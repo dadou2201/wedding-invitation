@@ -1,0 +1,25 @@
+▲ Next.js 16.3.0 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env.local
+✓ Ready in 491ms
+✓ Running next.config.ts took 42ms
+Creating turbopack project {
+  dir: 'C:\\Users\\boubo\\mariage\\wedding-invitation',
+  testMode: true
+}
+
+ GET /i/global-mariage 200 in 1416ms (next.js: 670ms, application-code: 746ms)
+ GET /i/global-complet 200 in 353ms (next.js: 11ms, application-code: 342ms)
+ GET /i/global-complet 200 in 457ms (next.js: 16ms, application-code: 442ms)
+ GET /i/global-mariage 200 in 600ms (next.js: 42ms, application-code: 558ms)
+ GET /i/global-complet 200 in 432ms (next.js: 10ms, application-code: 422ms)
+✓ Compiled in 80ms
+✓ Compiled in 142ms
+ GET /i/global-mariage 200 in 126ms (next.js: 74ms, application-code: 52ms)
+ GET /i/global-complet 200 in 120ms (next.js: 93ms, application-code: 28ms)
+ GET /i/global-mariage 200 in 4.3s (next.js: 11ms, application-code: 4.3s)
+✓ Compiled in 73ms
+ GET /i/global-mariage 200 in 567ms (next.js: 78ms, application-code: 489ms)
+ GET /i/global-complet 200 in 674ms (next.js: 87ms, application-code: 587ms)
+ GET /i/global-mariage 500 in 950ms (next.js: 833ms, application-code: 116ms)

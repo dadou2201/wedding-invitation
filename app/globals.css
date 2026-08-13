@@ -1,0 +1,3845 @@
+@import "tailwindcss";
+
+:root {
+  --ivory: #f8f4ec;
+  --warm-white: #fffdf8;
+  --sand: #dcc9a5;
+  --sand-light: #eee4d2;
+  --olive: #7a8060;
+  --olive-deep: #545b42;
+  --gold: #b89a62;
+  --ink: #252525;
+  --muted: #68675f;
+  --hairline: rgba(64, 61, 50, 0.2);
+  --page-gutter: clamp(1.125rem, 4vw, 4rem);
+  --section-space: clamp(7rem, 15vw, 13rem);
+  --font-fallback: Arial, Helvetica, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--ivory);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-body), var(--font-fallback);
+  --font-serif: var(--font-display), Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  background: var(--ivory);
+  color-scheme: light;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-body), var(--font-fallback);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  color: inherit;
+}
+
+::selection {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+.focus-ring:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.invitation-page {
+  min-width: 0;
+  overflow: clip;
+  background: var(--ivory);
+}
+
+/* Invitation opening card */
+
+.opening-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding:
+    max(0.75rem, env(safe-area-inset-top))
+    max(0.75rem, env(safe-area-inset-right))
+    max(0.75rem, env(safe-area-inset-bottom))
+    max(0.75rem, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.96), transparent 42%),
+    linear-gradient(145deg, #e8e5dc 0%, #f6f2e9 47%, #d9dace 100%);
+}
+
+.opening-page::before,
+.opening-page::after {
+  position: absolute;
+  z-index: -2;
+  width: min(46rem, 92vw);
+  height: min(46rem, 92vw);
+  border: 1px solid rgba(84, 91, 66, 0.12);
+  border-radius: 50%;
+  content: "";
+}
+
+.opening-page::before {
+  inset-block-start: -31rem;
+  inset-inline-start: -17rem;
+}
+
+.opening-page::after {
+  inset-block-end: -34rem;
+  inset-inline-end: -18rem;
+}
+
+.opening-page__glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, 0.38) 47%, transparent 73%),
+    repeating-linear-gradient(90deg, rgba(74, 75, 63, 0.015) 0 1px, transparent 1px 5px);
+  pointer-events: none;
+}
+
+.opening-card {
+  width: min(100%, 34rem);
+  padding: clamp(0.45rem, 1.8vw, 0.7rem);
+  border: 1px solid rgba(97, 91, 70, 0.45);
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow:
+    0 2rem 5rem rgba(63, 60, 48, 0.14),
+    0 0.2rem 0.8rem rgba(63, 60, 48, 0.07);
+  animation: opening-card-arrival 900ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.opening-card__inner {
+  position: relative;
+  display: flex;
+  min-height: min(43rem, calc(100svh - 2.4rem));
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 7svh, 4rem) clamp(1.15rem, 7vw, 3.8rem);
+  border: 1px solid rgba(97, 91, 70, 0.28);
+  text-align: center;
+}
+
+.opening-card__inner::before,
+.opening-card__inner::after {
+  position: absolute;
+  width: 2.4rem;
+  height: 2.4rem;
+  content: "";
+}
+
+.opening-card__inner::before {
+  inset-block-start: 0.55rem;
+  inset-inline-start: 0.55rem;
+  border-block-start: 1px solid rgba(184, 154, 98, 0.58);
+  border-inline-start: 1px solid rgba(184, 154, 98, 0.58);
+}
+
+.opening-card__inner::after {
+  inset-block-end: 0.55rem;
+  inset-inline-end: 0.55rem;
+  border-block-end: 1px solid rgba(184, 154, 98, 0.58);
+  border-inline-end: 1px solid rgba(184, 154, 98, 0.58);
+}
+
+.opening-monogram {
+  position: relative;
+  width: clamp(9rem, 39vw, 13.5rem);
+  aspect-ratio: 2.2 / 1;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.opening-monogram img {
+  object-fit: cover;
+  mix-blend-mode: multiply;
+}
+
+.opening-ornament {
+  display: flex;
+  width: min(9rem, 42vw);
+  align-items: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(0.9rem, 2.5svh, 1.5rem);
+  color: var(--gold);
+}
+
+.opening-ornament span {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+
+.opening-ornament span:last-child {
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+.opening-ornament i {
+  font-size: 0.32rem;
+  font-style: normal;
+  transform: rotate(45deg);
+}
+
+.opening-quote {
+  max-width: 26rem;
+  margin: clamp(1.25rem, 3.5svh, 2rem) 0 0;
+  color: #46453e;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 4.3vw, 1.38rem);
+  font-style: italic;
+  font-weight: 350;
+  line-height: 1.62;
+  text-wrap: balance;
+}
+
+.opening-names {
+  margin: clamp(1.2rem, 3.5svh, 2rem) 0 0;
+  color: #252820;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.25rem, 10vw, 3.75rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  text-wrap: nowrap;
+}
+
+.opening-names span {
+  margin-inline: 0.08em;
+  color: var(--gold);
+  font-size: 0.6em;
+  font-weight: 300;
+}
+
+.opening-date {
+  margin: clamp(0.9rem, 2.5svh, 1.35rem) 0 0;
+  color: var(--olive-deep);
+  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.opening-date span {
+  margin-inline: 0.55em;
+  color: var(--gold);
+}
+
+.opening-discover {
+  display: inline-flex;
+  min-width: clamp(10.5rem, 45vw, 12.5rem);
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-block-start: clamp(1.5rem, 4.5svh, 2.5rem);
+  padding: 0.8rem 1.5rem;
+  border: 1px solid var(--olive-deep);
+  background: var(--olive-deep);
+  color: var(--warm-white);
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: background 260ms ease, color 260ms ease, transform 260ms ease;
+}
+
+.opening-discover svg {
+  width: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.25;
+  transition: transform 260ms ease;
+}
+
+.opening-discover:hover {
+  background: transparent;
+  color: var(--olive-deep);
+  transform: translateY(-2px);
+}
+
+.opening-discover:hover svg {
+  transform: translateX(0.2rem);
+}
+
+@keyframes opening-card-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(1.4rem) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-height: 42rem) {
+  .opening-card__inner {
+    min-height: calc(100svh - 2.4rem);
+    padding-block: 1.35rem;
+  }
+
+  .opening-monogram {
+    width: clamp(8rem, 33vw, 11rem);
+  }
+
+  .opening-ornament,
+  .opening-quote,
+  .opening-names,
+  .opening-date,
+  .opening-discover {
+    margin-block-start: 0.85rem;
+  }
+
+  .opening-quote {
+    font-size: clamp(0.96rem, 3.5vw, 1.16rem);
+    line-height: 1.48;
+  }
+
+  .opening-names {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .opening-discover {
+    min-height: 3rem;
+  }
+}
+
+.section-shell {
+  width: min(100% - (var(--page-gutter) * 2), 76rem);
+  margin-inline: auto;
+}
+
+.eyebrow,
+.hero-eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: clamp(0.64rem, 1.2vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .hero-eyebrow {
+  letter-spacing: 0.08em;
+}
+
+.section-title {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.75rem, 8vw, 6rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+[dir="rtl"] .section-title {
+  letter-spacing: -0.012em;
+  line-height: 1.14;
+}
+
+.section-title--compact {
+  font-size: clamp(2.15rem, 6vw, 4.35rem);
+}
+
+.section-heading--center {
+  max-width: 50rem;
+  text-align: center;
+}
+
+.paper-ornament {
+  display: block;
+  width: 4.5rem;
+  height: 1px;
+  margin: 2rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Opening photograph */
+
+.wedding-hero {
+  position: relative;
+  background: var(--ivory);
+}
+
+.wedding-hero__photo {
+  position: relative;
+  height: max(42rem, 84svh);
+  min-height: 42rem;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.wedding-hero__image {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 50% 54%;
+  scale: 1.002;
+}
+
+.wedding-hero__veil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(18, 20, 14, 0.46) 0%, rgba(18, 20, 14, 0.08) 31%, transparent 53%, rgba(18, 20, 14, 0.17) 100%),
+    linear-gradient(90deg, rgba(18, 20, 14, 0.08), transparent 52%, rgba(18, 20, 14, 0.06));
+}
+
+.wedding-hero__topbar {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-block-start: max(1.25rem, env(safe-area-inset-top));
+  padding-inline: var(--page-gutter);
+}
+
+.hero-monogram {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+.hero-monogram span {
+  color: var(--sand-light);
+  font-size: 0.78em;
+  font-style: italic;
+}
+
+.language-switcher {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding-inline: 0.3rem;
+}
+
+.language-switcher button {
+  min-height: 2.5rem;
+  padding: 0 0.18rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 253, 248, 0.58);
+  cursor: pointer;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  transition: color 250ms ease;
+}
+
+.language-switcher button:last-child {
+  letter-spacing: 0.02em;
+}
+
+.language-switcher button[aria-pressed="true"] {
+  color: var(--warm-white);
+}
+
+.language-switcher > span {
+  width: 1px;
+  height: 0.75rem;
+  background: rgba(255, 253, 248, 0.34);
+}
+
+.wedding-hero__content {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: clamp(7.5rem, 17svh, 10rem);
+  inset-inline: var(--page-gutter);
+  text-align: center;
+}
+
+.hero-names {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12em;
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.7rem, 11.8vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+  white-space: nowrap;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.16);
+}
+
+.hero-ampersand {
+  margin: 0;
+  color: var(--sand-light);
+  font-size: 0.46em;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.discover-link {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: max(1.2rem, env(safe-area-inset-bottom));
+  inset-inline-start: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  color: rgba(255, 253, 248, 0.82);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
+[dir="rtl"] .discover-link {
+  transform: translateX(50%);
+}
+
+.discover-line {
+  width: 1px;
+  height: 2.2rem;
+  background: linear-gradient(180deg, currentColor, transparent);
+}
+
+.hero-invitation {
+  display: flex;
+  min-height: 19rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4.8rem var(--page-gutter);
+  text-align: center;
+}
+
+.hero-invitation__line {
+  max-width: 25rem;
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.35rem, 4vw, 1.9rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.hero-date {
+  display: block;
+  margin-block-start: 1.5rem;
+  color: var(--olive-deep);
+  font-size: clamp(0.68rem, 1.8vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .hero-date {
+  letter-spacing: 0.06em;
+}
+
+/* Framed entrance */
+
+.wedding-hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #4b4037;
+}
+
+.wedding-hero__photo {
+  display: grid;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 39rem;
+  place-items: center;
+}
+
+.wedding-hero__image {
+  filter: saturate(0.72) sepia(0.16) contrast(0.92) brightness(0.76);
+}
+
+.wedding-hero__image--mobile {
+  display: block;
+  object-position: 50% 52%;
+}
+
+.wedding-hero__veil {
+  background:
+    linear-gradient(135deg, rgba(72, 91, 69, 0.46), rgba(104, 61, 48, 0.5)),
+    linear-gradient(180deg, rgba(36, 35, 28, 0.18), rgba(45, 32, 27, 0.38));
+}
+
+.wedding-hero__topbar {
+  z-index: 4;
+  justify-content: flex-end;
+  padding-block-start: max(1rem, env(safe-area-inset-top));
+}
+
+.language-switcher {
+  gap: 0.7rem;
+  padding-inline: 0;
+}
+
+.language-switcher button {
+  color: rgba(255, 244, 222, 0.62);
+  text-shadow: 0 1px 12px rgba(37, 28, 23, 0.35);
+}
+
+.language-switcher button[aria-pressed="true"] {
+  color: #fff4de;
+}
+
+.language-switcher > span {
+  background: rgba(255, 225, 183, 0.42);
+}
+
+.intro-card {
+  position: relative;
+  z-index: 2;
+  width: min(calc(100vw - 2rem), 28rem);
+  max-width: calc(100vw - 2rem);
+  height: min(34rem, calc(100svh - 7rem));
+  min-width: 0;
+  min-height: 29rem;
+  padding: 0.72rem;
+  border: 1px solid rgba(241, 211, 161, 0.82);
+  background:
+    linear-gradient(155deg, rgba(247, 233, 210, 0.88), rgba(224, 191, 164, 0.8));
+  box-shadow: 0 1.8rem 5rem rgba(42, 29, 23, 0.2);
+  color: #403129;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.intro-card::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0.42rem;
+  border: 1px solid rgba(112, 91, 61, 0.54);
+  pointer-events: none;
+  content: "";
+}
+
+.intro-card__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.8rem, 6vw, 3rem) clamp(1.3rem, 6vw, 2.8rem);
+  border: 1px solid rgba(255, 245, 224, 0.72);
+  overflow: hidden;
+  text-align: center;
+}
+
+.intro-card__inner::before,
+.intro-card__inner::after {
+  position: absolute;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-color: rgba(124, 89, 57, 0.62);
+  content: "";
+}
+
+.intro-card__inner::before {
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  border-block-start: 1px solid;
+  border-inline-start: 1px solid;
+}
+
+.intro-card__inner::after {
+  inset-block-end: 0.75rem;
+  inset-inline-end: 0.75rem;
+  border-block-end: 1px solid;
+  border-inline-end: 1px solid;
+}
+
+.intro-logo {
+  position: relative;
+  width: clamp(6.5rem, 23vw, 7.6rem);
+  height: clamp(4.6rem, 16vw, 5.35rem);
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(115, 88, 55, 0.58);
+  border-radius: 50%;
+  background-color: #ead7bc;
+  background-image: url("/images/logo.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 35%;
+  background-size: 190%;
+  background-blend-mode: multiply;
+}
+
+.intro-logo::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0.28rem;
+  border: 1px solid rgba(184, 154, 98, 0.6);
+  border-radius: inherit;
+  pointer-events: none;
+  content: "";
+}
+
+.intro-card__invitation {
+  width: 100%;
+  max-width: 16rem;
+  margin: clamp(1.25rem, 3svh, 1.8rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 3.7vw, 1.05rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.intro-card .hero-names {
+  gap: 0.15em;
+  margin-block-start: clamp(1.1rem, 2.6svh, 1.7rem);
+  color: #513b31;
+  max-width: 100%;
+  font-size: clamp(1.95rem, 8.7vw, 3.25rem);
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  text-shadow: none;
+}
+
+.intro-card .hero-ampersand {
+  color: #a56f50;
+}
+
+.intro-card .hero-date {
+  margin-block-start: clamp(0.9rem, 2svh, 1.25rem);
+  color: #6c634f;
+  font-size: clamp(0.58rem, 2vw, 0.68rem);
+  letter-spacing: 0.2em;
+}
+
+.hero-discover-button {
+  display: inline-flex;
+  min-width: 9.8rem;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: clamp(1.25rem, 3svh, 1.9rem);
+  padding: 0.7rem 1.35rem;
+  border: 1px solid rgba(76, 91, 65, 0.72);
+  background: rgba(255, 247, 230, 0.18);
+  color: #46533f;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background 250ms ease, color 250ms ease, border-color 250ms ease;
+}
+
+.hero-discover-button:hover {
+  border-color: #526048;
+  background: #526048;
+  color: #fff8e9;
+}
+
+[dir="rtl"] .intro-card__invitation {
+  font-style: normal;
+  line-height: 1.75;
+}
+
+[dir="rtl"] .intro-card .hero-date,
+[dir="rtl"] .hero-discover-button {
+  letter-spacing: 0.06em;
+}
+
+/* Personal welcome */
+
+.welcome-section {
+  min-height: min(48rem, 92svh);
+  padding-block: var(--section-space);
+  background: var(--warm-white);
+}
+
+.welcome-inner {
+  max-width: 48rem;
+  text-align: center;
+}
+
+.botanical-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 2rem auto 1.8rem;
+  color: var(--olive);
+}
+
+.botanical-divider span {
+  width: clamp(2.4rem, 8vw, 4.5rem);
+  height: 1px;
+  background: var(--hairline);
+}
+
+.botanical-divider svg {
+  width: 2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 0.8;
+}
+
+.welcome-name {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.2rem, 10vw, 6.4rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+[dir="rtl"] .welcome-name {
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+}
+
+.welcome-copy {
+  max-width: 39rem;
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  color: #55544d;
+  font-size: clamp(1rem, 2vw, 1.16rem);
+  font-weight: 350;
+  line-height: 2;
+}
+
+.welcome-signature {
+  margin: 2.4rem 0 0;
+  color: var(--olive-deep);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.45rem, 4vw, 1.9rem);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.welcome-signature span {
+  color: var(--gold);
+}
+
+/* Countdown */
+
+.countdown-section {
+  padding-block: clamp(6.5rem, 13vw, 10rem);
+  background: var(--ivory);
+  color: var(--ink);
+}
+
+.countdown-inner {
+  position: relative;
+  max-width: 50rem;
+  padding-block: clamp(3.5rem, 7vw, 5rem);
+  border-block: 1px solid var(--hairline);
+  text-align: center;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 34rem);
+  margin: clamp(2.8rem, 7vw, 4.2rem) auto 0;
+}
+
+.countdown-item {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-inline: 0.35rem;
+}
+
+.countdown-item + .countdown-item::before {
+  position: absolute;
+  inset-block: 8%;
+  inset-inline-start: 0;
+  width: 1px;
+  background: var(--hairline);
+  content: "";
+}
+
+.countdown-value {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.6rem, 9vw, 4.9rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.countdown-label {
+  color: var(--muted);
+  font-size: clamp(0.58rem, 1.6vw, 0.69rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .countdown-label {
+  letter-spacing: 0.05em;
+}
+
+/* Event chapters */
+
+.events-section {
+  padding-block-start: var(--section-space);
+  background: var(--warm-white);
+}
+
+.events-section > .section-heading {
+  margin-block-end: clamp(7rem, 14vw, 12rem);
+}
+
+.events-list {
+  display: grid;
+}
+
+.event-chapter {
+  min-width: 0;
+}
+
+.event-paper {
+  padding-block: clamp(2rem, 4vw, 3.5rem) clamp(7rem, 14vw, 12rem);
+  background: var(--warm-white);
+}
+
+.event-paper--henna {
+  background: var(--ivory);
+}
+
+.event-heading {
+  max-width: 47rem;
+  text-align: center;
+}
+
+.event-category,
+.event-weekday {
+  margin: 0;
+  color: var(--gold);
+  font-size: clamp(0.66rem, 1.4vw, 0.76rem);
+  font-weight: 650;
+  letter-spacing: 0.28em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .event-category,
+[dir="rtl"] .event-weekday {
+  letter-spacing: 0.07em;
+}
+
+.event-weekday {
+  margin-block-start: clamp(3.5rem, 7vw, 5rem);
+  color: var(--olive);
+}
+
+.event-date-lockup {
+  display: grid;
+  justify-items: center;
+  margin-block-start: 0.2rem;
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.event-day {
+  font-size: clamp(5.8rem, 21vw, 10.5rem);
+  font-variant-numeric: lining-nums;
+  font-weight: 300;
+  letter-spacing: -0.08em;
+  line-height: 0.88;
+}
+
+.event-month {
+  margin-block-start: 0.35rem;
+  font-size: clamp(1.75rem, 5vw, 2.6rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.event-year {
+  margin-block-start: 0.65rem;
+  color: var(--muted);
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  line-height: 1;
+}
+
+.event-intro {
+  max-width: 35rem;
+  margin: clamp(2.4rem, 5vw, 3.5rem) auto 0;
+  color: var(--muted);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.event-photo {
+  position: relative;
+  overflow: hidden;
+  margin-inline: auto;
+  background: var(--sand-light);
+}
+
+.event-photo--portrait {
+  width: min(78%, 35rem);
+  aspect-ratio: 3 / 4;
+  margin-block: clamp(5rem, 11vw, 9rem);
+}
+
+.event-photo--landscape {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+}
+
+.event-photo__image {
+  object-fit: cover;
+  transition: transform 1.4s cubic-bezier(0.2, 0.65, 0.25, 1);
+}
+
+.event-photo:hover .event-photo__image {
+  transform: scale(1.012);
+}
+
+.event-details {
+  max-width: 43rem;
+  margin-block-start: clamp(5rem, 10vw, 8rem);
+  padding-block: clamp(3.25rem, 7vw, 5rem);
+  border-block: 1px solid var(--hairline);
+  text-align: center;
+}
+
+.event-photo--portrait + .event-details {
+  margin-block-start: 0;
+}
+
+.event-time {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 9vw, 5rem);
+  font-variant-numeric: lining-nums;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.event-location {
+  margin-block-start: 2.3rem;
+}
+
+.event-venue,
+.event-address {
+  margin: 0;
+}
+
+.event-venue {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.event-address {
+  max-width: 28rem;
+  margin: 0.6rem auto 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem 1.6rem;
+  margin-block-start: 2.75rem;
+}
+
+.event-action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0 0.3rem;
+  border-block-end: 1px solid var(--hairline);
+  color: var(--olive-deep);
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  transition: border-color 250ms ease, color 250ms ease;
+}
+
+[dir="rtl"] .event-action {
+  letter-spacing: 0.04em;
+}
+
+.event-action:hover {
+  border-block-end-color: var(--gold);
+  color: var(--gold);
+}
+
+.event-action svg {
+  width: 0.86rem;
+  height: 0.86rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.35;
+}
+
+/* Transparent framed invitations */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.events-section.framed-events {
+  padding: 0;
+  background: var(--ivory);
+}
+
+.framed-events__list {
+  display: grid;
+  gap: clamp(0.55rem, 1.4vw, 1rem);
+  padding: clamp(0.55rem, 1.4vw, 1rem);
+}
+
+.framed-event-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(0.55rem, 2.2vw, 1.5rem);
+  color: #403129;
+}
+
+.framed-event-page--wedding {
+  min-height: 76rem;
+}
+
+.framed-event-page__background,
+.framed-event-page__veil {
+  position: absolute;
+  inset: 0;
+}
+
+.framed-event-page__background {
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
+  filter: blur(7px) saturate(0.72) contrast(0.94);
+  transform: scale(1.055);
+}
+
+.framed-event-page--henna .framed-event-page__background {
+  object-position: 50% 42%;
+}
+
+.framed-event-page--shabbat .framed-event-page__background {
+  object-position: 50% 50%;
+}
+
+.framed-event-page__veil {
+  z-index: -1;
+  background:
+    linear-gradient(135deg, rgba(72, 91, 69, 0.46), rgba(104, 61, 48, 0.5)),
+    linear-gradient(180deg, rgba(36, 35, 28, 0.18), rgba(45, 32, 27, 0.38));
+}
+
+.framed-event-page--henna .framed-event-page__veil {
+  background:
+    linear-gradient(135deg, rgba(116, 72, 52, 0.48), rgba(72, 91, 69, 0.44)),
+    linear-gradient(180deg, rgba(48, 34, 28, 0.2), rgba(48, 34, 28, 0.4));
+}
+
+.framed-event-page--shabbat .framed-event-page__veil {
+  background:
+    linear-gradient(135deg, rgba(72, 91, 69, 0.5), rgba(111, 72, 58, 0.44)),
+    linear-gradient(180deg, rgba(34, 38, 30, 0.18), rgba(40, 31, 27, 0.4));
+}
+
+.framed-event-card {
+  width: min(100%, 49rem);
+  padding: 0.42rem;
+  border: 1px solid rgba(241, 211, 161, 0.82);
+  background:
+    linear-gradient(155deg, rgba(247, 233, 210, 0.94), rgba(224, 191, 164, 0.9));
+  box-shadow: 0 1.8rem 5rem rgba(42, 29, 23, 0.22);
+  backdrop-filter: blur(5px);
+}
+
+.framed-event-card__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  min-height: 100%;
+  padding: clamp(2.8rem, 9vw, 5.25rem) clamp(0.8rem, 6vw, 4.5rem);
+  border: 1px solid rgba(112, 91, 61, 0.54);
+  text-align: center;
+}
+
+.framed-event-card--wedding {
+  max-width: 45rem;
+}
+
+.wedding-corner-mark {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 0.9rem;
+  display: grid;
+  width: clamp(2.5rem, 11vw, 4.25rem);
+  gap: 0.3rem;
+}
+
+.wedding-corner-mark span {
+  display: block;
+  height: 1px;
+  background: rgba(124, 89, 57, 0.7);
+}
+
+.wedding-bsd {
+  position: absolute;
+  inset-block-start: 2.65rem;
+  right: 1rem;
+  margin: 0;
+  font-size: clamp(0.72rem, 2.8vw, 0.92rem);
+}
+
+.wedding-ceremony-title {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.1rem, 13vw, 5.75rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.wedding-blessing {
+  margin: clamp(2.5rem, 7vw, 4rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.08rem, 4.7vw, 1.65rem);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.wedding-families {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.7rem, 4vw, 3rem);
+  margin-block-start: clamp(2rem, 6vw, 3.3rem);
+}
+
+.wedding-families p {
+  display: grid;
+  align-content: start;
+  gap: 0.28rem;
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.77rem, 3vw, 1.08rem);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.wedding-couple {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(0.45rem, 3vw, 1.4rem);
+  margin-block-start: clamp(2.25rem, 7vw, 4rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.85rem, 12vw, 5.3rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.wedding-couple i {
+  color: #a56f50;
+  font-size: 0.68em;
+  font-weight: 300;
+}
+
+.wedding-couple-hebrew {
+  margin: 0.8rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 4.8vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.wedding-invitation-copy {
+  max-width: 34rem;
+  margin: clamp(2.1rem, 6vw, 3rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 3.7vw, 1.23rem);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.wedding-date-block {
+  display: grid;
+  gap: 0.38rem;
+  margin-block-start: clamp(2rem, 6vw, 3.1rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 4.2vw, 1.4rem);
+  line-height: 1.35;
+}
+
+.wedding-date-block time {
+  font-size: clamp(1.38rem, 5.4vw, 2rem);
+}
+
+.wedding-date-block [lang="he"] {
+  font-size: 0.94em;
+}
+
+.wedding-address {
+  max-width: 30rem;
+  margin-block-start: clamp(2rem, 6vw, 3rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 4.3vw, 1.55rem);
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.wedding-reception {
+  margin: clamp(1.65rem, 5vw, 2.5rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.98rem, 3.7vw, 1.2rem);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.wedding-memorial {
+  max-width: 32rem;
+  margin: clamp(1.7rem, 5vw, 2.5rem) 0 0;
+  color: #6c634f;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.78rem, 3vw, 0.98rem);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.wedding-route-button {
+  display: inline-flex;
+  min-width: min(100%, 15rem);
+  min-height: 3.55rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(2rem, 6vw, 3rem);
+  padding: 0.85rem 1.6rem;
+  border: 1px solid rgba(76, 91, 65, 0.72);
+  color: #46533f;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  letter-spacing: 0.04em;
+  transition: background 250ms ease, color 250ms ease;
+}
+
+.wedding-route-button:hover {
+  background: #526048;
+  color: #fff8e9;
+}
+
+.wedding-route-button svg,
+.standard-event-actions svg,
+.wedding-secondary-actions svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.wedding-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.85rem 1.35rem;
+  margin-block-start: 1.25rem;
+  color: #625b49;
+  font-size: 0.61rem;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.wedding-secondary-actions a {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.4rem;
+  border-block-end: 1px solid rgba(76, 91, 65, 0.34);
+}
+
+.framed-event-card--standard {
+  max-width: 39rem;
+}
+
+.standard-stationery {
+  min-height: min(46rem, calc(100svh - 2rem));
+  align-content: center;
+}
+
+.standard-event-ornament {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 3.5vw, 1.25rem);
+  letter-spacing: 0.1em;
+}
+
+.standard-event-ornament span {
+  color: #a56f50;
+  font-style: italic;
+}
+
+.standard-event-category {
+  margin: clamp(2.2rem, 7vw, 3.4rem) 0 0;
+  color: #7a684b;
+  font-size: clamp(0.65rem, 2.5vw, 0.78rem);
+  font-weight: 650;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .standard-event-category {
+  letter-spacing: 0.08em;
+}
+
+.standard-event-date {
+  display: grid;
+  justify-items: center;
+  margin: 1rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.standard-event-date > span {
+  font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+  font-weight: 550;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.standard-event-date time {
+  display: grid;
+  justify-items: center;
+  margin-block-start: 0.85rem;
+}
+
+.standard-event-date strong {
+  font-size: clamp(4.8rem, 19vw, 7.8rem);
+  font-weight: 300;
+  letter-spacing: -0.07em;
+  line-height: 0.82;
+}
+
+.standard-event-date time > span {
+  margin-block-start: 0.7rem;
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+}
+
+.standard-event-date small {
+  margin-block-start: 0.75rem;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.66rem;
+  font-weight: 650;
+  letter-spacing: 0.25em;
+}
+
+.standard-event-intro {
+  max-width: 28rem;
+  margin: clamp(1.8rem, 6vw, 2.8rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.98rem, 3.8vw, 1.22rem);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.standard-event-time {
+  margin: clamp(1.8rem, 6vw, 2.8rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.4rem, 10vw, 4rem);
+  font-variant-numeric: lining-nums;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.standard-event-location {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 28rem;
+  margin-block-start: 1.6rem;
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.standard-event-location p,
+.standard-event-location address {
+  margin: 0;
+}
+
+.standard-event-location p {
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
+}
+
+.standard-event-location address {
+  color: #6c634f;
+  font-size: clamp(0.83rem, 3vw, 1rem);
+  font-style: normal;
+  line-height: 1.65;
+}
+
+.standard-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.3rem;
+  margin-block-start: clamp(2rem, 7vw, 3.2rem);
+}
+
+.standard-event-actions a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.42rem;
+  border-block-end: 1px solid rgba(76, 91, 65, 0.38);
+  color: #46533f;
+  font-size: 0.61rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: border-color 250ms ease, color 250ms ease;
+}
+
+.standard-event-actions a:hover,
+.wedding-secondary-actions a:hover {
+  border-color: #a56f50;
+  color: #8e5f46;
+}
+
+[dir="rtl"] .standard-event-actions a,
+[dir="rtl"] .wedding-secondary-actions {
+  letter-spacing: 0.04em;
+}
+
+@media (min-width: 48rem) {
+  .framed-event-page--wedding {
+    min-height: 86rem;
+  }
+
+  .framed-event-card {
+    padding: 0.72rem;
+  }
+
+  .framed-event-card__inner {
+    padding-inline: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .wedding-families p {
+    font-size: 1.05rem;
+  }
+}
+
+/* Editorial photographs */
+
+.gallery-section {
+  padding-block: var(--section-space);
+  background: var(--warm-white);
+}
+
+.gallery-heading {
+  max-width: 51rem;
+  margin-inline: auto;
+  margin-block-end: clamp(5rem, 11vw, 9rem);
+}
+
+.gallery-heading > p:not(.eyebrow) {
+  max-width: 34rem;
+  margin: 2rem auto 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 2vw, 1.06rem);
+  line-height: 1.9;
+}
+
+.editorial-gallery {
+  display: grid;
+  align-items: start;
+}
+
+.gallery-frame {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  background: var(--sand-light);
+}
+
+.gallery-frame--1 {
+  width: 86%;
+}
+
+.gallery-frame--2 {
+  width: 72%;
+  margin-block-start: clamp(3rem, 9vw, 5rem);
+  margin-inline-start: auto;
+}
+
+.gallery-frame--3 {
+  width: 100%;
+  margin-block-start: clamp(4.5rem, 11vw, 7rem);
+}
+
+.gallery-image {
+  object-fit: cover;
+  transition: transform 1.4s cubic-bezier(0.2, 0.65, 0.25, 1);
+}
+
+.gallery-frame:hover .gallery-image {
+  transform: scale(1.012);
+}
+
+.gallery-frame figcaption {
+  position: absolute;
+  inset-block-end: 0.75rem;
+  inset-inline-end: 0.85rem;
+  color: rgba(255, 253, 248, 0.82);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* RSVP */
+
+.rsvp-section {
+  padding-block: var(--section-space);
+  background: var(--ivory);
+}
+
+.rsvp-shell {
+  max-width: 54rem;
+}
+
+.rsvp-heading {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.rsvp-intro {
+  max-width: 37rem;
+  margin: 2rem auto 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.rsvp-form,
+.rsvp-summary {
+  margin-block-start: clamp(4rem, 9vw, 7rem);
+  padding-block-start: clamp(3.25rem, 7vw, 5rem);
+  border-block-start: 1px solid var(--hairline);
+}
+
+.rsvp-events {
+  display: grid;
+  gap: clamp(3.25rem, 7vw, 5rem);
+}
+
+.rsvp-identity-fields {
+  display: grid;
+  gap: 2.5rem;
+  margin-block-end: clamp(4rem, 8vw, 6rem);
+  padding-block-end: clamp(3rem, 6vw, 4.5rem);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.rsvp-identity-fields .form-field {
+  margin-block-start: 0;
+}
+
+.rsvp-event,
+.guest-count-fieldset,
+.shuttle-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rsvp-event legend,
+.guest-count-fieldset legend,
+.shuttle-fieldset legend,
+.form-field label {
+  display: block;
+  margin-block-end: 1.35rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.rsvp-event legend {
+  width: 100%;
+  text-align: center;
+}
+
+.rsvp-options {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.rsvp-choice {
+  position: relative;
+}
+
+.rsvp-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.rsvp-choice label {
+  display: flex;
+  min-height: 3.7rem;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 0.3rem;
+  border-block-end: 1px solid var(--hairline);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  transition: border-color 250ms ease, color 250ms ease;
+}
+
+[dir="rtl"] .rsvp-choice label {
+  letter-spacing: 0.02em;
+}
+
+.rsvp-choice label:hover,
+.rsvp-choice label.is-selected {
+  border-block-end-color: var(--gold);
+  color: var(--olive-deep);
+}
+
+.rsvp-choice input:focus-visible + label {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.choice-mark {
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--olive);
+  border-radius: 50%;
+}
+
+.is-selected .choice-mark::after {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: inherit;
+  background: var(--olive);
+  content: "";
+}
+
+.guest-count-fieldset {
+  margin-block-start: clamp(3.2rem, 7vw, 4.75rem);
+  padding-block: clamp(2.2rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--hairline);
+  text-align: center;
+}
+
+.guest-count-fieldset legend {
+  float: inline-start;
+  width: 100%;
+}
+
+.shuttle-fieldset > p {
+  clear: both;
+  max-width: 33rem;
+  margin: 0 auto 1.8rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.guest-count-stepper {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.65rem, 2.5vw, 0.95rem);
+  margin-inline: auto;
+  padding: 0.42rem;
+  border: 1px solid rgba(84, 91, 66, 0.2);
+  border-radius: 999px;
+  background: rgba(238, 228, 210, 0.32);
+}
+
+.guest-count-stepper button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid rgba(84, 91, 66, 0.72);
+  border-radius: 50%;
+  background: var(--warm-white);
+  color: var(--olive-deep);
+  cursor: pointer;
+  box-shadow: 0 0.16rem 0.45rem rgba(64, 61, 50, 0.08);
+  transition: background 250ms ease, border-color 250ms ease, color 250ms ease;
+}
+
+.guest-count-stepper button span {
+  position: relative;
+  display: block;
+  width: 0.95rem;
+  height: 0.95rem;
+  font-size: 0;
+}
+
+.guest-count-stepper button span::before,
+.guest-count-stepper button:last-of-type span::after {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 0.85rem;
+  height: 1.5px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.guest-count-stepper button:last-of-type span::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.guest-count-stepper button:hover:not(:disabled) {
+  border-color: var(--olive-deep);
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.guest-count-stepper button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.guest-count-stepper output {
+  display: grid;
+  min-width: 2.25rem;
+  place-items: center;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.9rem, 7vw, 2.35rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.shuttle-fieldset {
+  margin-block-start: clamp(3rem, 7vw, 4.5rem);
+  padding-block-end: clamp(3rem, 6vw, 4.5rem);
+  border-block-end: 1px solid var(--hairline);
+  text-align: center;
+}
+
+.shuttle-fieldset legend {
+  float: inline-start;
+  width: 100%;
+}
+
+.shuttle-options {
+  display: grid;
+  clear: both;
+  gap: 0.2rem;
+  text-align: start;
+}
+
+.shuttle-options .choice-mark {
+  border-radius: 0.18rem;
+}
+
+.shuttle-options .is-selected .choice-mark::after {
+  width: 0.48rem;
+  height: 0.26rem;
+  border-block-end: 2px solid var(--warm-white);
+  border-inline-start: 2px solid var(--warm-white);
+  border-radius: 0;
+  background: transparent;
+  transform: translateY(-0.06rem) rotate(-45deg);
+}
+
+.shuttle-options .is-selected .choice-mark {
+  background: var(--olive);
+}
+
+.form-field {
+  position: relative;
+  margin-block-start: clamp(3rem, 7vw, 4.5rem);
+}
+
+.form-field input,
+.form-field textarea {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-block-end: 1px solid rgba(64, 61, 50, 0.34);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+  outline: 0;
+  transition: border-color 250ms ease;
+}
+
+.form-field input {
+  min-height: 3.4rem;
+  padding: 0.65rem 0;
+}
+
+.form-field textarea {
+  min-height: 8.5rem;
+  padding: 0.65rem 0 1.7rem;
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-block-end-color: var(--gold);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: rgba(37, 37, 37, 0.4);
+}
+
+.character-count {
+  position: absolute;
+  inset-block-end: 0.3rem;
+  inset-inline-end: 0;
+  color: var(--muted);
+  font-size: 0.65rem;
+}
+
+.form-error {
+  margin: 1.5rem 0 0;
+  color: #8a3e34;
+  font-size: 0.9rem;
+}
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--olive-deep);
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 250ms ease, color 250ms ease, opacity 250ms ease;
+}
+
+.primary-button {
+  width: 100%;
+  margin-block-start: 3.5rem;
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.rsvp-form .primary-button {
+  position: relative;
+  display: flex;
+  margin-inline: auto;
+  padding-inline: 3.2rem;
+}
+
+.rsvp-form .primary-button > span {
+  width: 100%;
+  text-align: center;
+}
+
+.rsvp-form .primary-button svg {
+  position: absolute;
+  inset-inline-end: 1.25rem;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #414735;
+}
+
+.primary-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.primary-button svg {
+  width: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.35;
+}
+
+[dir="rtl"] .primary-button svg {
+  transform: rotate(180deg);
+}
+
+.secondary-button {
+  margin-block-start: 2rem;
+  background: transparent;
+  color: var(--olive-deep);
+}
+
+.secondary-button:hover {
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.preview-note {
+  max-width: 35rem;
+  margin: 1.15rem 0 0;
+  color: rgba(37, 37, 37, 0.52);
+  font-size: 0.69rem;
+  line-height: 1.7;
+}
+
+.rsvp-summary {
+  text-align: start;
+}
+
+.rsvp-summary-title {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.8rem;
+}
+
+.rsvp-summary dl {
+  margin: 0;
+  border-block-start: 1px solid var(--hairline);
+}
+
+.rsvp-summary dl div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.2rem;
+  border-block-end: 1px solid var(--hairline);
+}
+
+.rsvp-summary dt {
+  font-weight: 600;
+}
+
+.rsvp-summary dd {
+  margin: 0;
+  color: var(--olive-deep);
+  font-size: 0.84rem;
+}
+
+.rsvp-summary dd[data-status="no"] {
+  color: var(--muted);
+}
+
+/* RSVP confirmation */
+
+.rsvp-section--confirmed {
+  padding: 0;
+  background: #2f3029;
+}
+
+.rsvp-confirmation-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(0.65rem, 2.4vw, 1.5rem);
+  color: #fffdf8;
+}
+
+.rsvp-confirmation-page__image,
+.rsvp-confirmation-page__veil {
+  position: absolute;
+  inset: 0;
+}
+
+.rsvp-confirmation-page__image {
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: blur(3px) saturate(0.72);
+  transform: scale(1.035);
+}
+
+.rsvp-confirmation-page__veil {
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(25, 25, 22, 0.42), rgba(27, 28, 24, 0.64)),
+    rgba(122, 128, 96, 0.12);
+}
+
+.rsvp-confirmation-card {
+  width: min(100%, 43rem);
+  padding: 0.45rem;
+  border: 1px solid rgba(255, 253, 248, 0.64);
+  background: rgba(35, 35, 31, 0.2);
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(2px);
+}
+
+.rsvp-confirmation-card__inner {
+  display: grid;
+  justify-items: center;
+  padding: clamp(3rem, 10vw, 5.5rem) clamp(1rem, 8vw, 5rem);
+  border: 1px solid rgba(255, 253, 248, 0.88);
+  text-align: center;
+}
+
+.rsvp-confirmation-monogram {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.3rem, 5vw, 1.75rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+}
+
+.rsvp-confirmation-monogram span {
+  color: #dcc9a5;
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+.rsvp-confirmation-check {
+  display: grid;
+  width: 3.6rem;
+  height: 3.6rem;
+  place-items: center;
+  margin-block-start: clamp(2rem, 6vw, 3rem);
+}
+
+.rsvp-confirmation-check svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #eee0c4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.15;
+}
+
+.rsvp-confirmation-eyebrow {
+  margin: 1.6rem 0 0;
+  color: #eee0c4;
+  font-size: clamp(0.62rem, 2.3vw, 0.74rem);
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .rsvp-confirmation-eyebrow {
+  letter-spacing: 0.07em;
+}
+
+.rsvp-confirmation-title {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.7rem, 11vw, 5.2rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+[dir="rtl"] .rsvp-confirmation-title {
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.rsvp-confirmation-text {
+  max-width: 30rem;
+  margin: 1.35rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 3.7vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.rsvp-confirmation-summary {
+  width: min(100%, 29rem);
+  margin-block-start: clamp(2.3rem, 7vw, 3.5rem);
+  text-align: start;
+}
+
+.rsvp-confirmation-summary > p {
+  margin: 0 0 0.9rem;
+  color: rgba(255, 253, 248, 0.7);
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.rsvp-confirmation-summary dl {
+  margin: 0;
+  border-block-start: 1px solid rgba(255, 253, 248, 0.34);
+}
+
+.rsvp-confirmation-summary dl div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.9rem;
+  border-block-end: 1px solid rgba(255, 253, 248, 0.26);
+}
+
+.rsvp-confirmation-summary dt,
+.rsvp-confirmation-summary dd {
+  margin: 0;
+  font-size: clamp(0.75rem, 2.8vw, 0.9rem);
+  line-height: 1.45;
+}
+
+.rsvp-confirmation-summary dt {
+  font-weight: 550;
+}
+
+.rsvp-confirmation-summary dd {
+  color: #eee0c4;
+  text-align: end;
+}
+
+.rsvp-confirmation-summary dd[data-status="no"] {
+  color: rgba(255, 253, 248, 0.66);
+}
+
+.rsvp-confirmation-edit {
+  min-height: 3.35rem;
+  margin-block-start: clamp(2rem, 7vw, 3.25rem);
+  padding: 0.75rem 1.5rem;
+  border: 1px solid rgba(255, 253, 248, 0.78);
+  background: transparent;
+  color: #fffdf8;
+  cursor: pointer;
+  font-size: 0.67rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 250ms ease, color 250ms ease;
+}
+
+.rsvp-confirmation-edit:hover {
+  background: #fffdf8;
+  color: #34352e;
+}
+
+.rsvp-confirmation-note {
+  max-width: 29rem;
+  margin: 1rem 0 0;
+  color: rgba(255, 253, 248, 0.63);
+  font-size: 0.65rem;
+  line-height: 1.65;
+}
+
+/* Closing */
+
+.final-message-section {
+  padding-block: var(--section-space);
+  background: var(--warm-white);
+}
+
+.final-message-inner {
+  max-width: 55rem;
+  text-align: center;
+}
+
+.final-message-inner blockquote {
+  margin: 1.8rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.15rem, 6.5vw, 4.7rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.24;
+}
+
+[dir="rtl"] .final-message-inner blockquote {
+  letter-spacing: -0.01em;
+  line-height: 1.38;
+}
+
+.final-names {
+  margin: 2.8rem 0 0;
+  color: var(--gold);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.5rem;
+  font-style: italic;
+}
+
+.wedding-footer {
+  display: flex;
+  min-height: 16rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem var(--page-gutter) max(2.5rem, env(safe-area-inset-bottom));
+  border-block-start: 1px solid var(--hairline);
+  background: var(--ivory);
+  color: var(--ink);
+  text-align: center;
+}
+
+.footer-monogram {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.footer-monogram span {
+  color: var(--gold);
+  font-size: 0.75em;
+  font-style: italic;
+}
+
+.wedding-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.08rem;
+}
+
+.wedding-footer a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-start: 0.5rem;
+  border-block-end: 1px solid var(--hairline);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wedding-footer a svg {
+  width: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3;
+}
+
+.wedding-footer small {
+  margin-block-start: 0.8rem;
+  color: rgba(37, 37, 37, 0.42);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+}
+
+/* Loading and route states */
+
+.invitation-loading,
+.invitation-state-page {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: max(2rem, env(safe-area-inset-top)) var(--page-gutter) max(2rem, env(safe-area-inset-bottom));
+  background: var(--ivory);
+  text-align: center;
+}
+
+.loading-monogram,
+.state-ornament {
+  color: var(--olive-deep);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.1em;
+}
+
+.loading-monogram span,
+.state-ornament span {
+  color: var(--gold);
+  font-size: 0.72em;
+  font-style: italic;
+}
+
+.loading-line {
+  position: relative;
+  width: 8rem;
+  height: 1px;
+  margin: 2rem 0;
+  overflow: hidden;
+  background: var(--hairline);
+}
+
+.loading-line::after {
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  content: "";
+  transform: translateX(-100%);
+  animation: loading-line 1.8s ease-in-out infinite;
+}
+
+.invitation-loading p {
+  margin: 0.3rem 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.invitation-state-page {
+  gap: 2rem;
+}
+
+.invitation-state-page section {
+  width: min(100%, 38rem);
+}
+
+.invitation-state-page h1,
+.invitation-state-page h2 {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+}
+
+.invitation-state-page section > p:last-child {
+  margin: 1rem auto 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.state-divider {
+  width: 5rem;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.invitation-state-page .secondary-button {
+  margin-block-start: 0;
+}
+
+/* Quiet reveal */
+
+.is-reveal-ready {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 1.05s ease,
+    transform 1.05s cubic-bezier(0.2, 0.65, 0.25, 1);
+}
+
+.is-reveal-ready.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes loading-line {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (min-width: 40rem) {
+  .rsvp-identity-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rsvp-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .shuttle-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .primary-button {
+    width: auto;
+    min-width: 19rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .wedding-hero__photo {
+    height: 100svh;
+    background-image: url("/images/nous3.jpg");
+    background-position: 50% 48%;
+    background-size: cover;
+  }
+
+  .wedding-hero__image--mobile {
+    display: none;
+  }
+
+  .intro-card {
+    width: min(calc(100% - 4rem), 31rem);
+    height: min(35rem, calc(100svh - 8rem));
+    min-height: 31rem;
+  }
+
+  .hero-names {
+    gap: 0.13em;
+    font-size: clamp(6rem, 10vw, 9rem);
+  }
+
+  .intro-card .hero-names {
+    font-size: clamp(2.9rem, 4vw, 3.5rem);
+  }
+
+  .event-photo--landscape {
+    width: min(90%, 82rem);
+    aspect-ratio: 16 / 9;
+  }
+
+  .editorial-gallery {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .gallery-frame--1 {
+    grid-column: 1 / span 5;
+    width: 100%;
+  }
+
+  .gallery-frame--2 {
+    grid-column: 8 / span 5;
+    width: 100%;
+    margin-block-start: clamp(8rem, 14vw, 13rem);
+  }
+
+  .gallery-frame--3 {
+    grid-column: 2 / span 10;
+    width: 100%;
+    margin-block-start: clamp(7rem, 12vw, 11rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .wedding-hero__image {
+    object-position: 50% 57%;
+  }
+
+  .event-photo--portrait {
+    width: min(38vw, 35rem);
+  }
+
+  .rsvp-events {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  .wedding-hero__photo {
+    height: 100svh;
+  }
+
+  .wedding-hero__image {
+    object-position: 50% 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .is-reveal-ready {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Focused invitation flow: stationery cards followed directly by RSVP */
+
+.invitation-language-switcher {
+  position: fixed;
+  z-index: 30;
+  inset-block-start: max(0.65rem, env(safe-area-inset-top));
+  inset-inline-end: max(0.65rem, env(safe-area-inset-right));
+  display: flex;
+  min-height: 2.65rem;
+  align-items: center;
+  gap: 0.55rem;
+  padding-inline: 0.8rem;
+  border: 1px solid rgba(255, 253, 248, 0.5);
+  border-radius: 999px;
+  background: rgba(52, 51, 43, 0.58);
+  box-shadow: 0 0.5rem 1.5rem rgba(31, 28, 23, 0.13);
+  color: #fffdf8;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.invitation-language-switcher button {
+  min-height: 2.3rem;
+  padding: 0 0.1rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 253, 248, 0.62);
+  cursor: pointer;
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.invitation-language-switcher button[aria-pressed="true"] {
+  color: #fffdf8;
+}
+
+.invitation-language-switcher > span {
+  width: 1px;
+  height: 0.8rem;
+  background: rgba(255, 253, 248, 0.35);
+}
+
+.invitation-page > .framed-events {
+  min-height: 100svh;
+}
+
+.invitation-page .framed-events__list {
+  gap: 0;
+  padding: 0;
+}
+
+.invitation-page .framed-event-page {
+  min-height: 100svh;
+  padding:
+    max(0.55rem, env(safe-area-inset-top))
+    max(0.5rem, env(safe-area-inset-right))
+    max(0.55rem, env(safe-area-inset-bottom))
+    max(0.5rem, env(safe-area-inset-left));
+}
+
+.invitation-page .invitation-language-switcher {
+  right: auto;
+  left: max(0.65rem, env(safe-area-inset-left));
+  inset-inline-end: auto;
+}
+
+.invitation-page .framed-event-page--wedding {
+  min-height: auto;
+  padding-block: max(0.55rem, env(safe-area-inset-top));
+}
+
+.invitation-page .framed-event-card {
+  width: min(100%, 43rem);
+  padding: clamp(0.27rem, 1.2vw, 0.62rem);
+}
+
+.invitation-page .framed-event-card__inner {
+  padding: clamp(2.6rem, 8vw, 5rem) clamp(0.8rem, 6vw, 4.5rem);
+}
+
+.invitation-page .framed-event-card--wedding .framed-event-card__inner {
+  padding-block: clamp(3.3rem, 10vw, 5rem);
+}
+
+.invitation-page .rsvp-section:not(.rsvp-section--confirmed) {
+  padding:
+    clamp(3.5rem, 12vw, 7rem)
+    max(0.65rem, env(safe-area-inset-right))
+    max(4rem, env(safe-area-inset-bottom))
+    max(0.65rem, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.78), transparent 36rem),
+    #e9e5db;
+}
+
+.invitation-page .rsvp-shell {
+  width: min(100%, 55rem);
+  max-width: 55rem;
+  padding: clamp(2.3rem, 8vw, 5rem) clamp(1rem, 6vw, 4.5rem);
+  border: 1px solid rgba(97, 91, 70, 0.36);
+  outline: 1px solid rgba(184, 154, 98, 0.28);
+  outline-offset: -0.55rem;
+  background: rgba(255, 253, 248, 0.97);
+  box-shadow: 0 1.5rem 4rem rgba(63, 60, 48, 0.12);
+}
+
+.invitation-page .rsvp-form {
+  margin-block-start: clamp(2.5rem, 8vw, 4.5rem);
+  padding-block-start: clamp(2.3rem, 7vw, 4rem);
+}
+
+@media (max-width: 30rem) {
+  .invitation-language-switcher {
+    inset-block-start: max(0.45rem, env(safe-area-inset-top));
+    inset-inline-end: max(0.45rem, env(safe-area-inset-right));
+    min-height: 2.45rem;
+    padding-inline: 0.68rem;
+  }
+
+  .invitation-page .framed-event-card__inner {
+    padding-inline: clamp(0.65rem, 4.3vw, 1.2rem);
+  }
+
+  .invitation-page .framed-event-card--wedding .framed-event-card__inner {
+    padding-block: 3.1rem 2.6rem;
+  }
+
+  .invitation-page .wedding-couple {
+    gap: 0.32rem;
+    font-size: clamp(2.45rem, 13.2vw, 3.6rem);
+  }
+
+  .invitation-page .wedding-families {
+    gap: 0.45rem;
+  }
+
+  .invitation-page .wedding-families p {
+    font-size: clamp(0.68rem, 3.25vw, 0.9rem);
+  }
+
+  .invitation-page .wedding-secondary-actions,
+  .invitation-page .standard-event-actions {
+    gap: 0.5rem 0.9rem;
+  }
+
+  .invitation-page .standard-stationery {
+    min-height: min(43rem, calc(100svh - 1.2rem));
+  }
+
+  .invitation-page .standard-event-date strong {
+    font-size: clamp(4.5rem, 23vw, 6.5rem);
+  }
+
+  .invitation-page .rsvp-section:not(.rsvp-section--confirmed) {
+    padding-inline: max(0.45rem, env(safe-area-inset-left));
+  }
+
+  .invitation-page .rsvp-shell {
+    padding: 2.7rem 1.15rem 3rem;
+    outline-offset: -0.38rem;
+  }
+
+  .invitation-page .rsvp-heading .section-title {
+    font-size: clamp(2.35rem, 13vw, 3.2rem);
+  }
+
+  .invitation-page .rsvp-intro {
+    margin-block-start: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .invitation-page .rsvp-events {
+    gap: 2.6rem;
+  }
+
+  .invitation-page .rsvp-event legend,
+  .invitation-page .guest-count-fieldset legend,
+  .invitation-page .shuttle-fieldset legend,
+  .invitation-page .form-field label {
+    font-size: clamp(1.3rem, 7vw, 1.7rem);
+  }
+
+  .invitation-page .rsvp-choice label {
+    min-height: 3.35rem;
+    padding-inline: 0.15rem;
+  }
+
+  .invitation-page .guest-count-fieldset {
+    margin-block-start: 3.2rem;
+    padding-block: 2.6rem;
+  }
+}
+
+/* Transparent full-screen invitation frames */
+
+html.invitation-snap-active {
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.invitation-snap-active .framed-event-page,
+html.invitation-snap-active .rsvp-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.invitation-page .framed-event-page {
+  height: 100svh;
+  min-height: 100svh;
+  padding: clamp(0.45rem, 1.7vw, 0.85rem);
+}
+
+.invitation-page .framed-event-page--wedding {
+  height: 100svh;
+  min-height: 100svh;
+  padding-block: clamp(0.45rem, 1.7vw, 0.85rem);
+}
+
+.invitation-page .framed-event-page__background {
+  filter: grayscale(1) saturate(0) contrast(1.03) brightness(0.88);
+  transform: scale(1.015);
+}
+
+.invitation-page .framed-event-page--wedding .framed-event-page__background {
+  object-position: 40% 0%;
+}
+
+.invitation-page .framed-event-page--henna .framed-event-page__background {
+  object-position: 43% 50%;
+}
+
+.invitation-page .framed-event-page--shabbat .framed-event-page__background {
+  right: auto;
+  left: -18%;
+  width: 118%;
+  max-width: none;
+  object-position: 50% 15%;
+}
+
+.invitation-page .framed-event-page__veil,
+.invitation-page .framed-event-page--henna .framed-event-page__veil,
+.invitation-page .framed-event-page--shabbat .framed-event-page__veil {
+  background:
+    linear-gradient(180deg, rgba(18, 18, 17, 0.28), rgba(18, 18, 17, 0.42)),
+    rgba(50, 50, 48, 0.08);
+}
+
+.invitation-page .framed-event-card,
+.invitation-page .framed-event-card--wedding,
+.invitation-page .framed-event-card--standard {
+  width: min(100%, 42rem);
+  height: 100%;
+  max-width: 42rem;
+  padding: clamp(0.38rem, 1.2vw, 0.62rem);
+  border: 1px solid rgba(255, 253, 248, 0.86);
+  background: rgba(32, 33, 29, 0.1);
+  box-shadow: 0 1rem 3.5rem rgba(0, 0, 0, 0.13);
+  color: #fffdf8;
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
+}
+
+.invitation-page .framed-event-card__inner {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  padding: clamp(2rem, 6vh, 4rem) clamp(0.8rem, 6vw, 4rem);
+  border-color: rgba(255, 253, 248, 0.9);
+  color: #fffdf8;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.34);
+}
+
+.invitation-page .framed-event-card--wedding .framed-event-card__inner {
+  padding-block: clamp(2rem, 5.5vh, 3.6rem);
+}
+
+.invitation-page .wedding-corner-mark span {
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.invitation-page .wedding-couple i,
+.invitation-page .standard-event-ornament span,
+.invitation-page .standard-event-category {
+  color: #f0ddbc;
+}
+
+.invitation-page .wedding-memorial,
+.invitation-page .wedding-secondary-actions,
+.invitation-page .standard-event-location address,
+.invitation-page .standard-event-actions a {
+  color: rgba(255, 253, 248, 0.88);
+}
+
+.invitation-page .wedding-route-button {
+  border-color: rgba(255, 253, 248, 0.78);
+  color: #fffdf8;
+}
+
+.invitation-page .wedding-route-button:hover {
+  border-color: #fffdf8;
+  background: #fffdf8;
+  color: #3f4638;
+}
+
+.invitation-page .wedding-secondary-actions a,
+.invitation-page .standard-event-actions a {
+  border-block-end-color: rgba(255, 253, 248, 0.54);
+}
+
+.invitation-page .standard-stationery {
+  min-height: 0;
+}
+
+.form-field--message label,
+.preview-note {
+  width: 100%;
+  text-align: center;
+}
+
+.preview-note {
+  margin-inline: auto;
+}
+
+@media (max-width: 48rem) {
+  .invitation-page .invitation-language-switcher {
+    left: max(0.45rem, env(safe-area-inset-left));
+  }
+
+  .invitation-page .framed-event-card__inner {
+    padding-inline: clamp(0.7rem, 5vw, 1.35rem);
+  }
+
+  .invitation-page .framed-event-card--wedding .framed-event-card__inner {
+    padding-block: clamp(1.75rem, 4.2vh, 2.35rem);
+  }
+
+  .invitation-page .wedding-corner-mark {
+    inset-block-start: 0.72rem;
+    inset-inline-end: 0.68rem;
+    width: 2.4rem;
+    gap: 0.22rem;
+  }
+
+  .invitation-page .wedding-bsd {
+    inset-block-start: 1.9rem;
+    right: 0.72rem;
+    font-size: 0.68rem;
+  }
+
+  .invitation-page .wedding-ceremony-title {
+    font-size: clamp(2.6rem, 11.5vw, 4rem);
+  }
+
+  .invitation-page .wedding-blessing {
+    margin-block-start: clamp(1.1rem, 2.6vh, 1.5rem);
+    font-size: clamp(0.92rem, 4vw, 1.15rem);
+    line-height: 1.35;
+  }
+
+  .invitation-page .wedding-families {
+    gap: 0.45rem;
+    margin-block-start: clamp(1rem, 2.4vh, 1.4rem);
+  }
+
+  .invitation-page .wedding-families p {
+    font-size: clamp(0.66rem, 3vw, 0.82rem);
+    line-height: 1.32;
+  }
+
+  .invitation-page .wedding-couple {
+    gap: 0.3rem;
+    margin-block-start: clamp(1.05rem, 2.6vh, 1.45rem);
+    font-size: clamp(2.25rem, 11.5vw, 3.5rem);
+  }
+
+  .invitation-page .wedding-couple-hebrew {
+    margin-block-start: 0.42rem;
+    font-size: clamp(0.92rem, 4vw, 1.15rem);
+  }
+
+  .invitation-page .wedding-invitation-copy {
+    margin-block-start: clamp(1rem, 2.5vh, 1.4rem);
+    font-size: clamp(0.76rem, 3.25vw, 0.94rem);
+    line-height: 1.42;
+  }
+
+  .invitation-page .wedding-date-block {
+    gap: 0.18rem;
+    margin-block-start: clamp(0.85rem, 2.2vh, 1.25rem);
+    font-size: clamp(0.78rem, 3.4vw, 0.98rem);
+    line-height: 1.25;
+  }
+
+  .invitation-page .wedding-date-block time {
+    font-size: clamp(1.05rem, 4.7vw, 1.4rem);
+  }
+
+  .invitation-page .wedding-address {
+    margin-block-start: clamp(0.8rem, 2vh, 1.15rem);
+    font-size: clamp(0.86rem, 3.7vw, 1.05rem);
+    line-height: 1.3;
+  }
+
+  .invitation-page .wedding-reception {
+    margin-block-start: clamp(0.7rem, 1.8vh, 1rem);
+    font-size: clamp(0.75rem, 3.2vw, 0.92rem);
+    line-height: 1.35;
+  }
+
+  .invitation-page .wedding-memorial {
+    margin-block-start: clamp(0.65rem, 1.7vh, 0.95rem);
+    font-size: clamp(0.62rem, 2.65vw, 0.75rem);
+    line-height: 1.4;
+  }
+
+  .invitation-page .wedding-route-button {
+    min-width: min(100%, 12rem);
+    min-height: 2.65rem;
+    margin-block-start: clamp(0.8rem, 2vh, 1.1rem);
+    padding: 0.55rem 1rem;
+    font-size: clamp(0.78rem, 3.3vw, 0.94rem);
+  }
+
+  .invitation-page .wedding-secondary-actions {
+    gap: 0.35rem 0.8rem;
+    margin-block-start: 0.45rem;
+    font-size: 0.5rem;
+  }
+
+  .invitation-page .wedding-secondary-actions a {
+    min-height: 1.8rem;
+  }
+
+  .invitation-page .standard-event-category {
+    margin-block-start: clamp(1.2rem, 3vh, 2rem);
+  }
+
+  .invitation-page .standard-event-date {
+    margin-block-start: 0.65rem;
+  }
+
+  .invitation-page .standard-event-date time {
+    margin-block-start: 0.55rem;
+  }
+
+  .invitation-page .standard-event-date strong {
+    font-size: clamp(4rem, 19vh, 6.25rem);
+  }
+
+  .invitation-page .standard-event-date time > span {
+    margin-block-start: 0.45rem;
+    font-size: clamp(1.35rem, 6vw, 1.9rem);
+  }
+
+  .invitation-page .standard-event-date small {
+    margin-block-start: 0.45rem;
+  }
+
+  .invitation-page .standard-event-intro {
+    margin-block-start: clamp(1.2rem, 3.2vh, 2rem);
+    font-size: clamp(0.9rem, 4vw, 1.08rem);
+    line-height: 1.48;
+  }
+
+  .invitation-page .standard-event-time {
+    margin-block-start: clamp(1.2rem, 3vh, 1.8rem);
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .invitation-page .standard-event-location {
+    gap: 0.3rem;
+    margin-block-start: 1rem;
+  }
+
+  .invitation-page .standard-event-location p {
+    font-size: clamp(0.96rem, 4.2vw, 1.16rem);
+  }
+
+  .invitation-page .standard-event-location address {
+    font-size: clamp(0.7rem, 3vw, 0.85rem);
+    line-height: 1.4;
+  }
+
+  .invitation-page .standard-event-actions {
+    gap: 0.35rem 0.8rem;
+    margin-block-start: clamp(1rem, 2.5vh, 1.5rem);
+  }
+
+  .invitation-page .standard-event-actions a {
+    min-height: 2.2rem;
+    font-size: 0.52rem;
+  }
+}
+
+@media (max-width: 23rem), (max-height: 43rem) {
+  .invitation-page .framed-event-card--wedding .framed-event-card__inner {
+    padding-block: 1.25rem;
+  }
+
+  .invitation-page .wedding-blessing,
+  .invitation-page .wedding-families,
+  .invitation-page .wedding-couple,
+  .invitation-page .wedding-invitation-copy,
+  .invitation-page .wedding-date-block,
+  .invitation-page .wedding-address,
+  .invitation-page .wedding-reception,
+  .invitation-page .wedding-memorial,
+  .invitation-page .wedding-route-button {
+    margin-block-start: 0.55rem;
+  }
+
+  .invitation-page .wedding-secondary-actions {
+    margin-block-start: 0.2rem;
+  }
+}
+
+/* Henné stationery */
+
+.henna-stationery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.henna-monogram {
+  width: clamp(7.6rem, 32vw, 10rem);
+  aspect-ratio: 2.2 / 1;
+  flex: 0 0 auto;
+}
+
+.henna-monogram svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #fffdf8;
+  stroke-linecap: square;
+  stroke-linejoin: round;
+  stroke-width: 12;
+}
+
+.henna-title {
+  margin: clamp(1rem, 2.5vh, 1.6rem) 0 0;
+  color: #fffdf8;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.6rem, 15vw, 5.8rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .henna-title {
+  letter-spacing: 0;
+}
+
+.henna-invitation-copy {
+  max-width: 30rem;
+  margin: clamp(1.5rem, 4vh, 2.6rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.henna-date-block {
+  display: grid;
+  justify-items: center;
+  margin-block-start: clamp(1.35rem, 3.5vh, 2.3rem);
+}
+
+.henna-date-block time {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.38em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: 550;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+.henna-date-block strong {
+  font-size: 1.75em;
+  font-weight: 400;
+  line-height: 0.8;
+}
+
+.henna-date-block small {
+  font-size: 0.78em;
+  font-weight: 650;
+}
+
+.henna-date-block p {
+  margin: clamp(0.75rem, 1.8vh, 1rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.4rem, 10vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.henna-dress-code {
+  margin: clamp(1.35rem, 3.5vh, 2.2rem) 0 0;
+  padding-block: 0.7rem;
+  border-block: 1px solid rgba(255, 253, 248, 0.5);
+  font-size: clamp(0.65rem, 2.8vw, 0.78rem);
+  font-weight: 750;
+  letter-spacing: 0.2em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .henna-dress-code {
+  letter-spacing: 0.06em;
+}
+
+.henna-route-button {
+  display: inline-flex;
+  min-width: min(100%, 13.5rem);
+  min-height: 3.15rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(1.35rem, 3.5vh, 2.2rem);
+  padding: 0.7rem 1.35rem;
+  border: 1px solid rgba(255, 253, 248, 0.82);
+  color: #fffdf8;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  transition: background 250ms ease, color 250ms ease;
+}
+
+.henna-route-button:hover {
+  background: #fffdf8;
+  color: #3f4638;
+  text-shadow: none;
+}
+
+.henna-route-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+@media (max-width: 30rem) {
+  .henna-monogram {
+    width: clamp(7rem, 31vw, 8.5rem);
+  }
+
+  .henna-title {
+    margin-block-start: clamp(0.7rem, 1.8vh, 1rem);
+    font-size: clamp(3.25rem, 15vw, 4.35rem);
+  }
+
+  .henna-invitation-copy {
+    margin-block-start: clamp(1.1rem, 2.7vh, 1.55rem);
+    font-size: clamp(0.95rem, 4.25vw, 1.12rem);
+    line-height: 1.4;
+  }
+
+  .henna-date-block {
+    margin-block-start: clamp(1rem, 2.5vh, 1.4rem);
+  }
+
+  .henna-date-block time {
+    gap: 0.3em;
+    font-size: clamp(0.88rem, 3.8vw, 1.02rem);
+  }
+
+  .henna-date-block p {
+    margin-block-start: 0.65rem;
+    font-size: clamp(2.2rem, 9.5vw, 2.75rem);
+  }
+
+  .henna-dress-code,
+  .henna-route-button {
+    margin-block-start: clamp(1rem, 2.5vh, 1.35rem);
+  }
+
+  .henna-route-button {
+    min-height: 2.8rem;
+  }
+}
+
+@media (max-height: 43rem) {
+  .henna-monogram {
+    width: 6.5rem;
+  }
+
+  .henna-title,
+  .henna-invitation-copy,
+  .henna-date-block,
+  .henna-dress-code,
+  .henna-route-button {
+    margin-block-start: 0.65rem;
+  }
+
+  .henna-title {
+    font-size: 2.9rem;
+  }
+
+  .henna-invitation-copy {
+    font-size: 0.88rem;
+  }
+
+  .henna-date-block p {
+    margin-block-start: 0.45rem;
+    font-size: 2rem;
+  }
+
+  .henna-dress-code {
+    padding-block: 0.45rem;
+  }
+
+  .henna-route-button {
+    min-height: 2.55rem;
+  }
+}
+
+/* Shabbat Hatan stationery */
+
+.shabbat-stationery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(1.35rem, 4vh, 2.8rem);
+}
+
+.shabbat-title {
+  margin: 0;
+  color: #fffdf8;
+  font-family: var(--font-script), var(--font-display), Georgia, serif;
+  font-size: clamp(3.15rem, 13.5vw, 5.4rem);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+[dir="rtl"] .shabbat-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.8rem, 12vw, 4.8rem);
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+.shabbat-introduction {
+  max-width: 31rem;
+  margin: clamp(1.2rem, 3.1vh, 2rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.88rem, 3.75vw, 1.08rem);
+  font-style: italic;
+  font-weight: 650;
+  line-height: 1.48;
+  text-wrap: balance;
+}
+
+[dir="rtl"] .shabbat-introduction {
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.shabbat-date {
+  display: grid;
+  gap: 0.15rem;
+  margin-block-start: clamp(1.05rem, 2.8vh, 1.75rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.38rem, 5.7vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.22;
+}
+
+.shabbat-date span {
+  display: block;
+}
+
+.shabbat-ornament {
+  display: block;
+  margin-block-start: clamp(0.7rem, 1.8vh, 1rem);
+  color: rgba(255, 253, 248, 0.78);
+  font-size: 0.82rem;
+  line-height: 1;
+}
+
+.shabbat-venue {
+  margin-block-start: clamp(0.7rem, 1.8vh, 1rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 4.4vw, 1.35rem);
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.shabbat-meal {
+  margin: clamp(0.9rem, 2.3vh, 1.35rem) 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.82rem, 3.5vw, 1rem);
+  font-style: italic;
+  font-weight: 650;
+  line-height: 1.38;
+}
+
+[dir="rtl"] .shabbat-meal {
+  font-style: normal;
+}
+
+.shabbat-hours {
+  display: grid;
+  gap: 0.25rem;
+  margin-block-start: clamp(0.9rem, 2.3vh, 1.35rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.78rem, 3.25vw, 0.96rem);
+  line-height: 1.3;
+}
+
+.shabbat-hours span {
+  font-weight: 650;
+}
+
+.shabbat-hours strong {
+  font-weight: 750;
+}
+
+.shabbat-parasha {
+  margin: clamp(0.55rem, 1.4vh, 0.8rem) 0 0;
+  font-family: var(--font-script), var(--font-display), Georgia, serif;
+  font-size: clamp(1.45rem, 6vw, 2.05rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+}
+
+[dir="rtl"] .shabbat-parasha {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: normal;
+  font-weight: 650;
+}
+
+.shabbat-route-button {
+  display: inline-flex;
+  min-width: min(100%, 13.5rem);
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(0.9rem, 2.3vh, 1.4rem);
+  padding: 0.65rem 1.35rem;
+  border: 1px solid rgba(255, 253, 248, 0.86);
+  color: #fffdf8;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  transition: background 250ms ease, color 250ms ease;
+}
+
+.shabbat-route-button:hover {
+  background: #fffdf8;
+  color: #3f4638;
+  text-shadow: none;
+}
+
+.shabbat-route-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+@media (max-width: 30rem) {
+  .shabbat-title {
+    font-size: clamp(2.9rem, 13.8vw, 4rem);
+  }
+
+  .shabbat-introduction {
+    margin-block-start: clamp(0.9rem, 2.2vh, 1.15rem);
+    font-size: clamp(0.8rem, 3.65vw, 0.93rem);
+  }
+
+  .shabbat-date {
+    margin-block-start: clamp(0.8rem, 2vh, 1rem);
+    font-size: clamp(1.22rem, 5.6vw, 1.55rem);
+  }
+
+  .shabbat-route-button {
+    min-height: 2.75rem;
+  }
+}
+
+@media (max-height: 43rem) {
+  .shabbat-stationery {
+    padding-block: 1rem;
+  }
+
+  .shabbat-title {
+    font-size: 2.75rem;
+  }
+
+  .shabbat-introduction {
+    margin-block-start: 0.65rem;
+    font-size: 0.76rem;
+    line-height: 1.38;
+  }
+
+  .shabbat-date {
+    margin-block-start: 0.65rem;
+    font-size: 1.15rem;
+  }
+
+  .shabbat-ornament,
+  .shabbat-venue,
+  .shabbat-meal,
+  .shabbat-hours,
+  .shabbat-parasha,
+  .shabbat-route-button {
+    margin-block-start: 0.55rem;
+  }
+
+  .shabbat-route-button {
+    min-height: 2.45rem;
+  }
+}
+
+/* Shared invitation titles and final card fitting */
+
+.invitation-event-title,
+.invitation-page .wedding-ceremony-title,
+.invitation-page .henna-title,
+.invitation-page .shabbat-title {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: clamp(0.85rem, 2.3vh, 1.4rem);
+  inset-inline: 0;
+  width: 100%;
+  margin: 0;
+  color: #fffdf8;
+  font-family: "Murray Hill", var(--font-murray-hill), "French Script MT", cursive;
+  font-size: clamp(2.4rem, 8.5vw, 3.4rem);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-align: center;
+  text-transform: none;
+  text-wrap: nowrap;
+}
+
+[dir="rtl"] .invitation-event-title,
+[dir="rtl"] .wedding-ceremony-title,
+[dir="rtl"] .henna-title,
+[dir="rtl"] .shabbat-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.1rem, 7.5vw, 3rem);
+  font-style: normal;
+  font-weight: 450;
+  letter-spacing: 0;
+}
+
+.invitation-page .framed-event-card--wedding .wedding-stationery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(4.1rem, 8vh, 5.1rem) clamp(0.8rem, 5vw, 3rem)
+    clamp(0.8rem, 2vh, 1.25rem);
+}
+
+.invitation-page .wedding-blessing {
+  margin-block-start: 0;
+  font-size: clamp(0.82rem, 2vw, 1.05rem);
+  line-height: 1.32;
+}
+
+.invitation-page .wedding-families {
+  gap: clamp(0.5rem, 3vw, 2rem);
+  margin-block-start: clamp(0.5rem, 1.4vh, 0.8rem);
+}
+
+.invitation-page .wedding-families p {
+  font-size: clamp(0.7rem, 1.8vw, 0.92rem);
+  line-height: 1.32;
+}
+
+.invitation-page .wedding-couple {
+  gap: clamp(0.3rem, 1.6vw, 0.8rem);
+  margin-block-start: clamp(0.55rem, 1.5vh, 0.85rem);
+  font-family: "Murray Hill", var(--font-murray-hill), "French Script MT", cursive;
+  font-size: clamp(2rem, 4.5vw, 3.7rem);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+}
+
+.invitation-page .wedding-couple i {
+  font-family: inherit;
+  font-style: normal;
+}
+
+.invitation-page .wedding-couple-hebrew {
+  margin-block-start: 0.22rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  font-weight: 350;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.invitation-page .wedding-invitation-copy {
+  margin-block-start: clamp(0.55rem, 1.5vh, 0.85rem);
+  font-size: clamp(0.76rem, 1.75vw, 1rem);
+  line-height: 1.38;
+}
+
+.invitation-page .wedding-date-block {
+  gap: 0.12rem;
+  margin-block-start: clamp(0.48rem, 1.3vh, 0.75rem);
+  font-size: clamp(0.76rem, 1.7vw, 0.96rem);
+  line-height: 1.22;
+}
+
+.invitation-page .wedding-date-block time {
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+}
+
+.invitation-page .wedding-address {
+  margin-block-start: clamp(0.48rem, 1.3vh, 0.75rem);
+  font-size: clamp(0.86rem, 2vw, 1.08rem);
+  line-height: 1.28;
+}
+
+.invitation-page .wedding-reception {
+  margin-block-start: clamp(0.4rem, 1.1vh, 0.65rem);
+  font-size: clamp(0.74rem, 1.7vw, 0.94rem);
+  line-height: 1.3;
+}
+
+.invitation-page .wedding-memorial {
+  margin-block-start: clamp(0.38rem, 1vh, 0.6rem);
+  font-size: clamp(0.64rem, 1.45vw, 0.8rem);
+  line-height: 1.35;
+}
+
+.invitation-page .wedding-route-button {
+  min-height: 2.45rem;
+  margin-block-start: clamp(0.48rem, 1.3vh, 0.75rem);
+  padding: 0.5rem 1rem;
+  font-size: clamp(0.78rem, 1.7vw, 0.92rem);
+}
+
+.invitation-page .wedding-secondary-actions {
+  gap: 0.25rem 0.75rem;
+  margin-block-start: 0.18rem;
+  font-size: 0.48rem;
+}
+
+.invitation-page .wedding-secondary-actions a {
+  min-height: 1.55rem;
+}
+
+.invitation-page .henna-stationery,
+.invitation-page .shabbat-stationery {
+  position: relative;
+  justify-content: center;
+  padding: clamp(4rem, 8vh, 5rem) clamp(0.8rem, 5vw, 3rem)
+    clamp(0.9rem, 2.5vh, 1.5rem);
+}
+
+.invitation-page .henna-invitation-copy {
+  margin-block-start: 0;
+}
+
+.invitation-page .henna-monogram {
+  position: relative;
+  width: clamp(7.5rem, 24vw, 9.5rem);
+  aspect-ratio: 2.2 / 1;
+  margin-block-start: clamp(0.9rem, 2.3vh, 1.35rem);
+  overflow: hidden;
+}
+
+.henna-monogram__image {
+  object-fit: cover;
+}
+
+.invitation-page .henna-date-block {
+  margin-block-start: clamp(0.8rem, 2vh, 1.2rem);
+}
+
+.invitation-page .henna-dress-code,
+.invitation-page .henna-route-button {
+  margin-block-start: clamp(0.8rem, 2vh, 1.2rem);
+}
+
+.invitation-page .shabbat-introduction {
+  margin-block-start: 0;
+}
+
+@media (min-width: 48.01rem) {
+  .invitation-page .framed-event-page--shabbat .framed-event-page__background {
+    object-position: 50% 20%;
+    transform: translateX(-7%) scale(1.12);
+  }
+}
+
+@media (max-width: 48rem) {
+  .invitation-event-title,
+  .invitation-page .wedding-ceremony-title,
+  .invitation-page .henna-title,
+  .invitation-page .shabbat-title {
+    inset-block-start: clamp(0.9rem, 2.2vh, 1.15rem);
+    font-size: clamp(2.3rem, 9.5vw, 3rem);
+  }
+
+  .invitation-page .wedding-couple {
+    gap: 0.28rem;
+    font-size: clamp(1.85rem, 8vw, 2.45rem);
+  }
+
+  .invitation-page .wedding-couple-hebrew {
+    margin-block-start: 0.18rem;
+    font-size: clamp(1.08rem, 4.8vw, 1.3rem);
+  }
+}
+
+@media (max-height: 43rem) {
+  .invitation-event-title,
+  .invitation-page .wedding-ceremony-title,
+  .invitation-page .henna-title,
+  .invitation-page .shabbat-title {
+    inset-block-start: 0.72rem;
+    font-size: 2.25rem;
+  }
+
+  .invitation-page .framed-event-card--wedding .wedding-stationery,
+  .invitation-page .henna-stationery,
+  .invitation-page .shabbat-stationery {
+    padding-block: 3.5rem 0.65rem;
+  }
+
+  .invitation-page .henna-monogram {
+    width: 6.8rem;
+    margin-block-start: 0.55rem;
+  }
+}
