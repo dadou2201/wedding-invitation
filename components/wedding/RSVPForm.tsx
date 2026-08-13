@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { submitRsvp } from "@/app/i/[token]/rsvp-actions";
+import { rememberPersonalInvitation } from "@/lib/invitation-return";
 import { getTranslations } from "@/lib/translations";
 import type {
   EventKey,
@@ -116,6 +117,7 @@ export function RSVPForm({
       setIsPersisted(result.persisted);
 
       if (result.invitationToken) {
+        rememberPersonalInvitation(token, result.invitationToken);
         router.replace(`/i/${result.invitationToken}#rsvp`);
         return;
       }

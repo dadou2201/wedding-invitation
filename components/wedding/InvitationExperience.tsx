@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { EventSections } from "@/components/wedding/EventSections";
 import { OpeningCard } from "@/components/wedding/OpeningCard";
 import { RSVPForm } from "@/components/wedding/RSVPForm";
+import { getRememberedPersonalInvitation } from "@/lib/invitation-return";
 import { getInvitedEvents } from "@/lib/invitation-utils";
 import { getTranslations } from "@/lib/translations";
 import { isGlobalInvitationToken } from "@/lib/invitation-tokens";
@@ -12,6 +13,10 @@ import type { InvitationData, Language } from "@/lib/types";
 interface InvitationExperienceProps {
   invitation: InvitationData;
   token: string;
+}
+
+function subscribeToRememberedInvitation() {
+  return () => undefined;
 }
 
 export function InvitationExperience({
@@ -30,6 +35,23 @@ export function InvitationExperience({
     () => getInvitedEvents(invitation.events, guest),
     [guest, invitation.events],
   );
+  const rememberedPersonalToken = useSyncExternalStore(
+    subscribeToRememberedInvitation,
+    () =>
+      isGlobalInvitation ? getRememberedPersonalInvitation(token) : null,
+    () => null,
+  );
+
+  useEffect(() => {
+    if (!rememberedPersonalToken) {
+      return;
+    }
+
+    window.location.replace(
+      `/i/${encodeURIComponent(rememberedPersonalToken)}#rsvp`,
+    );
+  }, [rememberedPersonalToken]);
+
   useEffect(() => {
     const root = document.documentElement;
     root.lang = language;
@@ -76,6 +98,25 @@ export function InvitationExperience({
 
     return () => observer.disconnect();
   }, [isInvitationOpen]);
+
+  if (rememberedPersonalToken) {
+    return (
+      <main
+        className="invitation-loading"
+        aria-busy="true"
+        aria-label="Chargement de votre réponse"
+      >
+        <div className="loading-monogram" aria-hidden="true">
+          C<span>&amp;</span>D
+        </div>
+        <div className="loading-line" aria-hidden="true" />
+        <p>Nous retrouvons votre réponse…</p>
+        <p lang="he" dir="rtl">
+          אנחנו מאתרים את תשובתכם…
+        </p>
+      </main>
+    );
+  }
 
   if (!isInvitationOpen) {
     return (

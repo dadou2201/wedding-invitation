@@ -46,8 +46,8 @@ const dictionary = {
       eyebrow: "Votre réponse",
       title: "Serez-vous des nôtres ?",
       intro: "Merci de confirmer votre présence pour chacun des moments auxquels vous êtes convié.",
-      yes: "Je serai présent·e",
-      no: "Je ne pourrai pas venir",
+      yes: "Présent",
+      no: "Absent",
       pending: "En attente",
       guestCount: "Nombre de personnes",
       decreaseGuestCount: "Retirer une personne",
@@ -80,8 +80,8 @@ const dictionary = {
         count === 1 ? "1 personne" : `${count} personnes`,
       statuses: {
         pending: "En attente",
-        yes: "Présent·e",
-        no: "Absent·e",
+        yes: "Présent",
+        no: "Absent",
       } satisfies Record<RsvpStatus, string>,
     },
     final: {
