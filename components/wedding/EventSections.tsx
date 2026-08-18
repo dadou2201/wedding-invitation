@@ -29,6 +29,10 @@ export function EventSections({
     (first, second) => DISPLAY_ORDER[first.key] - DISPLAY_ORDER[second.key],
   );
 
+  if (displayedEvents.length === 0) {
+    return null;
+  }
+
   return (
     <section
       id="events"

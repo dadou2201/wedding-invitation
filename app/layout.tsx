@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import {
+  Allura,
+  Cormorant_Garamond,
   Dancing_Script,
   Noto_Sans_Hebrew,
   Noto_Serif_Hebrew,
@@ -21,6 +23,20 @@ const displayFont = Noto_Serif_Hebrew({
 const murrayHillFont = Dancing_Script({
   variable: "--font-murray-hill",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const openingScriptFont = Allura({
+  variable: "--font-opening-script",
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+  display: "swap",
+});
+
+const openingSerifFont = Cormorant_Garamond({
+  variable: "--font-opening-serif",
+  subsets: ["latin", "latin-ext"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -52,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="fr"
       dir="ltr"
-      className={`${bodyFont.variable} ${displayFont.variable} ${murrayHillFont.variable}`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${murrayHillFont.variable} ${openingScriptFont.variable} ${openingSerifFont.variable}`}
     >
       <body>{children}</body>
     </html>

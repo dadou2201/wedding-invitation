@@ -98,213 +98,177 @@ a:focus-visible {
   place-items: center;
   overflow: hidden;
   padding:
-    max(0.75rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-top))
     max(0.75rem, env(safe-area-inset-right))
-    max(0.75rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-bottom))
     max(0.75rem, env(safe-area-inset-left));
   background:
-    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.96), transparent 42%),
-    linear-gradient(145deg, #e8e5dc 0%, #f6f2e9 47%, #d9dace 100%);
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.68), transparent 38%),
+    linear-gradient(145deg, #f3e4e5 0%, #f8eeee 52%, #efe0e1 100%);
+  color: #681c2b;
+  transition: opacity 720ms ease, transform 720ms cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
-.opening-page::before,
-.opening-page::after {
-  position: absolute;
-  z-index: -2;
-  width: min(46rem, 92vw);
-  height: min(46rem, 92vw);
-  border: 1px solid rgba(84, 91, 66, 0.12);
-  border-radius: 50%;
-  content: "";
-}
-
-.opening-page::before {
-  inset-block-start: -31rem;
-  inset-inline-start: -17rem;
-}
-
-.opening-page::after {
-  inset-block-end: -34rem;
-  inset-inline-end: -18rem;
-}
-
-.opening-page__glow {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background:
-    linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, 0.38) 47%, transparent 73%),
-    repeating-linear-gradient(90deg, rgba(74, 75, 63, 0.015) 0 1px, transparent 1px 5px);
+.opening-page--closing {
+  opacity: 0;
+  transform: scale(1.012);
   pointer-events: none;
 }
 
+.opening-page__texture {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, 0.3) 48%, transparent 76%),
+    repeating-linear-gradient(90deg, rgba(104, 28, 43, 0.012) 0 1px, transparent 1px 5px);
+  pointer-events: none;
+}
+
+.opening-composition {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-0.25rem);
+}
+
 .opening-card {
-  width: min(100%, 34rem);
-  padding: clamp(0.45rem, 1.8vw, 0.7rem);
-  border: 1px solid rgba(97, 91, 70, 0.45);
-  background: rgba(255, 253, 248, 0.94);
+  width: min(83vw, 32rem);
+  aspect-ratio: 1.55 / 1;
+  padding: clamp(0.38rem, 1.5vw, 0.55rem);
+  border: 1px solid rgba(104, 28, 43, 0.22);
+  background: rgba(255, 249, 247, 0.98);
   box-shadow:
-    0 2rem 5rem rgba(63, 60, 48, 0.14),
-    0 0.2rem 0.8rem rgba(63, 60, 48, 0.07);
-  animation: opening-card-arrival 900ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+    0 1.6rem 3.8rem rgba(91, 28, 42, 0.12),
+    0 0.25rem 0.9rem rgba(91, 28, 42, 0.08);
+  animation: opening-card-arrival 850ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
 }
 
 .opening-card__inner {
   position: relative;
   display: flex;
-  min-height: min(43rem, calc(100svh - 2.4rem));
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: clamp(2rem, 7svh, 4rem) clamp(1.15rem, 7vw, 3.8rem);
-  border: 1px solid rgba(97, 91, 70, 0.28);
+  justify-content: flex-start;
+  padding: clamp(1.35rem, 5.6vw, 3rem) clamp(0.8rem, 5vw, 2.8rem);
+  border: 1px solid rgba(104, 28, 43, 0.18);
   text-align: center;
 }
 
-.opening-card__inner::before,
-.opening-card__inner::after {
-  position: absolute;
-  width: 2.4rem;
-  height: 2.4rem;
-  content: "";
+.opening-title {
+  margin: 0;
+  color: #7a2636;
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1;
 }
 
-.opening-card__inner::before {
-  inset-block-start: 0.55rem;
-  inset-inline-start: 0.55rem;
-  border-block-start: 1px solid rgba(184, 154, 98, 0.58);
-  border-inline-start: 1px solid rgba(184, 154, 98, 0.58);
-}
-
-.opening-card__inner::after {
-  inset-block-end: 0.55rem;
-  inset-inline-end: 0.55rem;
-  border-block-end: 1px solid rgba(184, 154, 98, 0.58);
-  border-inline-end: 1px solid rgba(184, 154, 98, 0.58);
-}
-
-.opening-monogram {
-  position: relative;
-  width: clamp(9rem, 39vw, 13.5rem);
-  aspect-ratio: 2.2 / 1;
-  flex: 0 0 auto;
-  overflow: hidden;
-}
-
-.opening-monogram img {
-  object-fit: cover;
-  mix-blend-mode: multiply;
-}
-
-.opening-ornament {
-  display: flex;
-  width: min(9rem, 42vw);
-  align-items: center;
-  gap: 0.65rem;
-  margin-block-start: clamp(0.9rem, 2.5svh, 1.5rem);
-  color: var(--gold);
-}
-
-.opening-ornament span {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, currentColor);
-}
-
-.opening-ornament span:last-child {
-  background: linear-gradient(90deg, currentColor, transparent);
-}
-
-.opening-ornament i {
-  font-size: 0.32rem;
-  font-style: normal;
-  transform: rotate(45deg);
-}
-
-.opening-quote {
-  max-width: 26rem;
-  margin: clamp(1.25rem, 3.5svh, 2rem) 0 0;
-  color: #46453e;
+[dir="rtl"] .opening-title {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(1.05rem, 4.3vw, 1.38rem);
-  font-style: italic;
+  font-size: clamp(2.35rem, 10vw, 3.8rem);
   font-weight: 350;
-  line-height: 1.62;
-  text-wrap: balance;
+}
+
+.opening-divider {
+  width: clamp(2.6rem, 10vw, 4rem);
+  height: 1px;
+  margin-block-start: clamp(0.7rem, 2.5vw, 1.4rem);
+  background: rgba(104, 28, 43, 0.42);
 }
 
 .opening-names {
-  margin: clamp(1.2rem, 3.5svh, 2rem) 0 0;
-  color: #252820;
+  max-width: 100%;
+  margin: clamp(1.35rem, 5.2vw, 3rem) 0 0;
+  overflow-wrap: anywhere;
+  color: #681c2b;
+  font-family: var(--font-opening-serif), "Cormorant Garamond", var(--font-display), Georgia, serif;
+  font-size: clamp(1.35rem, 5.15vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: 0.09em;
+  line-height: 1.32;
+  text-wrap: balance;
+}
+
+[dir="rtl"] .opening-names {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.25rem, 10vw, 3.75rem);
-  font-style: italic;
-  font-weight: 300;
-  letter-spacing: -0.045em;
-  line-height: 1;
-  text-wrap: nowrap;
+  letter-spacing: 0.025em;
 }
 
-.opening-names span {
-  margin-inline: 0.08em;
-  color: var(--gold);
-  font-size: 0.6em;
-  font-weight: 300;
-}
-
-.opening-date {
-  margin: clamp(0.9rem, 2.5svh, 1.35rem) 0 0;
-  color: var(--olive-deep);
-  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
-  font-weight: 650;
-  letter-spacing: 0.2em;
-  line-height: 1.6;
-  text-transform: uppercase;
-}
-
-.opening-date span {
-  margin-inline: 0.55em;
-  color: var(--gold);
-}
-
-.opening-discover {
-  display: inline-flex;
-  min-width: clamp(10.5rem, 45vw, 12.5rem);
-  min-height: 3.35rem;
+.opening-trigger {
+  display: flex;
+  width: min(82vw, 22rem);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.9rem;
-  margin-block-start: clamp(1.5rem, 4.5svh, 2.5rem);
-  padding: 0.8rem 1.5rem;
-  border: 1px solid var(--olive-deep);
-  background: var(--olive-deep);
-  color: var(--warm-white);
-  cursor: pointer;
-  font-size: 0.65rem;
-  font-weight: 650;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: background 260ms ease, color 260ms ease, transform 260ms ease;
-}
-
-.opening-discover svg {
-  width: 1.05rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.25;
-  transition: transform 260ms ease;
-}
-
-.opening-discover:hover {
+  gap: clamp(0.65rem, 2svh, 0.95rem);
+  margin-block-start: clamp(1.45rem, 4.5svh, 2.2rem);
+  padding: 0;
+  border: 0;
   background: transparent;
-  color: var(--olive-deep);
-  transform: translateY(-2px);
+  color: #681c2b;
+  cursor: pointer;
 }
 
-.opening-discover:hover svg {
-  transform: translateX(0.2rem);
+.opening-trigger:disabled {
+  cursor: default;
+}
+
+.opening-seal {
+  display: grid;
+  width: clamp(4rem, 18vw, 4.5rem);
+  height: clamp(4rem, 18vw, 4.5rem);
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.12), transparent 24%),
+    #681c2b;
+  box-shadow:
+    0 0.7rem 1.3rem rgba(78, 17, 31, 0.22),
+    inset 0 0 0 1px rgba(255, 249, 247, 0.22);
+  transition: transform 260ms ease, box-shadow 260ms ease;
+}
+
+.opening-seal__inner {
+  position: relative;
+  display: grid;
+  width: calc(100% - 0.45rem);
+  height: calc(100% - 0.45rem);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 249, 247, 0.66);
+  border-radius: 50%;
+}
+
+.opening-seal img {
+  width: 246%;
+  height: auto;
+  object-fit: contain;
+}
+
+.opening-trigger__label {
+  font-size: clamp(0.58rem, 2.5vw, 0.68rem);
+  font-weight: 650;
+  letter-spacing: 0.32em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .opening-trigger__label {
+  letter-spacing: 0.12em;
+}
+
+.opening-trigger:hover .opening-seal {
+  box-shadow:
+    0 0.9rem 1.6rem rgba(78, 17, 31, 0.27),
+    inset 0 0 0 1px rgba(255, 249, 247, 0.3);
+  transform: translateY(-2px) scale(1.025);
 }
 
 @keyframes opening-card-arrival {
@@ -319,35 +283,681 @@ a:focus-visible {
   }
 }
 
-@media (max-height: 42rem) {
-  .opening-card__inner {
-    min-height: calc(100svh - 2.4rem);
-    padding-block: 1.35rem;
-  }
-
-  .opening-monogram {
-    width: clamp(8rem, 33vw, 11rem);
-  }
-
-  .opening-ornament,
-  .opening-quote,
-  .opening-names,
-  .opening-date,
-  .opening-discover {
-    margin-block-start: 0.85rem;
-  }
-
-  .opening-quote {
-    font-size: clamp(0.96rem, 3.5vw, 1.16rem);
-    line-height: 1.48;
-  }
-
+@media (max-height: 43rem) {
   .opening-names {
-    font-size: clamp(2rem, 8vw, 3rem);
+    margin-block-start: clamp(1rem, 4vw, 1.6rem);
   }
 
-  .opening-discover {
-    min-height: 3rem;
+  .opening-trigger {
+    gap: 0.45rem;
+    margin-block-start: 0.75rem;
+  }
+
+  .opening-seal {
+    width: 3.7rem;
+    height: 3.7rem;
+  }
+}
+
+/* Minimal event slides using the RSVP palette */
+
+.invitation-page .framed-event-page.simple-event-slide {
+  height: 100svh;
+  min-height: 100svh;
+  place-items: center;
+  padding:
+    max(0rem, env(safe-area-inset-top))
+    max(0rem, env(safe-area-inset-right))
+    max(0rem, env(safe-area-inset-bottom))
+    max(0rem, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.72), transparent 42rem),
+    #e9e5db;
+  color: var(--ink);
+}
+
+.simple-event-content {
+  position: relative;
+  width: min(100%, 68rem);
+  max-height: 100svh;
+  overflow-y: auto;
+  padding:
+    max(clamp(2.5rem, 6vh, 4.75rem), env(safe-area-inset-top))
+    clamp(1.25rem, 6vw, 5rem)
+    max(clamp(2rem, 5vh, 4rem), env(safe-area-inset-bottom));
+  scrollbar-width: none;
+  text-align: center;
+}
+
+.simple-event-content::-webkit-scrollbar {
+  display: none;
+}
+
+.simple-event-header h2 {
+  margin: 0;
+  color: var(--olive-deep);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.35rem, 7.5vw, 6.25rem);
+  font-weight: 350;
+  letter-spacing: 0.055em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.simple-event-couple-names {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.05em 0.22em;
+  margin: clamp(1.1rem, 2.5vh, 1.8rem) 0 0;
+  color: var(--olive-deep);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(3.7rem, 8vw, 6.2rem);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.simple-event-couple-names i,
+.simple-event-couple-ampersand {
+  color: var(--gold);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.52em;
+  font-style: normal;
+  font-weight: 350;
+}
+
+.simple-event-wedding-families {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(0.8rem, 2.8vw, 2.5rem);
+  max-width: 58rem;
+  margin: clamp(1.5rem, 3.2vh, 2.35rem) auto 0;
+}
+
+.simple-event-family-lines {
+  display: grid;
+  min-height: 5.5rem;
+  align-content: end;
+  gap: 0.28rem;
+}
+
+.simple-event-family-lines p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.68rem, 1.35vw, 0.86rem);
+  font-style: italic;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.simple-event-person-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: clamp(0.65rem, 1.6vh, 1rem) 0 0;
+}
+
+.simple-event-person-name > span {
+  color: var(--olive-deep);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(3.5rem, 7vw, 5.75rem);
+  line-height: 0.9;
+}
+
+.simple-event-person-name small,
+.simple-event-hebrew-names {
+  color: var(--olive);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 2.3vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.simple-event-person-name small {
+  margin-block-start: 0.35rem;
+}
+
+.simple-event-couple-ampersand {
+  align-self: end;
+  margin-block-end: clamp(1.8rem, 3.7vw, 2.8rem);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.simple-event-hebrew-names {
+  margin: clamp(0.65rem, 1.8vh, 1rem) 0 0;
+}
+
+.simple-event-ornament {
+  position: relative;
+  display: block;
+  width: clamp(5.5rem, 10vw, 7.75rem);
+  height: 1px;
+  margin: clamp(1.4rem, 3vh, 2.15rem) auto 0;
+  background: linear-gradient(
+    90deg,
+    var(--gold) 0 42%,
+    transparent 42% 58%,
+    var(--gold) 58% 100%
+  );
+}
+
+.simple-event-ornament::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.36rem;
+  height: 0.36rem;
+  background: var(--gold);
+  content: "";
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.simple-event-introduction {
+  max-width: 44rem;
+  margin: clamp(1.45rem, 3.5vh, 2.35rem) auto 0;
+  color: var(--olive-deep);
+  font-size: clamp(0.63rem, 1.25vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.simple-event-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.65rem, 1.7vh, 1rem);
+  margin-block-start: clamp(1.5rem, 3.5vh, 2.5rem);
+}
+
+.simple-event-details > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.simple-event-details span {
+  color: var(--gold);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.simple-event-details time,
+.simple-event-details strong {
+  color: var(--ink);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 2vw, 1.28rem);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.simple-event-hebrew-date {
+  color: var(--olive);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.82rem, 1.6vw, 1rem);
+  line-height: 1.35;
+}
+
+.simple-event-details > div:last-child {
+  margin-block-start: clamp(0.4rem, 1.2vh, 0.8rem);
+}
+
+.simple-event-details > div:last-child strong {
+  color: var(--olive-deep);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1;
+}
+
+.simple-event-details address {
+  color: var(--muted);
+  font-size: clamp(0.58rem, 1.15vw, 0.7rem);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.simple-event-highlights {
+  display: grid;
+  max-width: 43rem;
+  gap: 0.2rem;
+  margin: clamp(1.4rem, 3vh, 2rem) auto 0;
+}
+
+.simple-event-highlights p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.78rem, 1.4vw, 0.94rem);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.simple-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(1.25rem, 2.8vh, 1.85rem);
+}
+
+.simple-event-action {
+  display: inline-flex;
+  min-width: clamp(10.5rem, 19vw, 12.5rem);
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid rgba(84, 91, 66, 0.48);
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.22);
+  color: var(--olive-deep);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  transition: background 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+
+.simple-event-action:hover {
+  border-color: var(--olive-deep);
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.simple-event-action svg {
+  width: 1rem;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.35;
+}
+
+.simple-event-menu-link {
+  display: inline-block;
+  margin-block-start: clamp(0.9rem, 2vh, 1.25rem);
+  border-block-end: 1px solid rgba(84, 91, 66, 0.36);
+  color: var(--muted);
+  font-size: 0.56rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-content {
+  min-height: 100svh;
+  padding-block: clamp(0.8rem, 2vh, 1.25rem) clamp(0.4rem, 1vh, 0.7rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-header h2 {
+  font-size: clamp(3.2rem, 9.3vh, 5.6rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-wedding-families {
+  margin-block-start: clamp(1.2rem, 2.5vh, 1.65rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-family-lines {
+  min-height: 4.85rem;
+  gap: 0.34rem;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-family-lines p {
+  font-size: clamp(0.72rem, 1.6vh, 0.94rem);
+  line-height: 1.38;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-person-name {
+  margin-block-start: clamp(0.78rem, 1.6vh, 1.05rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-person-name > span {
+  font-size: clamp(3.45rem, 8.7vh, 5.15rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-person-name small {
+  margin-block-start: 0.42rem;
+  font-size: clamp(1.08rem, 2.2vh, 1.3rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-ornament,
+.simple-event-slide[data-event="wedding"] .simple-event-introduction,
+.simple-event-slide[data-event="wedding"] .simple-event-details,
+.simple-event-slide[data-event="wedding"] .simple-event-actions,
+.simple-event-slide[data-event="wedding"] .simple-event-highlights {
+  margin-block-start: clamp(0.9rem, 1.85vh, 1.3rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-introduction {
+  font-size: clamp(0.68rem, 1.45vh, 0.82rem);
+  line-height: 1.9;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details {
+  gap: clamp(0.9rem, 2.1vh, 1.2rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details > div {
+  gap: clamp(0.32rem, 0.8vh, 0.48rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details time,
+.simple-event-slide[data-event="wedding"] .simple-event-details strong {
+  font-size: clamp(1.14rem, 2.55vh, 1.46rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-hebrew-date {
+  font-size: clamp(0.92rem, 1.95vh, 1.1rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details > div:last-child {
+  margin-block-start: clamp(0.4rem, 1vh, 0.65rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details > div:last-child strong {
+  font-size: clamp(2.7rem, 6.1vh, 3.9rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-details address {
+  font-size: clamp(0.62rem, 1.35vh, 0.75rem);
+  line-height: 1.65;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-highlights {
+  gap: 0.28rem;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-highlights p {
+  font-size: clamp(0.84rem, 1.75vh, 1rem);
+  line-height: 1.65;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-highlights p:first-child {
+  margin-block-end: clamp(0.45rem, 1vh, 0.6rem);
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-action {
+  min-height: 2.9rem;
+  font-size: 0.61rem;
+}
+
+.simple-event-slide[data-event="wedding"] .simple-event-menu-link {
+  margin-block-start: clamp(0.65rem, 1.35vh, 0.85rem);
+  font-size: 0.58rem;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-content {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.8rem, 2vh, 1.25rem);
+  padding-block: clamp(1.25rem, 3vh, 2rem) clamp(1rem, 2.5vh, 1.6rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-header {
+  width: 100%;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-header h2 {
+  font-size: clamp(3.5rem, 9.5vh, 5.8rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-ornament {
+  margin-block-start: clamp(1.1rem, 2.5vh, 1.6rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-introduction {
+  width: 100%;
+  margin-block-start: 0;
+  font-size: clamp(0.72rem, 1.6vh, 0.88rem);
+  line-height: 1.9;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details {
+  width: 100%;
+  gap: clamp(1rem, 2.4vh, 1.4rem);
+  margin-block-start: 0;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details > div {
+  gap: clamp(0.32rem, 0.8vh, 0.48rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details time,
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details strong {
+  font-size: clamp(1.18rem, 2.65vh, 1.5rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details > div:last-child {
+  margin-block-start: clamp(0.35rem, 0.8vh, 0.55rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details > div:last-child strong {
+  font-size: clamp(2.85rem, 6.5vh, 4rem);
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details address {
+  font-size: clamp(0.64rem, 1.4vh, 0.78rem);
+  line-height: 1.65;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-actions,
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-highlights,
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-menu-link {
+  margin-block-start: 0;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-action {
+  min-height: 2.9rem;
+  font-size: 0.61rem;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-highlights p {
+  font-size: clamp(0.86rem, 1.8vh, 1.02rem);
+  line-height: 1.65;
+}
+
+.simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-menu-link {
+  font-size: 0.58rem;
+}
+
+@media (max-width: 40rem) {
+  .simple-event-content {
+    width: 100%;
+    max-height: 100svh;
+    padding:
+      max(2.5rem, env(safe-area-inset-top))
+      1.2rem
+      max(1.75rem, env(safe-area-inset-bottom));
+  }
+
+  .simple-event-header h2 {
+    font-size: clamp(3.15rem, 14vw, 4.35rem);
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-content {
+    padding:
+      max(3.75rem, env(safe-area-inset-top))
+      1.15rem
+      max(0.8rem, env(safe-area-inset-bottom));
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-header h2 {
+    font-size: clamp(3rem, 13vw, 3.65rem);
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-wedding-families {
+    gap: 0.45rem;
+    margin-block-start: 1.15rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-family-lines {
+    min-height: 4.6rem;
+    gap: 0.2rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-family-lines p {
+    font-size: clamp(0.59rem, 2.5vw, 0.7rem);
+    line-height: 1.28;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-person-name > span {
+    font-size: clamp(2.95rem, 13vw, 3.7rem);
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-person-name small {
+    font-size: 1.08rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-couple-ampersand {
+    margin-block-end: 1.5rem;
+    font-size: 1.45rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-ornament,
+  .simple-event-slide[data-event="wedding"] .simple-event-introduction,
+  .simple-event-slide[data-event="wedding"] .simple-event-details,
+  .simple-event-slide[data-event="wedding"] .simple-event-actions,
+  .simple-event-slide[data-event="wedding"] .simple-event-highlights {
+    margin-block-start: 1rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-introduction {
+    font-size: 0.68rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-details time,
+  .simple-event-slide[data-event="wedding"] .simple-event-details strong {
+    font-size: 1.16rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-details {
+    gap: 1rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-details > div:last-child strong {
+    font-size: 2.85rem;
+  }
+
+  .simple-event-slide[data-event="wedding"] .simple-event-highlights p {
+    font-size: 0.84rem;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-content {
+    padding:
+      max(3.75rem, env(safe-area-inset-top))
+      1.15rem
+      max(0.9rem, env(safe-area-inset-bottom));
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-header h2 {
+    font-size: clamp(3.1rem, 13.5vw, 3.8rem);
+  }
+
+  .simple-event-slide[data-event="shabbat"] .simple-event-header h2 {
+    font-size: clamp(2rem, 8.8vw, 2.5rem);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-introduction {
+    font-size: 0.7rem;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details {
+    gap: 1.1rem;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details time,
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details strong {
+    font-size: 1.18rem;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-details > div:last-child strong {
+    font-size: 2.9rem;
+  }
+
+  .simple-event-slide:is([data-event="henna"], [data-event="shabbat"]) .simple-event-highlights p {
+    font-size: 0.86rem;
+  }
+
+  .simple-event-couple-names {
+    gap: 0.05em 0.16em;
+    font-size: clamp(3.2rem, 15vw, 4.5rem);
+  }
+
+  .simple-event-introduction {
+    max-width: 21rem;
+    letter-spacing: 0.15em;
+  }
+
+  .simple-event-details address {
+    max-width: 20rem;
+  }
+
+  .simple-event-action {
+    min-width: min(100%, 10rem);
+    flex: 1 1 calc(50% - 0.35rem);
+    min-height: 2.7rem;
+    padding-inline: 0.6rem;
+    font-size: 0.54rem;
+  }
+}
+
+@media (max-height: 43rem) {
+  .simple-event-content {
+    padding-block: 1.75rem 1.25rem;
+  }
+
+  .simple-event-header h2 {
+    font-size: clamp(2.8rem, 10vh, 4rem);
+  }
+
+  .simple-event-wedding-families,
+  .simple-event-couple-names,
+  .simple-event-hebrew-names,
+  .simple-event-ornament,
+  .simple-event-introduction,
+  .simple-event-details,
+  .simple-event-actions {
+    margin-block-start: 0.65rem;
+  }
+
+  .simple-event-details {
+    gap: 0.4rem;
+  }
+
+  .simple-event-details > div:last-child {
+    margin-block-start: 0.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-page,
+  .opening-card,
+  .opening-seal {
+    animation: none;
+    transition-duration: 1ms;
   }
 }
 
@@ -1737,18 +2347,6 @@ a:focus-visible {
   gap: clamp(3.25rem, 7vw, 5rem);
 }
 
-.rsvp-identity-fields {
-  display: grid;
-  gap: 2.5rem;
-  margin-block-end: clamp(4rem, 8vw, 6rem);
-  padding-block-end: clamp(3rem, 6vw, 4.5rem);
-  border-block-end: 1px solid var(--hairline);
-}
-
-.rsvp-identity-fields .form-field {
-  margin-block-start: 0;
-}
-
 .rsvp-event,
 .guest-count-fieldset,
 .shuttle-fieldset {
@@ -2564,10 +3162,6 @@ a:focus-visible {
 }
 
 @media (min-width: 40rem) {
-  .rsvp-identity-fields {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .rsvp-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
@@ -2685,6 +3279,271 @@ a:focus-visible {
 }
 
 /* Focused invitation flow: stationery cards followed directly by RSVP */
+
+.invitation-intro-slide {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background: #681c2b;
+  color: #fff9f7;
+}
+
+.invitation-intro-photo {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+}
+
+.invitation-intro-slide__image {
+  z-index: 0;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+
+.invitation-intro-slide__veil {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(42, 10, 18, 0.52) 0%, rgba(42, 10, 18, 0.06) 38%, rgba(42, 10, 18, 0.18) 56%, rgba(42, 10, 18, 0.72) 100%),
+    linear-gradient(90deg, rgba(33, 8, 14, 0.12), transparent 28%, transparent 72%, rgba(33, 8, 14, 0.12));
+  pointer-events: none;
+}
+
+.invitation-intro-menu {
+  position: absolute;
+  z-index: 3;
+  top: max(1rem, env(safe-area-inset-top));
+  left: 50%;
+  display: flex;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  padding: 0.36rem;
+  border: 1px solid rgba(255, 249, 247, 0.5);
+  border-radius: 999px;
+  background: rgba(84, 17, 32, 0.58);
+  box-shadow: 0 0.75rem 2rem rgba(30, 8, 14, 0.18);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%);
+}
+
+.invitation-intro-menu a {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem clamp(0.68rem, 2.2vw, 1.15rem);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #fff9f7;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.68rem, 1.8vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+}
+
+.invitation-intro-menu a:hover {
+  border-color: rgba(255, 249, 247, 0.5);
+  background: rgba(255, 249, 247, 0.12);
+  transform: translateY(-1px);
+}
+
+.invitation-intro-names {
+  position: absolute;
+  z-index: 2;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: clamp(6.4rem, 15svh, 9.5rem);
+  left: max(1rem, env(safe-area-inset-left));
+  text-align: center;
+}
+
+.invitation-intro-names h1 {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(0.15rem, 1.2vw, 0.65rem);
+  margin: 0;
+  color: #fff9f7;
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(4rem, 12vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 0.82;
+  text-shadow: 0 0.2rem 1.6rem rgba(26, 4, 9, 0.58);
+}
+
+.invitation-intro-names h1 i {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: 0.42em;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.invitation-intro-names time {
+  display: block;
+  margin-block-start: clamp(0.75rem, 2svh, 1.15rem);
+  color: rgba(255, 249, 247, 0.9);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.65rem, 1.8vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  text-shadow: 0 0.12rem 0.8rem rgba(26, 4, 9, 0.58);
+}
+
+.invitation-intro-scroll {
+  position: absolute;
+  z-index: 3;
+  right: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: flex;
+  min-width: 7rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 249, 247, 0.9);
+  transform: translateX(50%);
+}
+
+.invitation-intro-scroll span {
+  font-size: 0.56rem;
+  font-weight: 650;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.invitation-intro-scroll svg {
+  width: 1.45rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.25;
+  animation: intro-scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes intro-scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(0.32rem);
+  }
+}
+
+@media (max-width: 48rem) {
+  .invitation-intro-menu {
+    top: max(4.15rem, calc(env(safe-area-inset-top) + 3.4rem));
+    max-width: calc(100% - 1rem);
+    border-radius: 1.5rem;
+  }
+
+  .invitation-intro-menu a {
+    min-height: 2.2rem;
+    padding: 0.58rem clamp(0.58rem, 2.7vw, 0.88rem);
+    font-size: clamp(0.61rem, 2.7vw, 0.74rem);
+    letter-spacing: 0.08em;
+  }
+
+  .invitation-intro-names {
+    bottom: clamp(6rem, 14svh, 7.8rem);
+  }
+
+  .invitation-intro-names h1 {
+    font-size: clamp(3.5rem, 17vw, 5.5rem);
+  }
+}
+
+@media (min-width: 64rem) and (min-aspect-ratio: 4 / 3) {
+  .invitation-intro-slide {
+    background:
+      radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.62), transparent 42%),
+      #f3e4e5;
+  }
+
+  .invitation-intro-photo {
+    inset: 50% auto auto 50%;
+    width: auto;
+    height: calc(100svh - 5rem);
+    max-height: 68rem;
+    aspect-ratio: 1278 / 2025;
+    border: 1px solid rgba(104, 28, 43, 0.2);
+    box-shadow: 0 1rem 2.8rem rgba(104, 28, 43, 0.1);
+    transform: translate(-50%, -50%);
+  }
+
+  .invitation-intro-slide__image {
+    object-fit: cover;
+    object-position: 50% 20%;
+  }
+
+  .invitation-intro-slide__veil {
+    background:
+      linear-gradient(180deg, rgba(42, 10, 18, 0.42) 0%, transparent 28%, rgba(42, 10, 18, 0.06) 54%, rgba(42, 10, 18, 0.68) 100%),
+      linear-gradient(90deg, rgba(52, 13, 23, 0.2), transparent 32%, transparent 68%, rgba(52, 13, 23, 0.2));
+  }
+
+  .invitation-intro-menu,
+  .invitation-intro-scroll {
+    z-index: 4;
+  }
+
+  .invitation-intro-names {
+    z-index: 3;
+  }
+
+  .invitation-intro-names h1 {
+    font-size: clamp(4rem, 8svh, 5.5rem);
+  }
+
+  .invitation-intro-scroll {
+    color: #681c2b;
+  }
+}
+
+@media (max-height: 36rem) and (orientation: landscape) {
+  .invitation-intro-slide__image {
+    object-position: 50% 12%;
+  }
+
+  .invitation-intro-menu {
+    top: max(0.6rem, env(safe-area-inset-top));
+  }
+
+  .invitation-intro-names {
+    bottom: 3.25rem;
+  }
+
+  .invitation-intro-names h1 {
+    font-size: clamp(3.4rem, 10vw, 5.3rem);
+  }
+
+  .invitation-intro-scroll {
+    bottom: max(0.35rem, env(safe-area-inset-bottom));
+  }
+
+  .invitation-intro-scroll span {
+    display: none;
+  }
+}
 
 .invitation-language-switcher {
   position: fixed;
@@ -2883,11 +3742,17 @@ a:focus-visible {
 
 html.invitation-snap-active {
   scroll-snap-type: y mandatory;
+  scrollbar-width: none;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
 }
 
+html.invitation-snap-active::-webkit-scrollbar {
+  display: none;
+}
+
 html.invitation-snap-active .framed-event-page,
+html.invitation-snap-active .invitation-intro-slide,
 html.invitation-snap-active .rsvp-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -3841,5 +4706,158 @@ html.invitation-snap-active .rsvp-section {
   .invitation-page .henna-monogram {
     width: 6.8rem;
     margin-block-start: 0.55rem;
+  }
+}
+
+/* Named RSVP responses */
+
+.invitation-page .rsvp-events {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.8rem, 7vw, 4.6rem);
+}
+
+.rsvp-people {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.rsvp-person-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(17rem, 1.35fr);
+  align-items: center;
+  gap: clamp(0.8rem, 2.5vw, 1.5rem);
+  min-width: 0;
+  padding: clamp(0.9rem, 2.5vw, 1.2rem);
+  border: 1px solid var(--hairline);
+  background: rgba(255, 253, 248, 0.45);
+}
+
+.rsvp-person-name {
+  min-width: 0;
+  margin: 0;
+  color: var(--olive-deep);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+
+.rsvp-person-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.45rem, 1.5vw, 0.7rem);
+  min-width: 0;
+}
+
+.rsvp-person-choice {
+  position: relative;
+  min-width: 0;
+}
+
+.rsvp-person-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.rsvp-person-choice label {
+  display: grid;
+  min-height: 3.25rem;
+  place-items: center;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(84, 91, 66, 0.23);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: clamp(0.65rem, 1.45vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    color 220ms ease;
+}
+
+[dir="rtl"] .rsvp-person-choice label {
+  letter-spacing: 0.01em;
+}
+
+.rsvp-person-choice label:hover {
+  border-color: var(--olive);
+}
+
+.rsvp-person-choice label.is-selected {
+  border-color: var(--olive-deep);
+  background: var(--olive-deep);
+  color: var(--warm-white);
+}
+
+.rsvp-person-choice input:focus-visible + label {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.rsvp-confirmation-summary .rsvp-confirmation-event {
+  align-items: flex-start;
+}
+
+.rsvp-confirmation-people {
+  display: grid;
+  width: min(100%, 15rem);
+  gap: 0.5rem;
+}
+
+.rsvp-confirmation-people > span {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.rsvp-confirmation-people b,
+.rsvp-confirmation-people em {
+  font-size: inherit;
+}
+
+.rsvp-confirmation-people b {
+  color: var(--warm-white);
+  font-weight: 500;
+}
+
+.rsvp-confirmation-people em {
+  color: #eee0c4;
+  font-style: normal;
+}
+
+.rsvp-confirmation-people em[data-status="no"] {
+  color: rgba(255, 253, 248, 0.66);
+}
+
+@media (max-width: 35rem) {
+  .rsvp-person-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .rsvp-person-name {
+    text-align: center;
+  }
+
+  .rsvp-person-choice label {
+    min-height: 3rem;
+    padding-inline: 0.45rem;
+  }
+
+  .rsvp-confirmation-summary .rsvp-confirmation-event {
+    display: grid;
+  }
+
+  .rsvp-confirmation-people {
+    width: 100%;
+    text-align: start;
   }
 }

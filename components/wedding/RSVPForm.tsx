@@ -1,10 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { submitRsvp } from "@/app/i/[token]/rsvp-actions";
-import { rememberPersonalInvitation } from "@/lib/invitation-return";
 import { getTranslations } from "@/lib/translations";
 import type {
   EventKey,
@@ -22,8 +20,9 @@ interface RSVPFormProps {
   language: Language;
   settings: WeddingSettings;
   token: string;
-  isGlobalInvitation?: boolean;
 }
+
+type GuestSlot = "first" | "second";
 
 export function RSVPForm({
   events,
@@ -31,11 +30,17 @@ export function RSVPForm({
   language,
   settings,
   token,
-  isGlobalInvitation = false,
 }: RSVPFormProps) {
-  const router = useRouter();
   const t = getTranslations(language).rsvp;
+  const hasSecondGuest = Boolean(guest.lastName.trim());
+  const showGuestCounter = !hasSecondGuest && guest.maxGuests > 1;
+  const hasPendingResponse = events.some(
+    (event) =>
+      guest.rsvp[event.key] === "pending" ||
+      (hasSecondGuest && guest.rsvpSecond[event.key] === "pending"),
+  );
   const [responses, setResponses] = useState(guest.rsvp);
+  const [secondResponses, setSecondResponses] = useState(guest.rsvpSecond);
   const [guestsCount, setGuestsCount] = useState(
     Math.min(Math.max(guest.guestsCount, 1), guest.maxGuests),
   );
@@ -43,19 +48,52 @@ export function RSVPForm({
     guest.shuttleInterest.slice(0, 1),
   );
   const [message, setMessage] = useState(guest.message);
-  const [firstName, setFirstName] = useState(
-    isGlobalInvitation ? "" : guest.firstName,
-  );
-  const [lastName, setLastName] = useState("");
   const [isEditing, setIsEditing] = useState(
-    isGlobalInvitation || !guest.answeredAt,
+    !guest.answeredAt || hasPendingResponse,
   );
-  const [isPersisted, setIsPersisted] = useState(Boolean(guest.answeredAt));
+  const [isPersisted, setIsPersisted] = useState(
+    Boolean(guest.answeredAt) && !hasPendingResponse,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const updateResponse = (event: WeddingEvent, status: RsvpStatus) => {
-    setResponses((current) => ({ ...current, [event.key]: status }));
+  const people = [
+    {
+      key: "first" as const,
+      name: guest.firstName.trim(),
+      responses,
+    },
+    ...(hasSecondGuest
+      ? [
+          {
+            key: "second" as const,
+            name: guest.lastName.trim(),
+            responses: secondResponses,
+          },
+        ]
+      : []),
+  ];
+  const getEventTitle = (event: WeddingEvent) =>
+    event.key === "shabbat" && language === "fr"
+      ? "Shabbat"
+      : event.title[language];
+
+  const updateResponse = (
+    event: WeddingEvent,
+    guestSlot: GuestSlot,
+    status: RsvpStatus,
+  ) => {
+    const update = (current: Record<EventKey, RsvpStatus>) => ({
+      ...current,
+      [event.key]: status,
+    });
+
+    if (guestSlot === "second") {
+      setSecondResponses(update);
+    } else {
+      setResponses(update);
+    }
+
     setError("");
   };
 
@@ -76,13 +114,14 @@ export function RSVPForm({
   const handleSubmit = async (submitEvent: FormEvent<HTMLFormElement>) => {
     submitEvent.preventDefault();
 
-    if (events.some((event) => responses[event.key] === "pending")) {
+    if (
+      events.some(
+        (event) =>
+          responses[event.key] === "pending" ||
+          (hasSecondGuest && secondResponses[event.key] === "pending"),
+      )
+    ) {
       setError(t.required);
-      return;
-    }
-
-    if (isGlobalInvitation && (!firstName.trim() || !lastName.trim())) {
-      setError(t.identityRequired);
       return;
     }
 
@@ -93,6 +132,11 @@ export function RSVPForm({
     const submittedResponses = Object.fromEntries(
       events.map((event) => [event.key, responses[event.key]]),
     ) as Partial<Record<EventKey, RsvpStatus>>;
+    const submittedSecondResponses = hasSecondGuest
+      ? (Object.fromEntries(
+          events.map((event) => [event.key, secondResponses[event.key]]),
+        ) as Partial<Record<EventKey, RsvpStatus>>)
+      : {};
 
     setIsSubmitting(true);
     setError("");
@@ -101,12 +145,10 @@ export function RSVPForm({
       const result = await submitRsvp({
         token,
         responses: submittedResponses,
+        secondResponses: submittedSecondResponses,
         guestsCount,
         shuttleInterest,
         message,
-        firstName,
-        lastName,
-        language,
       });
 
       if (!result.ok) {
@@ -115,12 +157,6 @@ export function RSVPForm({
       }
 
       setIsPersisted(result.persisted);
-
-      if (result.invitationToken) {
-        rememberPersonalInvitation(token, result.invitationToken);
-        router.replace(`/i/${result.invitationToken}#rsvp`);
-        return;
-      }
 
       showConfirmation();
     } catch {
@@ -147,79 +183,55 @@ export function RSVPForm({
           </div>
 
           <form className="rsvp-form" onSubmit={handleSubmit} noValidate>
-            {isGlobalInvitation && (
-              <div className="rsvp-identity-fields">
-                <div className="form-field">
-                  <label htmlFor="guest-first-name">{t.firstNameLabel}</label>
-                  <input
-                    id="guest-first-name"
-                    type="text"
-                    value={firstName}
-                    maxLength={80}
-                    autoComplete="given-name"
-                    placeholder={t.firstNamePlaceholder}
-                    onChange={(event) => {
-                      setFirstName(event.target.value);
-                      setError("");
-                    }}
-                  />
-                </div>
-
-                <div className="form-field">
-                  <label htmlFor="guest-last-name">{t.lastNameLabel}</label>
-                  <input
-                    id="guest-last-name"
-                    type="text"
-                    value={lastName}
-                    maxLength={80}
-                    autoComplete="family-name"
-                    placeholder={t.lastNamePlaceholder}
-                    onChange={(event) => {
-                      setLastName(event.target.value);
-                      setError("");
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
             <div className="rsvp-events">
               {events.map((event) => (
                 <fieldset className="rsvp-event" key={event.key}>
-                  <legend>{event.title[language]}</legend>
-                  <div className="rsvp-options">
-                    {(["yes", "no"] as const).map((status) => {
-                      const inputId = `${event.key}-${status}`;
-                      const selected = responses[event.key] === status;
+                  <legend>{getEventTitle(event)}</legend>
+                  <div className="rsvp-people">
+                    {people.map((person) => (
+                      <div className="rsvp-person-row" key={person.key}>
+                        <p className="rsvp-person-name">{person.name}</p>
+                        <div className="rsvp-person-options">
+                          {(["yes", "no"] as const).map((status) => {
+                            const inputId = `${event.key}-${person.key}-${status}`;
+                            const selected =
+                              person.responses[event.key] === status;
 
-                      return (
-                        <div className="rsvp-choice" key={status}>
-                          <input
-                            id={inputId}
-                            type="radio"
-                            name={event.key}
-                            value={status}
-                            checked={selected}
-                            onChange={() => updateResponse(event, status)}
-                          />
-                          <label
-                            htmlFor={inputId}
-                            className={selected ? "is-selected" : undefined}
-                          >
-                            <span className="choice-mark" aria-hidden="true" />
-                            <span>{status === "yes" ? t.yes : t.no}</span>
-                          </label>
+                            return (
+                              <div className="rsvp-person-choice" key={status}>
+                                <input
+                                  id={inputId}
+                                  type="radio"
+                                  name={`${event.key}-${person.key}`}
+                                  value={status}
+                                  checked={selected}
+                                  onChange={() =>
+                                    updateResponse(event, person.key, status)
+                                  }
+                                />
+                                <label
+                                  htmlFor={inputId}
+                                  className={
+                                    selected ? "is-selected" : undefined
+                                  }
+                                >
+                                  {status === "yes" ? t.yes : t.no}
+                                </label>
+                              </div>
+                            );
+                          })}
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
                 </fieldset>
               ))}
             </div>
 
-            <fieldset className="guest-count-fieldset">
-              <legend>{t.guestCount}</legend>
-              <div className="guest-count-stepper">
+            {showGuestCounter && (
+              <fieldset className="guest-count-fieldset">
+                <legend>{t.guestCount}</legend>
+                <div className="guest-count-stepper">
                 <button
                   type="button"
                   aria-label={t.decreaseGuestCount}
@@ -243,8 +255,9 @@ export function RSVPForm({
                 >
                   <span aria-hidden="true">+</span>
                 </button>
-              </div>
-            </fieldset>
+                </div>
+              </fieldset>
+            )}
 
             <fieldset className="shuttle-fieldset">
               <legend>{t.shuttleLabel}</legend>
@@ -353,17 +366,26 @@ export function RSVPForm({
                 <p>{t.summary}</p>
                 <dl>
                   {events.map((event) => (
-                    <div key={event.key}>
-                      <dt>{event.title[language]}</dt>
-                      <dd data-status={responses[event.key]}>
-                        {t.statuses[responses[event.key]]}
+                    <div className="rsvp-confirmation-event" key={event.key}>
+                      <dt>{getEventTitle(event)}</dt>
+                      <dd className="rsvp-confirmation-people">
+                        {people.map((person) => (
+                          <span key={person.key}>
+                            <b>{person.name}</b>
+                            <em data-status={person.responses[event.key]}>
+                              {t.statuses[person.responses[event.key]]}
+                            </em>
+                          </span>
+                        ))}
                       </dd>
                     </div>
                   ))}
-                  <div>
-                    <dt>{t.guestCount}</dt>
-                    <dd>{t.guestSummary(guestsCount)}</dd>
-                  </div>
+                  {showGuestCounter && (
+                    <div>
+                      <dt>{t.guestCount}</dt>
+                      <dd>{t.guestSummary(guestsCount)}</dd>
+                    </div>
+                  )}
                 </dl>
               </div>
 

@@ -9,10 +9,12 @@ export type ShuttleCity = (typeof SHUTTLE_CITIES)[number];
 
 export interface Guest {
   firstName: string;
+  lastName: string;
   preferredLanguage: Language;
   invited: Record<EventKey, boolean>;
   maxGuests: number;
   rsvp: Record<EventKey, RsvpStatus>;
+  rsvpSecond: Record<EventKey, RsvpStatus>;
   guestsCount: number;
   shuttleInterest: ShuttleCity[];
   message: string;

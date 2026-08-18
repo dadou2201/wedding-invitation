@@ -127,6 +127,7 @@ const createGuest = (
   invited: { wedding: true, henna: true, shabbat: true },
   maxGuests: 2,
   rsvp: { wedding: "pending", henna: "pending", shabbat: "pending" },
+  rsvpSecond: { wedding: "pending", henna: "pending", shabbat: "pending" },
   guestsCount: 1,
   shuttleInterest: [],
   message: "",
@@ -166,6 +167,7 @@ const mockGuests: MockGuestRecord[] = [
     firstName: "Sarah",
     lastName: "Attal",
     rsvp: { wedding: "yes", henna: "no", shabbat: "yes" },
+    rsvpSecond: { wedding: "yes", henna: "no", shabbat: "yes" },
     guestsCount: 2,
     shuttleInterest: ["Jerusalem"],
     message: "Nous avons très hâte de célébrer avec vous !",
@@ -178,10 +180,12 @@ export const mockInvitationTokens = mockGuests.map(({ token }) => token);
 function toPublicGuest(guest: MockGuestRecord): Guest {
   return {
     firstName: guest.firstName,
+    lastName: guest.lastName,
     preferredLanguage: guest.preferredLanguage,
     invited: guest.invited,
     maxGuests: guest.maxGuests,
     rsvp: guest.rsvp,
+    rsvpSecond: guest.rsvpSecond,
     guestsCount: guest.guestsCount,
     shuttleInterest: guest.shuttleInterest,
     message: guest.message,

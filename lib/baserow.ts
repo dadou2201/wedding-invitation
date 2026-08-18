@@ -15,11 +15,9 @@ import {
 } from "@/lib/baserow-fields";
 import { isValidPublicToken } from "@/lib/invitation-tokens";
 import {
-  EVENT_KEYS,
   type EventKey,
   type GalleryImage,
   type Guest,
-  type Language,
   type RsvpStatus,
   SHUTTLE_CITIES,
   type ShuttleCity,
@@ -72,17 +70,10 @@ export type BaserowConfigurationStatus =
 export interface UpdateGuestRsvpInput {
   token: string;
   responses: Partial<Record<EventKey, RsvpStatus>>;
+  secondResponses: Partial<Record<EventKey, RsvpStatus>>;
   guestsCount: number;
   shuttleInterest: ShuttleCity[];
   message: string;
-}
-
-export interface CreateGuestRsvpInput extends UpdateGuestRsvpInput {
-  firstName: string;
-  lastName: string;
-  preferredLanguage: Language;
-  invited: Record<EventKey, boolean>;
-  maxGuests: number;
 }
 
 export class BaserowConfigurationError extends Error {
@@ -475,66 +466,6 @@ async function updateBaserowRow(
   throw new BaserowRequestError();
 }
 
-async function createBaserowRow(
-  tableId: string,
-  body: Record<string, unknown>,
-): Promise<BaserowRow> {
-  const config = getBaserowConfig();
-  const url = new URL(
-    `api/database/rows/table/${tableId}/`,
-    `${config.apiUrl}/`,
-  );
-  url.searchParams.set("user_field_names", "true");
-
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Token ${config.apiToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-        cache: "no-store",
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      });
-
-      if (response.ok) {
-        const row = (await response.json()) as unknown;
-
-        if (!isBaserowRow(row)) {
-          throw new BaserowDataError();
-        }
-
-        return row;
-      }
-
-      if (attempt < MAX_RETRIES && isRetryableStatus(response.status)) {
-        await delay(250 * 2 ** attempt);
-        continue;
-      }
-
-      throw new BaserowRequestError(response.status);
-    } catch (error) {
-      if (
-        error instanceof BaserowRequestError ||
-        error instanceof BaserowDataError
-      ) {
-        throw error;
-      }
-
-      if (attempt === MAX_RETRIES) {
-        throw new BaserowRequestError();
-      }
-
-      await delay(250 * 2 ** attempt);
-    }
-  }
-
-  throw new BaserowRequestError();
-}
-
 function normalizeEventKey(value: unknown): EventKey | null {
   const normalized = normalizeSelectionValue(value)
     .normalize("NFD")
@@ -580,6 +511,7 @@ function mapGuestRow(row: BaserowRow): Guest {
 
   return {
     firstName: normalizeText(row[fields.firstName]) || "Invité",
+    lastName: normalizeText(row[fields.lastName]),
     preferredLanguage: normalizeLanguage(
       row[fields.preferredLanguage] ?? row["Sélection multiple"],
     ),
@@ -593,6 +525,11 @@ function mapGuestRow(row: BaserowRow): Guest {
       wedding: normalizeRsvpStatus(row[fields.weddingRsvp]),
       henna: normalizeRsvpStatus(row[fields.hennaRsvp]),
       shabbat: normalizeRsvpStatus(row[fields.shabbatRsvp]),
+    },
+    rsvpSecond: {
+      wedding: normalizeRsvpStatus(row[fields.weddingRsvpSecond]),
+      henna: normalizeRsvpStatus(row[fields.hennaRsvpSecond]),
+      shabbat: normalizeRsvpStatus(row[fields.shabbatRsvpSecond]),
     },
     guestsCount,
     shuttleInterest: normalizeShuttleInterest(
@@ -800,31 +737,62 @@ export async function updateGuestRSVP(
     henna: fields.hennaRsvp,
     shabbat: fields.shabbatRsvp,
   };
+  const secondRsvpFieldByEvent: Record<EventKey, string> = {
+    wedding: fields.weddingRsvpSecond,
+    henna: fields.hennaRsvpSecond,
+    shabbat: fields.shabbatRsvpSecond,
+  };
   const optionNameByStatus: Record<RsvpStatus, string> = {
     pending: "Pending",
     yes: "Yes",
     no: "No",
   };
 
-  for (const [eventKey, status] of Object.entries(input.responses) as Array<
-    [EventKey, RsvpStatus | undefined]
-  >) {
-    if (!status || !guest.invited[eventKey]) {
-      throw new BaserowDataError();
+  const primaryEventKeys = Object.keys(input.responses) as EventKey[];
+  const secondEventKeys = Object.keys(input.secondResponses) as EventKey[];
+  const hasSecondGuest = Boolean(guest.lastName.trim());
+
+  if (
+    (hasSecondGuest &&
+      (primaryEventKeys.length !== secondEventKeys.length ||
+        primaryEventKeys.some(
+          (eventKey) => !secondEventKeys.includes(eventKey),
+        ))) ||
+    (!hasSecondGuest && secondEventKeys.length > 0)
+  ) {
+    throw new BaserowDataError();
+  }
+
+  const addResponsesToPayload = (
+    responses: Partial<Record<EventKey, RsvpStatus>>,
+    fieldByEvent: Record<EventKey, string>,
+  ) => {
+    for (const [eventKey, status] of Object.entries(responses) as Array<
+      [EventKey, RsvpStatus | undefined]
+    >) {
+      if (!status || !guest.invited[eventKey]) {
+        throw new BaserowDataError();
+      }
+
+      const fieldName = fieldByEvent[eventKey];
+      const schema = schemas.find((candidate) => candidate.name === fieldName);
+      const option = schema?.selectOptions.find(
+        (candidate) => candidate.value === optionNameByStatus[status],
+      );
+
+      if (!schema || !option) {
+        throw new BaserowDataError();
+      }
+
+      payload[fieldName] =
+        schema.type === "multiple_select" ? [option.id] : option.id;
     }
+  };
 
-    const fieldName = rsvpFieldByEvent[eventKey];
-    const schema = schemas.find((candidate) => candidate.name === fieldName);
-    const option = schema?.selectOptions.find(
-      (candidate) => candidate.value === optionNameByStatus[status],
-    );
+  addResponsesToPayload(input.responses, rsvpFieldByEvent);
 
-    if (!schema || !option) {
-      throw new BaserowDataError();
-    }
-
-    payload[fieldName] =
-      schema.type === "multiple_select" ? [option.id] : option.id;
+  if (hasSecondGuest) {
+    addResponsesToPayload(input.secondResponses, secondRsvpFieldByEvent);
   }
 
   const answeredAtSchema = schemas.find(
@@ -886,104 +854,4 @@ function getShuttleInterestPayload(
 
     return optionId;
   });
-}
-
-export async function createGuestRSVP(
-  input: CreateGuestRsvpInput,
-): Promise<{ guest: Guest; token: string }> {
-  const config = getBaserowConfig();
-  const schemas = await getFieldSchemas(config.tableIds.guests);
-  const fields = BASEROW_FIELDS.guests;
-  const token = crypto.randomUUID().replaceAll("-", "");
-  const answeredAt = new Date().toISOString();
-  const shuttleInterestSchema = findFieldSchema(
-    schemas,
-    fields.shuttleInterest,
-    fields.dietaryRequirements,
-  );
-
-  if (!shuttleInterestSchema) {
-    throw new BaserowDataError();
-  }
-
-  const payload: Record<string, unknown> = {
-    [fields.token]: token,
-    [fields.firstName]: input.firstName.trim(),
-    [fields.lastName]: input.lastName.trim(),
-    [fields.weddingInvited]: input.invited.wedding,
-    [fields.hennaInvited]: input.invited.henna,
-    [fields.shabbatInvited]: input.invited.shabbat,
-    [fields.maxGuests]: input.maxGuests,
-    [fields.guestsCount]: input.guestsCount,
-    [fields.message]: input.message.trim(),
-  };
-  payload[shuttleInterestSchema.name] = getShuttleInterestPayload(
-    shuttleInterestSchema,
-    input.shuttleInterest,
-  );
-  const preferredLanguageSchema = findFieldSchema(
-    schemas,
-    fields.preferredLanguage,
-    "Sélection multiple",
-  );
-  const preferredLanguageOptionId = getSelectOptionId(
-    preferredLanguageSchema,
-    input.preferredLanguage,
-  );
-
-  if (preferredLanguageSchema && preferredLanguageOptionId !== null) {
-    payload[preferredLanguageSchema.name] =
-      preferredLanguageSchema.type === "multiple_select"
-        ? [preferredLanguageOptionId]
-        : preferredLanguageOptionId;
-  }
-
-  const rsvpFieldByEvent: Record<EventKey, string> = {
-    wedding: fields.weddingRsvp,
-    henna: fields.hennaRsvp,
-    shabbat: fields.shabbatRsvp,
-  };
-  const optionNameByStatus: Record<RsvpStatus, string> = {
-    pending: "Pending",
-    yes: "Yes",
-    no: "No",
-  };
-
-  for (const eventKey of EVENT_KEYS) {
-    const status = input.invited[eventKey]
-      ? input.responses[eventKey]
-      : "pending";
-
-    if (!status) {
-      throw new BaserowDataError();
-    }
-
-    const fieldName = rsvpFieldByEvent[eventKey];
-    const schema = findFieldSchema(schemas, fieldName);
-    const optionId = getSelectOptionId(schema, optionNameByStatus[status]);
-
-    if (!schema || optionId === null) {
-      throw new BaserowDataError();
-    }
-
-    payload[fieldName] =
-      schema.type === "multiple_select" ? [optionId] : optionId;
-  }
-
-  const answeredAtSchema = findFieldSchema(schemas, fields.answeredAt);
-
-  if (!answeredAtSchema) {
-    throw new BaserowDataError();
-  }
-
-  payload[fields.answeredAt] = answeredAtSchema.dateIncludeTime
-    ? answeredAt
-    : answeredAt.slice(0, 10);
-
-  const createdRow = await createBaserowRow(
-    config.tableIds.guests,
-    payload,
-  );
-
-  return { guest: mapGuestRow(createdRow), token };
 }

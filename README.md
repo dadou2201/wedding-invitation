@@ -43,25 +43,20 @@ Le client Baserow est marqué `server-only`. Les données personnelles Guest ne 
   message et date de réponse sont enregistrés dans la ligne Guest associée au
   lien d’invitation)
 
-## Invitations globales
+## Invitations personnalisées
 
-Une ligne `Guest` dont le token commence par `global-` sert de modèle partagé.
-Le visiteur renseigne son prénom et son nom puis, à l’envoi, une nouvelle ligne
-`Guest` est créée avec les événements autorisés par le modèle. Le visiteur est
-ensuite redirigé vers son lien personnel, depuis lequel il peut modifier sa
-réponse.
+Chaque lien `/i/[token]` correspond directement à une ligne de la table
+`Guests`. Les sections Mariage, Henné et Chabbat sont affichées uniquement
+quand les champs `Wedding Invited`, `Henna Invited` et `Shabbat Invited`
+correspondants sont actifs. Le formulaire RSVP reprend exactement les mêmes
+autorisations.
 
-Le jeton Baserow doit disposer des droits `Read`, `Create` et `Update` sur la
-table `Guests`. Les autres tables peuvent rester en lecture seule.
+Le jeton Baserow doit disposer des droits `Read` et `Update` sur la table
+`Guests`. Les autres tables peuvent rester en lecture seule.
 
 Le choix de navette utilise la colonne `Shuttle Interest` lorsqu’elle existe ;
 pour rester compatible avec la base actuelle, il utilise sinon l’ancienne
 colonne `Dietary Requirements`.
-
-Modèles actuellement configurés :
-
-- `/i/global-mariage` : mariage uniquement ;
-- `/i/global-complet` : mariage, henné et chabbat.
 
 ## Vérifications
 

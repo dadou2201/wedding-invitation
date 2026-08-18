@@ -3,18 +3,13 @@
 import { revalidatePath } from "next/cache";
 import {
   BaserowRequestError,
-  createGuestRSVP,
   getBaserowConfigurationStatus,
   updateGuestRSVP,
 } from "@/lib/baserow";
 import { getInvitationByToken } from "@/lib/invitation";
-import {
-  isGlobalInvitationToken,
-  isValidPublicToken,
-} from "@/lib/invitation-tokens";
+import { isValidPublicToken } from "@/lib/invitation-tokens";
 import type {
   EventKey,
-  Language,
   RsvpStatus,
   ShuttleCity,
 } from "@/lib/types";
@@ -23,28 +18,54 @@ import { SHUTTLE_CITIES } from "@/lib/types";
 export interface RsvpSubmission {
   token: string;
   responses: Partial<Record<EventKey, RsvpStatus>>;
+  secondResponses: Partial<Record<EventKey, RsvpStatus>>;
   guestsCount: number;
   shuttleInterest: ShuttleCity[];
   message: string;
-  firstName: string;
-  lastName: string;
-  language: Language;
 }
 
 export type RsvpActionResult =
-  | { ok: true; persisted: boolean; invitationToken?: string }
+  | { ok: true; persisted: boolean }
   | { ok: false; error: "invalid" | "unavailable" };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function parseSubmission(value: unknown): RsvpSubmission | null {
-  if (!isRecord(value) || !isRecord(value.responses)) {
+function parseResponses(
+  value: unknown,
+): Partial<Record<EventKey, RsvpStatus>> | null {
+  if (!isRecord(value)) {
     return null;
   }
 
+  const responses: Partial<Record<EventKey, RsvpStatus>> = {};
+
+  for (const [key, status] of Object.entries(value)) {
+    if (
+      !["wedding", "henna", "shabbat"].includes(key) ||
+      !["yes", "no"].includes(String(status))
+    ) {
+      return null;
+    }
+
+    responses[key as EventKey] = status as RsvpStatus;
+  }
+
+  return responses;
+}
+
+function parseSubmission(value: unknown): RsvpSubmission | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const responses = parseResponses(value.responses);
+  const secondResponses = parseResponses(value.secondResponses);
+
   if (
+    !responses ||
+    !secondResponses ||
     typeof value.token !== "string" ||
     !isValidPublicToken(value.token) ||
     typeof value.guestsCount !== "number" ||
@@ -58,38 +79,18 @@ function parseSubmission(value: unknown): RsvpSubmission | null {
     ) ||
     new Set(value.shuttleInterest).size !== value.shuttleInterest.length ||
     typeof value.message !== "string" ||
-    value.message.length > 600 ||
-    typeof value.firstName !== "string" ||
-    value.firstName.length > 80 ||
-    typeof value.lastName !== "string" ||
-    value.lastName.length > 80 ||
-    (value.language !== "fr" && value.language !== "he")
+    value.message.length > 600
   ) {
     return null;
-  }
-
-  const responses: Partial<Record<EventKey, RsvpStatus>> = {};
-
-  for (const [key, status] of Object.entries(value.responses)) {
-    if (
-      !["wedding", "henna", "shabbat"].includes(key) ||
-      !["yes", "no"].includes(String(status))
-    ) {
-      return null;
-    }
-
-    responses[key as EventKey] = status as RsvpStatus;
   }
 
   return {
     token: value.token,
     responses,
+    secondResponses,
     guestsCount: value.guestsCount,
     shuttleInterest: value.shuttleInterest as ShuttleCity[],
     message: value.message,
-    firstName: value.firstName.trim(),
-    lastName: value.lastName.trim(),
-    language: value.language,
   };
 }
 
@@ -117,7 +118,10 @@ export async function submitRsvp(
 
     const expectedEventKeys = invitation.events.map((event) => event.key);
     const submittedEventKeys = Object.keys(input.responses) as EventKey[];
-    const isGlobalInvitation = isGlobalInvitationToken(input.token);
+    const submittedSecondEventKeys = Object.keys(
+      input.secondResponses,
+    ) as EventKey[];
+    const hasSecondGuest = Boolean(invitation.guest.lastName.trim());
 
     if (
       expectedEventKeys.length === 0 ||
@@ -127,9 +131,16 @@ export async function submitRsvp(
           input.responses[eventKey] !== "yes" &&
           input.responses[eventKey] !== "no",
       ) ||
+      (hasSecondGuest &&
+        (expectedEventKeys.length !== submittedSecondEventKeys.length ||
+          expectedEventKeys.some(
+            (eventKey) =>
+              input.secondResponses[eventKey] !== "yes" &&
+              input.secondResponses[eventKey] !== "no",
+          ))) ||
+      (!hasSecondGuest && submittedSecondEventKeys.length > 0) ||
       input.guestsCount < 1 ||
-      input.guestsCount > invitation.guest.maxGuests ||
-      (isGlobalInvitation && (!input.firstName || !input.lastName))
+      input.guestsCount > invitation.guest.maxGuests
     ) {
       return { ok: false, error: "invalid" };
     }
@@ -138,22 +149,6 @@ export async function submitRsvp(
       return process.env.NODE_ENV === "development"
         ? { ok: true, persisted: false }
         : { ok: false, error: "unavailable" };
-    }
-
-    if (isGlobalInvitation) {
-      const created = await createGuestRSVP({
-        ...input,
-        preferredLanguage: input.language,
-        invited: invitation.guest.invited,
-        maxGuests: invitation.guest.maxGuests,
-      });
-      revalidatePath(`/i/${created.token}`);
-
-      return {
-        ok: true,
-        persisted: true,
-        invitationToken: created.token,
-      };
     }
 
     await updateGuestRSVP(input);

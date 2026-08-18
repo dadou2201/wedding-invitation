@@ -1,55 +1,95 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { getInvitationDisplayName } from "@/lib/guest-display-name";
+import type { Guest, Language } from "@/lib/types";
 
 interface OpeningCardProps {
+  guest: Guest;
+  language: Language;
   onDiscover: () => void;
 }
 
-export function OpeningCard({ onDiscover }: OpeningCardProps) {
+const OPENING_COPY = {
+  fr: {
+    invitation: "Invitation",
+    open: "Ouvrir l’invitation",
+    logoAlt: "Monogramme de Clara et David",
+  },
+  he: {
+    invitation: "הזמנה",
+    open: "פתיחת ההזמנה",
+    logoAlt: "המונוגרמה של קלרה ודוד",
+  },
+} as const;
+
+const EXIT_DURATION_MS = 720;
+
+export function OpeningCard({
+  guest,
+  language,
+  onDiscover,
+}: OpeningCardProps) {
+  const [isClosing, setIsClosing] = useState(false);
+  const copy = OPENING_COPY[language];
+  const displayName = getInvitationDisplayName(guest);
+  const direction = language === "he" ? "rtl" : "ltr";
+
+  const handleOpen = () => {
+    if (isClosing) {
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      onDiscover();
+      return;
+    }
+
+    setIsClosing(true);
+    window.setTimeout(onDiscover, EXIT_DURATION_MS);
+  };
+
   return (
-    <main className="opening-page" lang="fr" dir="ltr">
-      <div className="opening-page__glow" aria-hidden="true" />
+    <main
+      className={`opening-page${isClosing ? " opening-page--closing" : ""}`}
+      lang={language}
+      dir={direction}
+    >
+      <div className="opening-page__texture" aria-hidden="true" />
 
-      <article className="opening-card" aria-labelledby="opening-names">
-        <div className="opening-card__inner">
-          <div className="opening-monogram">
-            <Image
-              src="/images/monogram-cd.png"
-              alt="Monogramme de Clara et David"
-              fill
-              priority
-              sizes="(max-width: 600px) 48vw, 220px"
-            />
+      <div className="opening-composition">
+        <article className="opening-card" aria-labelledby="opening-names">
+          <div className="opening-card__inner">
+            <p className="opening-title">{copy.invitation}</p>
+            <span className="opening-divider" aria-hidden="true" />
+            <h1 id="opening-names" className="opening-names">
+              {displayName}
+            </h1>
           </div>
+        </article>
 
-          <div className="opening-ornament" aria-hidden="true">
-            <span />
-            <i>◆</i>
-            <span />
-          </div>
-
-          <blockquote className="opening-quote">
-            Parce que ce jour ne serait pas le même sans vous, nous vous
-            invitons à célébrer notre mariage à nos côtés.
-          </blockquote>
-
-          <h1 id="opening-names" className="opening-names">
-            Clara <span>&amp;</span> David
-          </h1>
-
-          <p className="opening-date">Novembre 2026 <span>—</span> Israël</p>
-
-          <button
-            type="button"
-            className="opening-discover focus-ring"
-            onClick={onDiscover}
-          >
-            <span>Découvrir</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 12h13m-5-5 5 5-5 5" />
-            </svg>
-          </button>
-        </div>
-      </article>
+        <button
+          type="button"
+          className="opening-trigger focus-ring"
+          onClick={handleOpen}
+          disabled={isClosing}
+          aria-label={copy.open}
+        >
+          <span className="opening-seal" aria-hidden="true">
+            <span className="opening-seal__inner">
+              <Image
+                src="/images/monogram-cd-white.png"
+                alt={copy.logoAlt}
+                width={120}
+                height={80}
+                priority
+              />
+            </span>
+          </span>
+          <span className="opening-trigger__label">{copy.open}</span>
+        </button>
+      </div>
     </main>
   );
 }

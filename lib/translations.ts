@@ -12,7 +12,6 @@ const dictionary = {
     welcome: {
       eyebrow: "Une invitation rien que pour vous",
       salutation: (firstName: string) => `${firstName},`,
-      globalSalutation: "Chers invités,",
     },
     countdown: {
       eyebrow: "Le grand jour approche",
@@ -52,10 +51,6 @@ const dictionary = {
       guestCount: "Nombre de personnes",
       decreaseGuestCount: "Retirer une personne",
       increaseGuestCount: "Ajouter une personne",
-      firstNameLabel: "Prénom",
-      firstNamePlaceholder: "Votre prénom",
-      lastNameLabel: "Nom",
-      lastNamePlaceholder: "Votre nom de famille",
       shuttleLabel: "Intéressé·e par une navette ?",
       shuttleHelp: "Cochez une ou deux villes, ou ne cochez rien si vous ne souhaitez pas de navette.",
       shuttleJerusalem: "Jérusalem",
@@ -65,7 +60,6 @@ const dictionary = {
       submit: "Envoyer ma réponse",
       submitting: "Enregistrement…",
       required: "Merci de répondre pour chaque événement.",
-      identityRequired: "Merci d’indiquer votre prénom et votre nom.",
       invalid: "Certaines informations sont incomplètes. Merci de vérifier vos réponses.",
       unavailable: "Nous n’avons pas pu enregistrer votre réponse. Merci de réessayer dans quelques instants.",
       storageNote: "Votre réponse est transmise directement aux mariés.",
@@ -102,7 +96,6 @@ const dictionary = {
     welcome: {
       eyebrow: "הזמנה אישית במיוחד בשבילך",
       salutation: (firstName: string) => `${firstName},`,
-      globalSalutation: "אורחים יקרים,",
     },
     countdown: {
       eyebrow: "היום הגדול מתקרב",
@@ -142,10 +135,6 @@ const dictionary = {
       guestCount: "מספר האורחים",
       decreaseGuestCount: "הסרת אורח",
       increaseGuestCount: "הוספת אורח",
-      firstNameLabel: "שם פרטי",
-      firstNamePlaceholder: "השם הפרטי שלכם",
-      lastNameLabel: "שם משפחה",
-      lastNamePlaceholder: "שם המשפחה שלכם",
       shuttleLabel: "מעוניינים בהסעה?",
       shuttleHelp: "סמנו עיר אחת או שתיים, או השאירו ריק אם אינכם מעוניינים בהסעה.",
       shuttleJerusalem: "ירושלים",
@@ -155,7 +144,6 @@ const dictionary = {
       submit: "שליחת האישור",
       submitting: "שומרים…",
       required: "נא להשיב עבור כל אירוע.",
-      identityRequired: "נא להזין שם פרטי ושם משפחה.",
       invalid: "חלק מהמידע חסר או אינו תקין. אנא בדקו את התשובות.",
       unavailable: "לא הצלחנו לשמור את תשובתכם כרגע. אנא נסו שוב בעוד מספר רגעים.",
       storageNote: "התשובה נשלחת ישירות לזוג.",
