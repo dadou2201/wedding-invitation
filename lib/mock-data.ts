@@ -1,6 +1,7 @@
 import type {
   GalleryImage,
   Guest,
+  GuestMember,
   InvitationData,
   WeddingEvent,
   WeddingSettings,
@@ -30,27 +31,27 @@ export const mockSettings: WeddingSettings = {
 export const mockEvents: WeddingEvent[] = [
   {
     key: "henna",
-    title: { fr: "La soirée du henné", he: "ערב החינה" },
-    date: "2027-06-10T19:30:00+03:00",
-    venue: { fr: "La Maison des Oliviers", he: "בית הזיתים" },
+    title: { fr: "Henné", he: "חינה" },
+    date: "2026-11-04T19:00:00+02:00",
+    venue: { fr: "Narya House", he: "Narya House" },
     address: {
-      fr: "12, chemin des Oliviers · Jérusalem",
-      he: "דרך הזיתים 12 · ירושלים",
+      fr: "HaHarash, Petah Tikva",
+      he: "רחוב החרש, פתח תקווה",
     },
     wazeUrl:
-      "https://www.waze.com/ul?q=Jerusalem&navigate=yes",
+      "https://www.waze.com/ul?q=Narya+House%2C+HaHarash%2C+Petah+Tikva%2C+Israel&navigate=yes&utm_source=clara_david_invitation",
     googleMapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Jerusalem",
     visible: true,
   },
   {
     key: "wedding",
-    title: { fr: "Notre mariage", he: "החתונה שלנו" },
-    date: "2027-06-15T18:30:00+03:00",
-    venue: { fr: "Le Jardin de Jérusalem", he: "הגן הירושלמי" },
+    title: { fr: "Houppa", he: "חופה" },
+    date: "2026-11-02T18:00:00+02:00",
+    venue: { fr: "Les salons 58", he: "אולמי 58" },
     address: {
-      fr: "8, promenade de la Paix · Jérusalem",
-      he: "טיילת השלום 8 · ירושלים",
+      fr: "Hayarkonim 58, Petah Tikva",
+      he: "הירקונים 58, פתח תקווה",
     },
     wazeUrl:
       "https://www.waze.com/ul?q=Jerusalem&navigate=yes",
@@ -60,14 +61,15 @@ export const mockEvents: WeddingEvent[] = [
   },
   {
     key: "shabbat",
-    title: { fr: "Le Chabbat", he: "שבת חתן" },
-    date: "2027-06-18T19:00:00+03:00",
-    venue: { fr: "La Cour de David", he: "חצר דוד" },
+    title: { fr: "Chabbat Hatan", he: "שבת חתן" },
+    date: "2026-11-06T16:27:00+02:00",
+    venue: { fr: "Kfar Hanofesh Almog", he: "כפר הנופש אלמוג" },
     address: {
-      fr: "4, rue de la Citadelle · Jérusalem",
-      he: "רחוב המצודה 4 · ירושלים",
+      fr: "Kibboutz Almog",
+      he: "קיבוץ אלמוג",
     },
-    wazeUrl: null,
+    wazeUrl:
+      "https://www.waze.com/ul?q=Kfar+Hanofesh+Almog%2C+Kibboutz+Almog%2C+Israel&navigate=yes&utm_source=clara_david_invitation",
     googleMapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Jerusalem",
     visible: true,
@@ -163,6 +165,13 @@ const mockGuests: MockGuestRecord[] = [
     maxGuests: 5,
   }),
   createGuest({
+    token: "wedding-shabbat",
+    firstName: "Myriam",
+    lastName: "Dan",
+    invited: { wedding: true, henna: false, shabbat: true },
+    maxGuests: 2,
+  }),
+  createGuest({
     token: "rsvp-saved",
     firstName: "Sarah",
     lastName: "Attal",
@@ -173,7 +182,29 @@ const mockGuests: MockGuestRecord[] = [
     message: "Nous avons très hâte de célébrer avec vous !",
     answeredAt: "2026-08-10T12:00:00+03:00",
   }),
+  createGuest({
+    token: "family-demo",
+    firstName: "Famille Bourak",
+    lastName: "",
+    maxGuests: 5,
+  }),
 ];
+
+const familyMemberNames = [
+  "David Bourak",
+  "Mickaël Bourak",
+  "Fabienne Bourak",
+  "Serge Bourak",
+  "Liora Bourak",
+];
+
+const mockGuestMembersByToken: Record<string, GuestMember[]> = {
+  "family-demo": familyMemberNames.map((name, index) => ({
+    id: index + 1,
+    name,
+    rsvp: { wedding: "pending", henna: "pending", shabbat: "pending" },
+  })),
+};
 
 export const mockInvitationTokens = mockGuests.map(({ token }) => token);
 
@@ -204,6 +235,7 @@ export function getMockInvitationByToken(
 
   return {
     guest: toPublicGuest(guest),
+    guestMembers: mockGuestMembersByToken[token] ?? [],
     events: mockEvents,
     gallery: mockGallery,
     settings: mockSettings,

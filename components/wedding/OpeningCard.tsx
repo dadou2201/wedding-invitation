@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { getInvitationDisplayName } from "@/lib/guest-display-name";
-import type { Guest, Language } from "@/lib/types";
+import type { Language } from "@/lib/types";
 
 interface OpeningCardProps {
-  guest: Guest;
+  displayName: string;
   language: Language;
   onDiscover: () => void;
 }
@@ -27,13 +26,12 @@ const OPENING_COPY = {
 const EXIT_DURATION_MS = 720;
 
 export function OpeningCard({
-  guest,
+  displayName,
   language,
   onDiscover,
 }: OpeningCardProps) {
   const [isClosing, setIsClosing] = useState(false);
   const copy = OPENING_COPY[language];
-  const displayName = getInvitationDisplayName(guest);
   const direction = language === "he" ? "rtl" : "ltr";
 
   const handleOpen = () => {
@@ -79,10 +77,10 @@ export function OpeningCard({
           <span className="opening-seal" aria-hidden="true">
             <span className="opening-seal__inner">
               <Image
-                src="/images/monogram-cd-white.png"
+                src="/images/logo2.jpg"
                 alt={copy.logoAlt}
-                width={120}
-                height={80}
+                width={1254}
+                height={1254}
                 priority
               />
             </span>

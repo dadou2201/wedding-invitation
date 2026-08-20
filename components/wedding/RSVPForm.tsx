@@ -8,6 +8,7 @@ import type {
   EventKey,
   Guest,
   Language,
+  RsvpPerson,
   RsvpStatus,
   ShuttleCity,
   WeddingEvent,
@@ -18,29 +19,31 @@ interface RSVPFormProps {
   events: WeddingEvent[];
   guest: Guest;
   language: Language;
+  rsvpPeople: RsvpPerson[];
   settings: WeddingSettings;
   token: string;
 }
-
-type GuestSlot = "first" | "second";
 
 export function RSVPForm({
   events,
   guest,
   language,
+  rsvpPeople,
   settings,
   token,
 }: RSVPFormProps) {
   const t = getTranslations(language).rsvp;
-  const hasSecondGuest = Boolean(guest.lastName.trim());
-  const showGuestCounter = !hasSecondGuest && guest.maxGuests > 1;
-  const hasPendingResponse = events.some(
-    (event) =>
-      guest.rsvp[event.key] === "pending" ||
-      (hasSecondGuest && guest.rsvpSecond[event.key] === "pending"),
+  const showGuestCounter = rsvpPeople.length === 1 && guest.maxGuests > 1;
+  const hasPendingResponse = rsvpPeople.some((person) =>
+    events.some((event) => person.responses[event.key] === "pending"),
   );
-  const [responses, setResponses] = useState(guest.rsvp);
-  const [secondResponses, setSecondResponses] = useState(guest.rsvpSecond);
+  const [responsesByPerson, setResponsesByPerson] = useState<
+    Record<string, Record<EventKey, RsvpStatus>>
+  >(() =>
+    Object.fromEntries(
+      rsvpPeople.map((person) => [person.id, { ...person.responses }]),
+    ),
+  );
   const [guestsCount, setGuestsCount] = useState(
     Math.min(Math.max(guest.guestsCount, 1), guest.maxGuests),
   );
@@ -57,42 +60,34 @@ export function RSVPForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const people = [
-    {
-      key: "first" as const,
-      name: guest.firstName.trim(),
-      responses,
-    },
-    ...(hasSecondGuest
-      ? [
-          {
-            key: "second" as const,
-            name: guest.lastName.trim(),
-            responses: secondResponses,
-          },
-        ]
-      : []),
-  ];
-  const getEventTitle = (event: WeddingEvent) =>
-    event.key === "shabbat" && language === "fr"
-      ? "Shabbat"
-      : event.title[language];
+  const people = rsvpPeople.map((person) => ({
+    ...person,
+    responses: responsesByPerson[person.id] ?? person.responses,
+  }));
+  const getEventTitle = (event: WeddingEvent) => {
+    if (language !== "fr") {
+      return event.title[language];
+    }
+
+    return {
+      wedding: "Mariage",
+      henna: "Henné",
+      shabbat: "Chabbat Hatan",
+    }[event.key];
+  };
 
   const updateResponse = (
     event: WeddingEvent,
-    guestSlot: GuestSlot,
+    personId: string,
     status: RsvpStatus,
   ) => {
-    const update = (current: Record<EventKey, RsvpStatus>) => ({
+    setResponsesByPerson((current) => ({
       ...current,
-      [event.key]: status,
-    });
-
-    if (guestSlot === "second") {
-      setSecondResponses(update);
-    } else {
-      setResponses(update);
-    }
+      [personId]: {
+        ...current[personId],
+        [event.key]: status,
+      },
+    }));
 
     setError("");
   };
@@ -115,10 +110,8 @@ export function RSVPForm({
     submitEvent.preventDefault();
 
     if (
-      events.some(
-        (event) =>
-          responses[event.key] === "pending" ||
-          (hasSecondGuest && secondResponses[event.key] === "pending"),
+      people.some((person) =>
+        events.some((event) => person.responses[event.key] === "pending"),
       )
     ) {
       setError(t.required);
@@ -129,14 +122,12 @@ export function RSVPForm({
       return;
     }
 
-    const submittedResponses = Object.fromEntries(
-      events.map((event) => [event.key, responses[event.key]]),
-    ) as Partial<Record<EventKey, RsvpStatus>>;
-    const submittedSecondResponses = hasSecondGuest
-      ? (Object.fromEntries(
-          events.map((event) => [event.key, secondResponses[event.key]]),
-        ) as Partial<Record<EventKey, RsvpStatus>>)
-      : {};
+    const submittedPeople = people.map((person) => ({
+      id: person.id,
+      responses: Object.fromEntries(
+        events.map((event) => [event.key, person.responses[event.key]]),
+      ) as Partial<Record<EventKey, RsvpStatus>>,
+    }));
 
     setIsSubmitting(true);
     setError("");
@@ -144,8 +135,7 @@ export function RSVPForm({
     try {
       const result = await submitRsvp({
         token,
-        responses: submittedResponses,
-        secondResponses: submittedSecondResponses,
+        people: submittedPeople,
         guestsCount,
         shuttleInterest,
         message,
@@ -189,11 +179,11 @@ export function RSVPForm({
                   <legend>{getEventTitle(event)}</legend>
                   <div className="rsvp-people">
                     {people.map((person) => (
-                      <div className="rsvp-person-row" key={person.key}>
+                      <div className="rsvp-person-row" key={person.id}>
                         <p className="rsvp-person-name">{person.name}</p>
                         <div className="rsvp-person-options">
                           {(["yes", "no"] as const).map((status) => {
-                            const inputId = `${event.key}-${person.key}-${status}`;
+                            const inputId = `${event.key}-${person.id}-${status}`;
                             const selected =
                               person.responses[event.key] === status;
 
@@ -202,11 +192,11 @@ export function RSVPForm({
                                 <input
                                   id={inputId}
                                   type="radio"
-                                  name={`${event.key}-${person.key}`}
+                                  name={`${event.key}-${person.id}`}
                                   value={status}
                                   checked={selected}
                                   onChange={() =>
-                                    updateResponse(event, person.key, status)
+                                    updateResponse(event, person.id, status)
                                   }
                                 />
                                 <label
@@ -300,6 +290,7 @@ export function RSVPForm({
 
             <div className="form-field form-field--message">
               <label htmlFor="wedding-message">{t.messageLabel}</label>
+              <p className="rsvp-message-help">{t.messageHelp}</p>
               <textarea
                 id="wedding-message"
                 value={message}
@@ -334,22 +325,16 @@ export function RSVPForm({
         </div>
       ) : (
         <div className="rsvp-confirmation-page reveal-section is-visible">
-          <Image
-            src="/images/nous5.jpg"
-            alt={`${settings.brideName} & ${settings.groomName}`}
-            fill
-            sizes="100vw"
-            className="rsvp-confirmation-page__image"
-          />
-          <span className="rsvp-confirmation-page__veil" aria-hidden="true" />
-
           <div className="rsvp-confirmation-card">
             <div className="rsvp-confirmation-card__inner">
-              <p className="rsvp-confirmation-monogram" dir="ltr">
-                {settings.brideName.charAt(0)}
-                <span>&amp;</span>
-                {settings.groomName.charAt(0)}
-              </p>
+              <Image
+                src="/images/logo2.jpg"
+                alt={`Logo ${settings.brideName} et ${settings.groomName}`}
+                width={1254}
+                height={1254}
+                sizes="112px"
+                className="rsvp-confirmation-logo"
+              />
               <span className="rsvp-confirmation-check" aria-hidden="true">
                 <svg viewBox="0 0 48 48">
                   <circle cx="24" cy="24" r="22" />
@@ -370,7 +355,7 @@ export function RSVPForm({
                       <dt>{getEventTitle(event)}</dt>
                       <dd className="rsvp-confirmation-people">
                         {people.map((person) => (
-                          <span key={person.key}>
+                          <span key={person.id}>
                             <b>{person.name}</b>
                             <em data-status={person.responses[event.key]}>
                               {t.statuses[person.responses[event.key]]}
@@ -403,6 +388,17 @@ export function RSVPForm({
           </div>
         </div>
       )}
+
+      <footer className="rsvp-finale">
+        <span aria-hidden="true" />
+        <Image
+          src="/images/logo2.jpg"
+          alt={`Logo ${settings.brideName} et ${settings.groomName}`}
+          width={1254}
+          height={1254}
+          sizes="(max-width: 480px) 64px, 72px"
+        />
+      </footer>
     </section>
   );
 }

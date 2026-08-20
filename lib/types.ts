@@ -21,6 +21,21 @@ export interface Guest {
   answeredAt: string | null;
 }
 
+export interface GuestMember {
+  id: number;
+  name: string;
+  rsvp: Record<EventKey, RsvpStatus>;
+}
+
+export type RsvpPersonSource = "guest" | "guest-member";
+
+export interface RsvpPerson {
+  id: string;
+  name: string;
+  source: RsvpPersonSource;
+  responses: Record<EventKey, RsvpStatus>;
+}
+
 export interface WeddingEvent {
   key: EventKey;
   title: LocalizedText;
@@ -56,6 +71,7 @@ export interface WeddingSettings {
 
 export interface InvitationData {
   guest: Guest;
+  guestMembers: GuestMember[];
   events: WeddingEvent[];
   gallery: GalleryImage[];
   settings: WeddingSettings;

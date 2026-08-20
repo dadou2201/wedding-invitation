@@ -26,7 +26,7 @@ const EVENT_LABELS: Record<Language, Record<EventKey, string>> = {
   fr: {
     wedding: "Houppa",
     henna: "Henné",
-    shabbat: "Chabbat",
+    shabbat: "Chabbat Hatan",
   },
   he: {
     wedding: "חופה",
@@ -74,7 +74,7 @@ export function InvitationIntro({
 
       <nav className="invitation-intro-menu" aria-label={copy.navigation}>
         {events.map((event) => (
-          <a key={event.key} href={`#event-${event.key}`}>
+          <a key={event.key} href={`#${event.key}`}>
             {EVENT_LABELS[language][event.key]}
           </a>
         ))}
@@ -83,7 +83,7 @@ export function InvitationIntro({
 
       {firstEvent && (
         <a
-          href={`#event-${firstEvent.key}`}
+          href={`#${firstEvent.key}`}
           className="invitation-intro-scroll focus-ring"
           aria-label={copy.scroll}
         >

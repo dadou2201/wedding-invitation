@@ -15,6 +15,7 @@ Sans configuration Baserow, `next dev` utilise uniquement les invités de démon
 - `/i/wedding-only`
 - `/i/wedding-henna`
 - `/i/rsvp-saved`
+- `/i/family-demo`
 
 Les mocks ne sont jamais utilisés comme fallback silencieux en production.
 
@@ -37,11 +38,12 @@ Le client Baserow est marqué `server-only`. Les données personnelles Guest ne 
 
 ## État de l’intégration
 
-- Lecture Guest par token : active
+- Lecture Guest par token et des Guest Members liés : active
 - Lecture Events, Gallery et Settings : active
-- Écriture RSVP : active (présences, nombre d’invités, intérêt pour une navette,
-  message et date de réponse sont enregistrés dans la ligne Guest associée au
-  lien d’invitation)
+- Écriture RSVP : active. Les réponses solo/couple restent dans `Guests`; les
+  réponses d’une famille sont enregistrées sur chaque ligne liée de
+  `Guest Members`. Le nombre d’invités, la navette, le message et la date de
+  réponse restent dans la ligne `Guests` associée au lien.
 
 ## Invitations personnalisées
 
@@ -51,8 +53,11 @@ quand les champs `Wedding Invited`, `Henna Invited` et `Shabbat Invited`
 correspondants sont actifs. Le formulaire RSVP reprend exactement les mêmes
 autorisations.
 
-Le jeton Baserow doit disposer des droits `Read` et `Update` sur la table
-`Guests`. Les autres tables peuvent rester en lecture seule.
+Le jeton Baserow doit disposer des droits `Read` et `Update` sur les tables
+`Guests` et `Guest Members`. La table `Guest Members` est découverte depuis le
+champ de relation `Guest Members` de `Guests` : aucun identifiant de table
+supplémentaire n’est nécessaire dans l’environnement. Les autres tables peuvent
+rester en lecture seule.
 
 Le choix de navette utilise la colonne `Shuttle Interest` lorsqu’elle existe ;
 pour rester compatible avec la base actuelle, il utilise sinon l’ancienne
@@ -62,5 +67,6 @@ colonne `Dietary Requirements`.
 
 ```bash
 npm run lint
+npm run test
 npm run build
 ```

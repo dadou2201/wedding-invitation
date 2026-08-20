@@ -7,6 +7,7 @@ import {
   updateGuestRSVP,
 } from "@/lib/baserow";
 import { getInvitationByToken } from "@/lib/invitation";
+import { getInvitationAudience } from "@/lib/guest-display-name";
 import { isValidPublicToken } from "@/lib/invitation-tokens";
 import type {
   EventKey,
@@ -17,8 +18,10 @@ import { SHUTTLE_CITIES } from "@/lib/types";
 
 export interface RsvpSubmission {
   token: string;
-  responses: Partial<Record<EventKey, RsvpStatus>>;
-  secondResponses: Partial<Record<EventKey, RsvpStatus>>;
+  people: Array<{
+    id: string;
+    responses: Partial<Record<EventKey, RsvpStatus>>;
+  }>;
   guestsCount: number;
   shuttleInterest: ShuttleCity[];
   message: string;
@@ -60,12 +63,31 @@ function parseSubmission(value: unknown): RsvpSubmission | null {
     return null;
   }
 
-  const responses = parseResponses(value.responses);
-  const secondResponses = parseResponses(value.secondResponses);
+  const people = Array.isArray(value.people)
+    ? value.people.flatMap((candidate) => {
+        if (!isRecord(candidate) || typeof candidate.id !== "string") {
+          return [];
+        }
+
+        const responses = parseResponses(candidate.responses);
+
+        if (
+          !responses ||
+          !/^(?:primary|secondary|member:\d+)$/.test(candidate.id)
+        ) {
+          return [];
+        }
+
+        return [{ id: candidate.id, responses }];
+      })
+    : [];
 
   if (
-    !responses ||
-    !secondResponses ||
+    !Array.isArray(value.people) ||
+    people.length !== value.people.length ||
+    people.length === 0 ||
+    people.length > 100 ||
+    new Set(people.map((person) => person.id)).size !== people.length ||
     typeof value.token !== "string" ||
     !isValidPublicToken(value.token) ||
     typeof value.guestsCount !== "number" ||
@@ -86,8 +108,7 @@ function parseSubmission(value: unknown): RsvpSubmission | null {
 
   return {
     token: value.token,
-    responses,
-    secondResponses,
+    people,
     guestsCount: value.guestsCount,
     shuttleInterest: value.shuttleInterest as ShuttleCity[],
     message: value.message,
@@ -117,28 +138,37 @@ export async function submitRsvp(
     }
 
     const expectedEventKeys = invitation.events.map((event) => event.key);
-    const submittedEventKeys = Object.keys(input.responses) as EventKey[];
-    const submittedSecondEventKeys = Object.keys(
-      input.secondResponses,
-    ) as EventKey[];
-    const hasSecondGuest = Boolean(invitation.guest.lastName.trim());
+    const { rsvpPeople } = getInvitationAudience(
+      invitation.guest,
+      invitation.guestMembers,
+    );
+    const submittedById = new Map(
+      input.people.map((person) => [person.id, person]),
+    );
 
     if (
       expectedEventKeys.length === 0 ||
-      expectedEventKeys.length !== submittedEventKeys.length ||
-      expectedEventKeys.some(
-        (eventKey) =>
-          input.responses[eventKey] !== "yes" &&
-          input.responses[eventKey] !== "no",
-      ) ||
-      (hasSecondGuest &&
-        (expectedEventKeys.length !== submittedSecondEventKeys.length ||
+      submittedById.size !== rsvpPeople.length ||
+      rsvpPeople.some((expectedPerson) => {
+        const submittedPerson = submittedById.get(expectedPerson.id);
+
+        if (!submittedPerson) {
+          return true;
+        }
+
+        const submittedEventKeys = Object.keys(
+          submittedPerson.responses,
+        ) as EventKey[];
+
+        return (
+          submittedEventKeys.length !== expectedEventKeys.length ||
           expectedEventKeys.some(
             (eventKey) =>
-              input.secondResponses[eventKey] !== "yes" &&
-              input.secondResponses[eventKey] !== "no",
-          ))) ||
-      (!hasSecondGuest && submittedSecondEventKeys.length > 0) ||
+              submittedPerson.responses[eventKey] !== "yes" &&
+              submittedPerson.responses[eventKey] !== "no",
+          )
+        );
+      }) ||
       input.guestsCount < 1 ||
       input.guestsCount > invitation.guest.maxGuests
     ) {
@@ -151,7 +181,10 @@ export async function submitRsvp(
         : { ok: false, error: "unavailable" };
     }
 
-    await updateGuestRSVP(input);
+    await updateGuestRSVP({
+      ...input,
+      guestMembers: invitation.guestMembers,
+    });
     revalidatePath(`/i/${input.token}`);
 
     return { ok: true, persisted: true };

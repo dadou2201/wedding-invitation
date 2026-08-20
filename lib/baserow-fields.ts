@@ -2,6 +2,7 @@ import type { Language, RsvpStatus } from "@/lib/types";
 
 export const BASEROW_TABLES = {
   guests: "Guests",
+  guestMembers: "Guest Members",
   events: "Events",
   gallery: "Gallery",
   settings: "Settings",
@@ -31,6 +32,14 @@ export const BASEROW_FIELDS = {
     answeredAt: "Answered At",
     side: "Side",
     tableNumber: "Table Number",
+    guestMembers: "Guest Members",
+  },
+  guestMembers: {
+    name: "Nom",
+    linkToGuests: "Link to Guests",
+    weddingRsvp: "Wedding RSVP",
+    hennaRsvp: "Henna RSVP",
+    shabbatRsvp: "Shabbat RSVP",
   },
   events: {
     name: "Nom",

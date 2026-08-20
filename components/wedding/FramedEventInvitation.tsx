@@ -1,7 +1,6 @@
-import { formatEventDate, formatEventTime } from "@/lib/invitation-utils";
+import Image from "next/image";
 import { getTranslations } from "@/lib/translations";
 import type {
-  EventKey,
   Language,
   WeddingEvent,
   WeddingSettings,
@@ -13,184 +12,112 @@ interface FramedEventInvitationProps {
   settings: WeddingSettings;
 }
 
-interface EventPresentation {
-  address: string;
-  date: string;
-  dateTime: string;
-  hebrewDate?: string;
-  highlights: readonly string[];
-  introduction: string;
-  time: string;
-  title: string;
-  venue: string;
-}
-
-function createWazeNavigationUrl(destination: string) {
-  const params = new URLSearchParams({
-    q: destination,
-    navigate: "yes",
-    utm_source: "clara_david_invitation",
-  });
-
-  return `https://www.waze.com/ul?${params.toString()}`;
-}
-
-function resolveWazeNavigationUrl(
-  configuredUrl: string | null,
-  fallbackUrl: string,
-) {
-  if (!configuredUrl) {
-    return fallbackUrl;
-  }
-
-  try {
-    const url = new URL(configuredUrl);
-    const isTemporaryDriveShare =
-      url.hostname.endsWith("waze.com") &&
-      url.searchParams.get("a") === "share_drive";
-
-    return isTemporaryDriveShare ? fallbackUrl : configuredUrl;
-  } catch {
-    return fallbackUrl;
-  }
-}
-
-const WAZE_FALLBACKS: Record<EventKey, string> = {
-  wedding: createWazeNavigationUrl(
-    "58 FIFTY EIGHT, HaYarkonim 58, Petah Tikva, Israel",
-  ),
-  henna: createWazeNavigationUrl(
-    "Narya House - נאריה האוס, HaHarash Street, Petah Tikva, Israel",
-  ),
-  shabbat: createWazeNavigationUrl("Kibbutz Almog, Israel"),
-};
-
-const UI_COPY = {
+const EVENT_COPY = {
   fr: {
-    labels: {
-      date: "Date",
-      time: "Horaire",
-      venue: "Lieu",
+    wedding: {
+      title: "Houppa",
+      joy: "Ont la joie de vous faire part du mariage de leurs enfants et petits-enfants",
+      invitation:
+        "Et seront honorés de votre présence à la houppa qui aura lieu le",
+      date: "Lundi 2 Novembre",
+      time: "À 18h00 précises",
+      venue: "Dans les salons 58",
+      address: "Hayarkonim 58, Petah Tikva",
+      reception: "La cérémonie sera suivie d’une réception",
+      memorial:
+        "En ce jour si spécial, nous aurons une pensée émue pour nos grands-parents Yves Abécassis, René Bourak et Mady Zerbib",
     },
-    menu: "Retour au menu",
+    henna: {
+      title: "Henné",
+      invitation:
+        "Nous vous attendons tous en blanc pour prolonger les festivités lors de notre henné",
+      date: "Le mercredi 4 novembre",
+      time: "À 19:00",
+      venue: "à Narya House, HaHarash, Petah Tikva",
+    },
+    shabbat: {
+      title: "Chabbat Hatan",
+      invitation:
+        "Nous serons heureux de vous avoir à nos côtés pour partager la joie de notre chabbat hatan",
+      date: "Le vendredi 6 novembre & samedi 7 novembre",
+      venue: "Au Kfar Hanofesh Almog",
+      address: "Kibboutz Almog",
+      schedule: "Horaires de Chabbat",
+      entrance: "E : 16h27",
+      exit: "S : 17h25",
+      parasha: "Parashat Haye Sarah",
+    },
   },
   he: {
-    labels: {
-      date: "תאריך",
-      time: "שעה",
-      venue: "מקום",
-    },
-    menu: "חזרה לתפריט",
-  },
-} as const;
-
-const EVENT_COPY = {
-  wedding: {
-    fr: {
-      title: "Houppa",
-      introduction: "Nous serions heureux de vous compter parmi nous pour célébrer notre union.",
-      date: "Lundi 2 novembre 2026",
-      hebrewDate: "כ״ב בְּחֶשְׁוָן תשפ״ז",
-      time: "18h00 précises",
-      venue: "Salle 58",
-      address: "HaYarkonim 58, Petah Tikva, Israël",
-      highlights: [
-        "La cérémonie sera suivie d’une réception.",
-        "Nous avons une pensée très émue pour nos grands-parents,",
-        "Monsieur Abecassis, Rene Bourak, Mady Zerbib",
-      ],
-    },
-    he: {
+    wedding: {
       title: "חופה",
-      introduction: "נשמח לחגוג את נישואינו יחד איתכם.",
-      date: "יום שני, 2 בנובמבר 2026",
-      hebrewDate: "כ״ב בְּחֶשְׁוָן תשפ״ז",
-      time: "18:00 בדיוק",
-      venue: "אולם 58",
-      address: "הירקונים 58, פתח תקווה, ישראל",
-      highlights: [
-        "לאחר החופה תתקיים קבלת פנים.",
-        "במחשבותינו הנרגשות נמצאים סבינו וסבותינו,",
-        "Monsieur Abecassis, Rene Bourak, Mady Zerbib",
-      ],
+      joy: "שמחים לבשר על נישואי ילדיהם ונכדיהם",
+      invitation: "ויתכבדו בנוכחותכם בחופה שתתקיים ביום",
+      date: "יום שני, 2 בנובמבר",
+      time: "בשעה 18:00 בדיוק",
+      venue: "באולמי 58",
+      address: "הירקונים 58, פתח תקווה",
+      reception: "לאחר החופה תתקיים קבלת פנים",
+      memorial:
+        "ביום מיוחד זה נישא עמנו את זכר סבינו וסבותינו איב אבקסיס, רנה בוראק ומדי זרביב",
     },
-  },
-  henna: {
-    fr: {
-      title: "Henné",
-      introduction: "Une soirée chaleureuse et joyeuse pour ouvrir les festivités.",
-      venue: "Narya House",
-      address: "Petah Tikva, Israël",
-      highlights: ["Tenue blanche exigée."],
-    },
-    he: {
+    henna: {
       title: "חינה",
-      introduction: "ערב חם ושמח לפתיחת החגיגות.",
-      venue: "Narya House",
-      address: "פתח תקווה, ישראל",
-      highlights: ["לבוש לבן חובה."],
+      invitation: "נשמח לפגוש את כולכם בלבן ולהמשיך יחד את החגיגות בחינה שלנו",
+      date: "יום רביעי, 4 בנובמבר",
+      time: "בשעה 19:00",
+      venue: "Narya House, רחוב החרש, פתח תקווה",
     },
-  },
-  shabbat: {
-    fr: {
-      title: "Shabbat Hatan",
-      introduction: "Nous avons la joie de partager avec vous la simha de notre Shabbat Hatan.",
-      date: "Vendredi 6 & samedi 7 novembre 2026",
-      time: "Entrée 16h27 · Sortie 17h25",
-      venue: "Kibboutz Almog",
-      address: "Almog, Israël",
-      highlights: [
-        "Les offices seront suivis d’un repas.",
-        "Paracha ‘Hayé Sarah",
-      ],
-    },
-    he: {
+    shabbat: {
       title: "שבת חתן",
-      introduction: "נשמח לחלוק עמכם את שמחת שבת החתן שלנו.",
-      date: "יום שישי 6 ושבת 7 בנובמבר 2026",
-      time: "כניסה 16:27 · יציאה 17:25",
-      venue: "קיבוץ אלמוג",
-      address: "אלמוג, ישראל",
-      highlights: [
-        "לאחר התפילות תתקיים סעודה.",
-        "פרשת חיי שרה",
-      ],
+      invitation: "נשמח שתהיו לצידנו ונחלוק יחד את שמחת שבת החתן שלנו",
+      date: "יום שישי 6 בנובמבר ושבת 7 בנובמבר",
+      venue: "כפר הנופש אלמוג",
+      address: "קיבוץ אלמוג",
+      schedule: "זמני שבת",
+      entrance: "כניסה: 16:27",
+      exit: "יציאה: 17:25",
+      parasha: "פרשת חיי שרה",
     },
   },
 } as const;
 
-function getPresentation(
-  event: WeddingEvent,
-  language: Language,
-): EventPresentation {
-  if (event.key === "wedding") {
-    const copy = EVENT_COPY.wedding[language];
+const WEDDING_FAMILIES = {
+  left: [
+    "Armand et Aline Amsellem",
+    "Marie Paule Abécassis",
+    "Johan & Valérie Amsellem",
+  ],
+  right: [
+    "Armand Zerbib",
+    "Jeanine Bourak",
+    "Serge et Fabienne Bourak",
+  ],
+} as const;
 
-    return {
-      ...copy,
-      dateTime: "2026-11-02T18:00:00+02:00",
-    };
-  }
+const WEDDING_WAZE_FALLBACK =
+  "https://www.waze.com/ul?q=58+FIFTY+EIGHT%2C+HaYarkonim+58%2C+Petah+Tikva%2C+Israel&navigate=yes&utm_source=clara_david_invitation";
 
-  if (event.key === "henna") {
-    const copy = EVENT_COPY.henna[language];
+const HENNA_WAZE_FALLBACK =
+  "https://www.waze.com/ul?q=Narya+House%2C+HaHarash%2C+Petah+Tikva%2C+Israel&navigate=yes&utm_source=clara_david_invitation";
 
-    return {
-      ...copy,
-      address: event.address[language] || copy.address,
-      date: formatEventDate(event.date, language),
-      dateTime: event.date,
-      time: formatEventTime(event.date, language),
-    };
-  }
+const SHABBAT_WAZE_FALLBACK =
+  "https://www.waze.com/ul?q=Kfar+Hanofesh+Almog%2C+Kibboutz+Almog%2C+Israel&navigate=yes&utm_source=clara_david_invitation";
 
-  const copy = EVENT_COPY.shabbat[language];
-
-  return {
-    ...copy,
-    address: event.address[language] || copy.address,
-    dateTime: "2026-11-06",
-  };
+function BrandLogo({ light = false }: { light?: boolean }) {
+  return (
+    <span
+      className={`interior-brand${light ? " interior-brand--light" : ""}`}
+    >
+      <Image
+        src="/images/logo2.jpg"
+        alt="Logo Clara et David"
+        width={1254}
+        height={1254}
+        sizes="(max-width: 480px) 112px, 144px"
+      />
+    </span>
+  );
 }
 
 function PinIcon() {
@@ -202,112 +129,195 @@ function PinIcon() {
   );
 }
 
-export function FramedEventInvitation({
+function WazeLink({
+  event,
+  language,
+}: {
+  event: WeddingEvent;
+  language: Language;
+}) {
+  const label = getTranslations(language).events.waze;
+  const wazeUrl =
+    event.wazeUrl ??
+    (event.key === "wedding"
+      ? WEDDING_WAZE_FALLBACK
+      : event.key === "henna"
+        ? HENNA_WAZE_FALLBACK
+        : event.key === "shabbat"
+          ? SHABBAT_WAZE_FALLBACK
+          : null);
+
+  if (!wazeUrl) {
+    return null;
+  }
+
+  return (
+    <a
+      href={wazeUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="interior-waze focus-ring"
+      aria-label={`${label} — ${event.title[language]}`}
+    >
+      <PinIcon />
+      <span>{label}</span>
+    </a>
+  );
+}
+
+function WeddingInvitation({
   event,
   language,
   settings,
 }: FramedEventInvitationProps) {
-  const presentation = getPresentation(event, language);
-  const ui = UI_COPY[language];
-  const t = getTranslations(language).events;
-  const titleId = `framed-event-title-${event.key}`;
-  const wazeUrl = resolveWazeNavigationUrl(
-    event.wazeUrl,
-    WAZE_FALLBACKS[event.key],
-  );
+  const copy = EVENT_COPY[language].wedding;
+
   return (
-    <article
-      id={`event-${event.key}`}
-      className="framed-event-page simple-event-slide"
-      data-event={event.key}
-      aria-labelledby={titleId}
-    >
-      <div className="simple-event-content">
-        <header className="simple-event-header">
-          <h2 id={titleId}>{presentation.title}</h2>
+    <div className="interior-event__content wedding-invitation">
+      <p className="wedding-bsd" lang="he" dir="rtl">
+        בס״ד
+      </p>
+      <h2 id="wedding-title" className="interior-event__title">
+        {copy.title}
+      </h2>
+      <p className="wedding-verse" lang="he" dir="rtl">
+        קול ששון וקול שמחה קול חתן וקול כלה
+      </p>
 
-          {event.key === "wedding" ? (
-            <div className="simple-event-wedding-families">
-              <div className="simple-event-family">
-                <div className="simple-event-family-lines">
-                  <p>M. et Mme Johan et Valerie Amsellem</p>
-                  <p>M. et Mme Armand et Aline Amsellem</p>
-                  <p>Mme Paule Abecassis</p>
-                </div>
-                <p className="simple-event-person-name">
-                  <span>{settings.brideName}</span>
-                  <small lang="he" dir="rtl">קלרה</small>
-                </p>
-              </div>
-
-              <i className="simple-event-couple-ampersand" aria-hidden="true">
-                &amp;
-              </i>
-
-              <div className="simple-event-family">
-                <div className="simple-event-family-lines">
-                  <p>M. et Mme Serge et Fabienne Bourak</p>
-                  <p>Mme Jeanine Bourak</p>
-                  <p>M. Armand Zerbib</p>
-                </div>
-                <p className="simple-event-person-name">
-                  <span>{settings.groomName}</span>
-                  <small lang="he" dir="rtl">דוד</small>
-                </p>
-              </div>
-            </div>
-          ) : null}
-
-          <span className="simple-event-ornament" aria-hidden="true" />
-        </header>
-
-        <p className="simple-event-introduction">
-          {presentation.introduction}
-        </p>
-
-        <div className="simple-event-details">
-          <div>
-            <span>{ui.labels.date}</span>
-            <time dateTime={presentation.dateTime}>{presentation.date}</time>
-            {presentation.hebrewDate && (
-              <small className="simple-event-hebrew-date" lang="he" dir="rtl">
-                {presentation.hebrewDate}
-              </small>
-            )}
-          </div>
-          <div>
-            <span>{ui.labels.time}</span>
-            <strong>{presentation.time}</strong>
-          </div>
-          <div>
-            <span>{ui.labels.venue}</span>
-            <strong>{presentation.venue}</strong>
-            <address>{presentation.address}</address>
-          </div>
-        </div>
-
-        <div className="simple-event-actions">
-          <a
-            href={wazeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="simple-event-action focus-ring"
-          >
-            <PinIcon />
-            <span>{t.waze}</span>
-          </a>
-        </div>
-
-        <div className="simple-event-highlights">
-          {presentation.highlights.map((highlight) => (
-            <p key={highlight}>{highlight}</p>
+      <div className="wedding-families-new">
+        <div>
+          {WEDDING_FAMILIES.left.map((name) => (
+            <p key={name}>{name}</p>
           ))}
         </div>
-
-        <a href="#introduction" className="simple-event-menu-link focus-ring">
-          {ui.menu}
-        </a>
+        <span aria-hidden="true" />
+        <div>
+          {WEDDING_FAMILIES.right.map((name) => (
+            <p key={name}>{name}</p>
+          ))}
+        </div>
       </div>
+
+      <p className="wedding-joy">{copy.joy}</p>
+
+      <div className="wedding-couple-new" dir="ltr">
+        <div>
+          <strong>{settings.groomName}</strong>
+          <span lang="he" dir="rtl">ארמנד ברוך</span>
+        </div>
+        <i aria-hidden="true">&amp;</i>
+        <div>
+          <strong>{settings.brideName}</strong>
+          <span lang="he" dir="rtl">חנה ביבה</span>
+        </div>
+      </div>
+
+      <p className="wedding-invitation-text">{copy.invitation}</p>
+
+      <div className="wedding-date-new">
+        <time dateTime="2026-11-02">{copy.date}</time>
+        <span lang="he" dir="rtl">כ״ג חשוון תשפ״ז</span>
+        <strong>{copy.time}</strong>
+      </div>
+
+      <address className="wedding-location-new">
+        <strong>{copy.venue}</strong>
+        <span>{copy.address}</span>
+      </address>
+
+      <p className="wedding-reception-new">{copy.reception}</p>
+      <p className="wedding-memorial-new">{copy.memorial}</p>
+      <WazeLink event={event} language={language} />
+    </div>
+  );
+}
+
+function HennaInvitation({ event, language }: FramedEventInvitationProps) {
+  const copy = EVENT_COPY[language].henna;
+
+  return (
+    <div className="henna-frame">
+      <Image
+        src="/images/fondHenne.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="henna-frame__artwork"
+      />
+      <div className="henna-frame__content">
+        <h2 id="henna-title" className="henna-frame__title">
+          {copy.title}
+        </h2>
+        <BrandLogo />
+        <p className="henna-frame__intro">{copy.invitation}</p>
+        <time dateTime="2026-11-04" className="henna-frame__date">
+          {copy.date}
+        </time>
+        <strong className="henna-frame__time">{copy.time}</strong>
+        <address className="henna-frame__venue">{copy.venue}</address>
+        <WazeLink event={event} language={language} />
+      </div>
+    </div>
+  );
+}
+
+function ShabbatInvitation({ event, language }: FramedEventInvitationProps) {
+  const copy = EVENT_COPY[language].shabbat;
+
+  return (
+    <div className="interior-event__content shabbat-invitation">
+      <header className="shabbat-invitation__header">
+        <h2 id="shabbat-title" className="interior-event__title">
+          {copy.title}
+        </h2>
+        <p className="shabbat-invitation__intro">{copy.invitation}</p>
+      </header>
+
+      <div className="shabbat-invitation__main">
+        <time dateTime="2026-11-06" className="shabbat-invitation__date">
+          {language === "fr" ? (
+            <>
+              <span>Vendredi 6 novembre</span>
+              <i aria-hidden="true">&amp;</i>
+              <span>Samedi 7 novembre</span>
+            </>
+          ) : (
+            copy.date
+          )}
+        </time>
+        <address className="shabbat-invitation__venue">
+          <strong>{copy.venue}</strong>
+          <span>{copy.address}</span>
+        </address>
+      </div>
+
+      <div className="shabbat-invitation__footer">
+        <div className="shabbat-schedule">
+          <p>{copy.schedule}</p>
+          <div>
+            <span>{copy.entrance}</span>
+            <span>{copy.exit}</span>
+          </div>
+        </div>
+        <p className="shabbat-parasha-new">{copy.parasha}</p>
+        <WazeLink event={event} language={language} />
+      </div>
+    </div>
+  );
+}
+
+export function FramedEventInvitation(props: FramedEventInvitationProps) {
+  const { event } = props;
+
+  return (
+    <article
+      id={event.key}
+      className={`interior-event interior-event--${event.key}`}
+      aria-labelledby={`${event.key}-title`}
+    >
+      {event.key === "wedding" && <WeddingInvitation {...props} />}
+      {event.key === "henna" && <HennaInvitation {...props} />}
+      {event.key === "shabbat" && <ShabbatInvitation {...props} />}
     </article>
   );
 }

@@ -18,6 +18,7 @@ import {
   type EventKey,
   type GalleryImage,
   type Guest,
+  type GuestMember,
   type RsvpStatus,
   SHUTTLE_CITIES,
   type ShuttleCity,
@@ -40,6 +41,8 @@ interface BaserowFieldSchema {
   type?: string;
   selectOptions: BaserowSelectOption[];
   dateIncludeTime: boolean;
+  linkRowTableId: number | null;
+  linkRowRelatedFieldId: number | null;
 }
 
 interface BaserowSelectOption {
@@ -69,8 +72,11 @@ export type BaserowConfigurationStatus =
 
 export interface UpdateGuestRsvpInput {
   token: string;
-  responses: Partial<Record<EventKey, RsvpStatus>>;
-  secondResponses: Partial<Record<EventKey, RsvpStatus>>;
+  guestMembers: GuestMember[];
+  people: Array<{
+    id: string;
+    responses: Partial<Record<EventKey, RsvpStatus>>;
+  }>;
   guestsCount: number;
   shuttleInterest: ShuttleCity[];
   message: string;
@@ -329,6 +335,8 @@ async function getFieldSchemas(tableId: string): Promise<BaserowFieldSchema[]> {
       type?: unknown;
       select_options?: unknown;
       date_include_time?: unknown;
+      link_row_table_id?: unknown;
+      link_row_related_field_id?: unknown;
     };
 
     if (
@@ -360,6 +368,14 @@ async function getFieldSchemas(tableId: string): Promise<BaserowFieldSchema[]> {
         type: typeof candidate.type === "string" ? candidate.type : undefined,
         selectOptions,
         dateIncludeTime: candidate.date_include_time === true,
+        linkRowTableId:
+          typeof candidate.link_row_table_id === "number"
+            ? candidate.link_row_table_id
+            : null,
+        linkRowRelatedFieldId:
+          typeof candidate.link_row_related_field_id === "number"
+            ? candidate.link_row_related_field_id
+            : null,
       },
     ];
   });
@@ -394,6 +410,29 @@ async function getAllRows(tableId: string): Promise<BaserowRow[]> {
       tableId,
       page,
       { kind: "global", revalidate: GLOBAL_DATA_REVALIDATE_SECONDS },
+    );
+    rows.push(...response.results);
+
+    if (!response.next || rows.length >= response.count) {
+      return rows;
+    }
+  }
+
+  throw new BaserowDataError();
+}
+
+async function getAllPrivateRows(
+  tableId: string,
+  additionalParams: Record<string, string>,
+): Promise<BaserowRow[]> {
+  const rows: BaserowRow[] = [];
+
+  for (let page = 1; page <= MAX_PAGES; page += 1) {
+    const response = await getRowsPage(
+      tableId,
+      page,
+      { kind: "private" },
+      additionalParams,
     );
     rows.push(...response.results);
 
@@ -498,6 +537,28 @@ function normalizeShuttleInterest(value: unknown): ShuttleCity[] {
   );
 }
 
+function normalizeLinkedRowIds(value: unknown): number[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((candidate): number[] => {
+    if (typeof candidate === "number" && Number.isInteger(candidate)) {
+      return [candidate];
+    }
+
+    if (
+      typeof candidate === "object" &&
+      candidate !== null &&
+      typeof (candidate as { id?: unknown }).id === "number"
+    ) {
+      return [(candidate as { id: number }).id];
+    }
+
+    return [];
+  });
+}
+
 function mapGuestRow(row: BaserowRow): Guest {
   const fields = BASEROW_FIELDS.guests;
   const maxGuests = Math.max(
@@ -537,6 +598,20 @@ function mapGuestRow(row: BaserowRow): Guest {
     ),
     message: normalizeText(row[fields.message]),
     answeredAt: normalizeDate(row[fields.answeredAt]),
+  };
+}
+
+function mapGuestMemberRow(row: BaserowRow): GuestMember {
+  const fields = BASEROW_FIELDS.guestMembers;
+
+  return {
+    id: row.id,
+    name: normalizeText(row[fields.name]) || "Invité",
+    rsvp: {
+      wedding: normalizeRsvpStatus(row[fields.weddingRsvp]),
+      henna: normalizeRsvpStatus(row[fields.hennaRsvp]),
+      shabbat: normalizeRsvpStatus(row[fields.shabbatRsvp]),
+    },
   };
 }
 
@@ -650,6 +725,94 @@ async function getGuestRowByToken(token: string): Promise<BaserowRow | null> {
   return response.results[0];
 }
 
+interface GuestMemberTableContext {
+  tableId: string;
+  schemas: BaserowFieldSchema[];
+  linkToGuestsField: BaserowFieldSchema;
+}
+
+async function getGuestMemberTableContext(): Promise<GuestMemberTableContext> {
+  const config = getBaserowConfig();
+  const guestSchemas = await getFieldSchemas(config.tableIds.guests);
+  const guestMembersRelation = guestSchemas.find(
+    (field) =>
+      field.name === BASEROW_FIELDS.guests.guestMembers &&
+      field.type === "link_row" &&
+      field.linkRowTableId !== null,
+  );
+
+  if (!guestMembersRelation?.linkRowTableId) {
+    throw new BaserowDataError();
+  }
+
+  const tableId = String(guestMembersRelation.linkRowTableId);
+  const schemas = await getFieldSchemas(tableId);
+  const linkToGuestsField = schemas.find(
+    (field) =>
+      field.name === BASEROW_FIELDS.guestMembers.linkToGuests &&
+      field.type === "link_row" &&
+      field.linkRowTableId === Number(config.tableIds.guests) &&
+      field.id === guestMembersRelation.linkRowRelatedFieldId,
+  );
+
+  if (!linkToGuestsField) {
+    throw new BaserowDataError();
+  }
+
+  return { tableId, schemas, linkToGuestsField };
+}
+
+async function getGuestMembersForGuestRow(
+  guestRow: BaserowRow,
+): Promise<GuestMember[]> {
+  const linkedIds = normalizeLinkedRowIds(
+    guestRow[BASEROW_FIELDS.guests.guestMembers],
+  );
+
+  if (linkedIds.length === 0) {
+    return [];
+  }
+
+  const context = await getGuestMemberTableContext();
+  const rows = await getAllPrivateRows(context.tableId, {
+    [`filter__field_${context.linkToGuestsField.id}__link_row_has`]: String(
+      guestRow.id,
+    ),
+  });
+  const rowById = new Map(rows.map((row) => [row.id, row]));
+
+  if (
+    rowById.size !== linkedIds.length ||
+    linkedIds.some((rowId) => !rowById.has(rowId))
+  ) {
+    throw new BaserowDataError();
+  }
+
+  return linkedIds.map((rowId) => mapGuestMemberRow(rowById.get(rowId)!));
+}
+
+export interface GuestWithMembers {
+  guest: Guest;
+  guestMembers: GuestMember[];
+}
+
+export async function getGuestWithMembersByToken(
+  token: string,
+): Promise<GuestWithMembers | null> {
+  const row = await getGuestRowByToken(token);
+
+  if (!row) {
+    return null;
+  }
+
+  const guestMembers = await getGuestMembersForGuestRow(row);
+
+  return {
+    guest: mapGuestRow(row),
+    guestMembers,
+  };
+}
+
 export async function getGuestByToken(token: string): Promise<Guest | null> {
   const row = await getGuestRowByToken(token);
   return row ? mapGuestRow(row) : null;
@@ -699,15 +862,25 @@ export async function updateGuestRSVP(
   }
 
   const guest = mapGuestRow(row);
+  const guestMembers = input.guestMembers;
+  const linkedMemberIds = normalizeLinkedRowIds(
+    row[BASEROW_FIELDS.guests.guestMembers],
+  );
+  const loadedMemberIds = new Set(guestMembers.map((member) => member.id));
   const guestsCount = Math.floor(input.guestsCount);
 
   if (
+    loadedMemberIds.size !== guestMembers.length ||
+    linkedMemberIds.length !== loadedMemberIds.size ||
+    linkedMemberIds.some((memberId) => !loadedMemberIds.has(memberId)) ||
     !Number.isFinite(guestsCount) ||
     guestsCount < 1 ||
     guestsCount > guest.maxGuests ||
     input.shuttleInterest.length > SHUTTLE_CITIES.length ||
     input.shuttleInterest.some((city) => !SHUTTLE_CITIES.includes(city)) ||
-    input.message.length > 600
+    input.message.length > 600 ||
+    input.people.length === 0 ||
+    new Set(input.people.map((person) => person.id)).size !== input.people.length
   ) {
     throw new BaserowDataError();
   }
@@ -732,50 +905,42 @@ export async function updateGuestRSVP(
     shuttleInterestSchema,
     input.shuttleInterest,
   );
-  const rsvpFieldByEvent: Record<EventKey, string> = {
+  const primaryRsvpFieldByEvent: Record<EventKey, string> = {
     wedding: fields.weddingRsvp,
     henna: fields.hennaRsvp,
     shabbat: fields.shabbatRsvp,
   };
-  const secondRsvpFieldByEvent: Record<EventKey, string> = {
+  const secondaryRsvpFieldByEvent: Record<EventKey, string> = {
     wedding: fields.weddingRsvpSecond,
     henna: fields.hennaRsvpSecond,
     shabbat: fields.shabbatRsvpSecond,
   };
-  const optionNameByStatus: Record<RsvpStatus, string> = {
-    pending: "Pending",
+  const optionNameByStatus: Record<Exclude<RsvpStatus, "pending">, string> = {
     yes: "Yes",
     no: "No",
   };
 
-  const primaryEventKeys = Object.keys(input.responses) as EventKey[];
-  const secondEventKeys = Object.keys(input.secondResponses) as EventKey[];
-  const hasSecondGuest = Boolean(guest.lastName.trim());
-
-  if (
-    (hasSecondGuest &&
-      (primaryEventKeys.length !== secondEventKeys.length ||
-        primaryEventKeys.some(
-          (eventKey) => !secondEventKeys.includes(eventKey),
-        ))) ||
-    (!hasSecondGuest && secondEventKeys.length > 0)
-  ) {
-    throw new BaserowDataError();
-  }
-
   const addResponsesToPayload = (
+    targetPayload: Record<string, unknown>,
     responses: Partial<Record<EventKey, RsvpStatus>>,
     fieldByEvent: Record<EventKey, string>,
+    targetSchemas: BaserowFieldSchema[],
   ) => {
     for (const [eventKey, status] of Object.entries(responses) as Array<
       [EventKey, RsvpStatus | undefined]
     >) {
-      if (!status || !guest.invited[eventKey]) {
+      if (
+        (status !== "yes" && status !== "no") ||
+        !["wedding", "henna", "shabbat"].includes(eventKey) ||
+        !guest.invited[eventKey]
+      ) {
         throw new BaserowDataError();
       }
 
       const fieldName = fieldByEvent[eventKey];
-      const schema = schemas.find((candidate) => candidate.name === fieldName);
+      const schema = targetSchemas.find(
+        (candidate) => candidate.name === fieldName,
+      );
       const option = schema?.selectOptions.find(
         (candidate) => candidate.value === optionNameByStatus[status],
       );
@@ -784,15 +949,77 @@ export async function updateGuestRSVP(
         throw new BaserowDataError();
       }
 
-      payload[fieldName] =
+      targetPayload[fieldName] =
         schema.type === "multiple_select" ? [option.id] : option.id;
     }
   };
 
-  addResponsesToPayload(input.responses, rsvpFieldByEvent);
+  if (guestMembers.length > 0) {
+    const expectedIds = new Set(
+      guestMembers.map((member) => `member:${member.id}`),
+    );
 
-  if (hasSecondGuest) {
-    addResponsesToPayload(input.secondResponses, secondRsvpFieldByEvent);
+    if (
+      input.people.length !== expectedIds.size ||
+      input.people.some((person) => !expectedIds.has(person.id))
+    ) {
+      throw new BaserowDataError();
+    }
+
+    const memberContext = await getGuestMemberTableContext();
+    const memberFields = BASEROW_FIELDS.guestMembers;
+    const memberRsvpFieldByEvent: Record<EventKey, string> = {
+      wedding: memberFields.weddingRsvp,
+      henna: memberFields.hennaRsvp,
+      shabbat: memberFields.shabbatRsvp,
+    };
+
+    await Promise.all(
+      input.people.map((person) => {
+        const memberId = Number(person.id.slice("member:".length));
+        const memberPayload: Record<string, unknown> = {};
+
+        if (!Number.isInteger(memberId) || !expectedIds.has(person.id)) {
+          throw new BaserowDataError();
+        }
+
+        addResponsesToPayload(
+          memberPayload,
+          person.responses,
+          memberRsvpFieldByEvent,
+          memberContext.schemas,
+        );
+
+        return updateBaserowRow(
+          memberContext.tableId,
+          memberId,
+          memberPayload,
+        );
+      }),
+    );
+  } else {
+    const hasSecondaryGuest = Boolean(guest.lastName.trim());
+    const expectedIds = new Set(
+      hasSecondaryGuest ? ["primary", "secondary"] : ["primary"],
+    );
+
+    if (
+      input.people.length !== expectedIds.size ||
+      input.people.some((person) => !expectedIds.has(person.id))
+    ) {
+      throw new BaserowDataError();
+    }
+
+    for (const person of input.people) {
+      addResponsesToPayload(
+        payload,
+        person.responses,
+        person.id === "secondary"
+          ? secondaryRsvpFieldByEvent
+          : primaryRsvpFieldByEvent,
+        schemas,
+      );
+    }
   }
 
   const answeredAtSchema = schemas.find(

@@ -225,6 +225,7 @@ a:focus-visible {
   width: clamp(4rem, 18vw, 4.5rem);
   height: clamp(4rem, 18vw, 4.5rem);
   place-items: center;
+  overflow: hidden;
   border-radius: 50%;
   background:
     radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.12), transparent 24%),
@@ -961,6 +962,336 @@ a:focus-visible {
   }
 }
 
+/* Full-screen slide rhythm and focused Houppa corrections */
+
+html.invitation-snap-active {
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.invitation-snap-active .invitation-intro-slide,
+html.invitation-snap-active .interior-event,
+html.invitation-snap-active .rsvp-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.invitation-page .interior-event {
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.opening-seal__inner {
+  isolation: isolate;
+  border-color: rgba(255, 249, 247, 0.9);
+  box-shadow:
+    inset 0 0 0 2px rgba(104, 28, 43, 0.22),
+    0 0 0 1px rgba(255, 249, 247, 0.28);
+}
+
+.opening-seal img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 198%;
+  height: 198%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 49%;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+}
+
+.invitation-intro-names h1,
+.invitation-intro-names h1 span,
+.invitation-intro-names h1 i {
+  font-family: Didot, "Bodoni MT", "Bodoni 72", "Times New Roman", serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+}
+
+.invitation-intro-names h1 i {
+  font-size: 0.45em;
+  font-style: italic;
+}
+
+.invitation-page .interior-event--wedding {
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  padding:
+    max(clamp(1.35rem, 3.2svh, 2.2rem), env(safe-area-inset-top))
+    max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-right))
+    max(clamp(1.25rem, 3svh, 2rem), env(safe-area-inset-bottom))
+    max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-left));
+}
+
+.invitation-page .wedding-invitation {
+  position: static;
+  display: flex;
+  width: min(100%, 54rem);
+  min-height: min(80svh, 46rem);
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invitation-page .wedding-bsd {
+  position: absolute;
+  inset: auto;
+  top: max(1.05rem, env(safe-area-inset-top));
+  right: max(1.35rem, env(safe-area-inset-right));
+  left: auto;
+  width: auto;
+  margin: 0;
+  color: rgba(255, 253, 248, 0.84);
+  font-size: clamp(0.72rem, 1.7vw, 0.9rem);
+  line-height: 1;
+  text-align: right;
+}
+
+.invitation-page .interior-event--wedding .interior-event__title {
+  margin: 0;
+  font-size: clamp(3.35rem, 8vw, 5.6rem);
+  line-height: 0.82;
+}
+
+.invitation-page .wedding-verse {
+  margin-block-start: clamp(0.55rem, 1.55svh, 1rem);
+  font-size: clamp(1.02rem, 2.55vw, 1.38rem);
+  line-height: 1.35;
+}
+
+.invitation-page .wedding-families-new {
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  width: min(100%, 49rem);
+  gap: clamp(0.55rem, 2.5vw, 2.2rem);
+  margin-block-start: clamp(0.78rem, 2svh, 1.35rem);
+}
+
+.invitation-page .wedding-families-new > div:first-child {
+  text-align: left;
+}
+
+.invitation-page .wedding-families-new > div:last-child {
+  text-align: right;
+}
+
+.invitation-page .wedding-families-new > span {
+  width: 1px;
+  height: 82%;
+  margin: 0;
+}
+
+.invitation-page .wedding-families-new p {
+  margin: 0.08rem 0;
+  font-size: clamp(0.75rem, 2.2vw, 1.08rem);
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+.invitation-page .wedding-joy,
+.invitation-page .wedding-invitation-text {
+  max-width: 39rem;
+  margin-block-start: clamp(0.68rem, 1.8svh, 1.15rem);
+  font-size: clamp(0.9rem, 2.1vw, 1.16rem);
+  line-height: 1.3;
+}
+
+.invitation-page .wedding-couple-new {
+  width: min(100%, 39rem);
+  gap: clamp(0.35rem, 1.5vw, 0.8rem);
+  margin-block-start: clamp(0.58rem, 1.55svh, 1rem);
+}
+
+.invitation-page .wedding-couple-new > div {
+  gap: 0.12rem;
+}
+
+.invitation-page .wedding-couple-new strong {
+  font-size: clamp(2.65rem, 7.3vw, 4.8rem);
+  line-height: 0.82;
+}
+
+.invitation-page .wedding-couple-new i {
+  font-size: clamp(1.35rem, 3.4vw, 2.25rem);
+}
+
+.invitation-page .wedding-couple-new span {
+  font-size: clamp(0.88rem, 2.15vw, 1.2rem);
+  line-height: 1.1;
+}
+
+.invitation-page .wedding-date-new {
+  gap: clamp(0.16rem, 0.55svh, 0.38rem);
+  margin-block-start: clamp(0.6rem, 1.55svh, 1rem);
+}
+
+.invitation-page .wedding-date-new time {
+  font-size: clamp(2.1rem, 5.7vw, 4rem);
+  line-height: 0.92;
+}
+
+.invitation-page .wedding-date-new span {
+  font-size: clamp(0.86rem, 2vw, 1.12rem);
+}
+
+.invitation-page .wedding-date-new strong {
+  font-size: clamp(1.02rem, 2.3vw, 1.3rem);
+}
+
+.invitation-page .wedding-location-new {
+  gap: 0.08rem;
+  margin-block-start: clamp(0.62rem, 1.6svh, 1.05rem);
+}
+
+.invitation-page .wedding-location-new strong {
+  font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+}
+
+.invitation-page .wedding-location-new span {
+  font-size: clamp(0.7rem, 1.65vw, 0.88rem);
+  line-height: 1.25;
+}
+
+.invitation-page .wedding-reception-new {
+  margin-block-start: clamp(0.55rem, 1.45svh, 0.92rem);
+  font-size: clamp(0.84rem, 1.9vw, 1.05rem);
+  line-height: 1.25;
+}
+
+.invitation-page .wedding-memorial-new {
+  max-width: 37rem;
+  margin-block-start: clamp(0.5rem, 1.3svh, 0.85rem);
+  font-size: clamp(0.76rem, 1.75vw, 0.95rem);
+  line-height: 1.3;
+}
+
+.invitation-page .interior-event--wedding .interior-waze {
+  min-width: 7.6rem;
+  min-height: 2.75rem;
+  margin-block-start: clamp(0.62rem, 1.6svh, 1.05rem);
+  padding: 0.55rem 1.15rem;
+}
+
+@media (max-width: 37.5rem) {
+  .invitation-page .wedding-families-new {
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    gap: clamp(0.4rem, 2vw, 0.75rem);
+    margin-block-start: clamp(0.66rem, 1.75svh, 0.92rem);
+  }
+
+  .invitation-page .wedding-families-new > span {
+    width: 1px;
+    height: 82%;
+  }
+
+  .invitation-page .wedding-families-new p {
+    font-size: clamp(0.7rem, 2.75vw, 0.84rem);
+  }
+
+  .invitation-page .wedding-couple-new strong {
+    font-size: clamp(2.35rem, 11vw, 3.15rem);
+  }
+
+  .invitation-page .wedding-couple-new span {
+    font-size: clamp(0.8rem, 3.5vw, 0.96rem);
+  }
+
+  .invitation-page .wedding-date-new time {
+    font-size: clamp(1.95rem, 9.2vw, 2.7rem);
+  }
+}
+
+@media (max-height: 43rem) {
+  .invitation-page .interior-event--wedding {
+    padding-block: max(0.8rem, env(safe-area-inset-top));
+  }
+
+  .invitation-page .wedding-invitation {
+    min-height: 0;
+    justify-content: center;
+  }
+
+  .invitation-page .wedding-bsd {
+    top: max(0.72rem, env(safe-area-inset-top));
+  }
+
+  .invitation-page .interior-event--wedding .interior-event__title {
+    font-size: clamp(2.5rem, 9svh, 3.35rem);
+  }
+
+  .invitation-page .wedding-verse,
+  .invitation-page .wedding-families-new,
+  .invitation-page .wedding-joy,
+  .invitation-page .wedding-couple-new,
+  .invitation-page .wedding-invitation-text,
+  .invitation-page .wedding-date-new,
+  .invitation-page .wedding-location-new,
+  .invitation-page .wedding-reception-new,
+  .invitation-page .wedding-memorial-new,
+  .invitation-page .interior-event--wedding .interior-waze {
+    margin-block-start: clamp(0.34rem, 1.1svh, 0.65rem);
+  }
+
+  .invitation-page .wedding-verse {
+    font-size: clamp(0.82rem, 2.6svh, 1rem);
+  }
+
+  .invitation-page .wedding-families-new p {
+    font-size: clamp(0.64rem, 2.05svh, 0.76rem);
+    line-height: 1.15;
+  }
+
+  .invitation-page .wedding-joy,
+  .invitation-page .wedding-invitation-text {
+    font-size: clamp(0.72rem, 2.2svh, 0.86rem);
+    line-height: 1.15;
+  }
+
+  .invitation-page .wedding-couple-new strong {
+    font-size: clamp(2rem, 7.3svh, 2.6rem);
+  }
+
+  .invitation-page .wedding-couple-new span,
+  .invitation-page .wedding-date-new span {
+    font-size: clamp(0.7rem, 2.1svh, 0.82rem);
+  }
+
+  .invitation-page .wedding-date-new {
+    gap: 0.08rem;
+  }
+
+  .invitation-page .wedding-date-new time {
+    font-size: clamp(1.65rem, 6svh, 2.15rem);
+  }
+
+  .invitation-page .wedding-date-new strong,
+  .invitation-page .wedding-location-new strong {
+    font-size: clamp(0.95rem, 3.1svh, 1.18rem);
+  }
+
+  .invitation-page .wedding-reception-new,
+  .invitation-page .wedding-memorial-new {
+    font-size: clamp(0.64rem, 1.9svh, 0.76rem);
+    line-height: 1.15;
+  }
+
+  .invitation-page .interior-event--wedding .interior-waze {
+    min-height: 2.5rem;
+    padding-block: 0.42rem;
+  }
+}
+
 .section-shell {
   width: min(100% - (var(--page-gutter) * 2), 76rem);
   margin-inline: auto;
@@ -1336,7 +1667,7 @@ a:focus-visible {
   border: 1px solid rgba(115, 88, 55, 0.58);
   border-radius: 50%;
   background-color: #ead7bc;
-  background-image: url("/images/logo.jpg");
+  background-image: url("/images/logo2.jpg");
   background-repeat: no-repeat;
   background-position: 50% 35%;
   background-size: 190%;
@@ -4859,5 +5190,1541 @@ html.invitation-snap-active .rsvp-section {
   .rsvp-confirmation-people {
     width: 100%;
     text-align: start;
+  }
+}
+
+/* 2026 interior invitation refresh */
+
+:root {
+  --wedding-blue: #142a53;
+  --wedding-blue-deep: #08172f;
+  --wedding-blue-soft: rgba(20, 42, 83, 0.6);
+  --wedding-white: #fffdf8;
+  --wedding-ivory: #f7f4ed;
+}
+
+html.invitation-snap-active {
+  scroll-snap-type: none;
+  overscroll-behavior-y: auto;
+}
+
+.invitation-page .invitation-intro-slide,
+.invitation-page .interior-event,
+.invitation-page .rsvp-section {
+  scroll-margin-block-start: 0;
+  scroll-snap-align: none;
+}
+
+.invitation-intro-names time {
+  margin-block-start: clamp(0.65rem, 1.6svh, 1rem);
+  font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: 400;
+  letter-spacing: clamp(0.08em, 0.6vw, 0.17em);
+  line-height: 0.95;
+}
+
+.opening-seal img {
+  width: 142%;
+  height: 142%;
+  object-fit: cover;
+  object-position: 50% 46%;
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+
+.intro-logo {
+  background-image: url("/images/logo2.jpg");
+  background-position: 50% 49%;
+  background-size: 215%;
+}
+
+.invitation-page .framed-events,
+.invitation-page .framed-events__list {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.invitation-page .interior-event {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding:
+    max(clamp(3.8rem, 8vw, 7rem), env(safe-area-inset-top))
+    max(clamp(1rem, 5vw, 4rem), env(safe-area-inset-right))
+    max(clamp(3.8rem, 8vw, 7rem), env(safe-area-inset-bottom))
+    max(clamp(1rem, 5vw, 4rem), env(safe-area-inset-left));
+}
+
+.invitation-page .interior-event--wedding,
+.invitation-page .interior-event--shabbat {
+  background: var(--wedding-blue-deep);
+  color: var(--wedding-white);
+}
+
+.invitation-page .interior-event--wedding::before,
+.invitation-page .interior-event--shabbat::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(98, 131, 179, 0.3), transparent 45rem),
+    linear-gradient(145deg, var(--wedding-blue-soft), rgba(20, 42, 83, 0.76));
+  content: "";
+}
+
+.invitation-page .interior-event--wedding::after,
+.invitation-page .interior-event--shabbat::after {
+  position: absolute;
+  z-index: -1;
+  inset: clamp(0.7rem, 2vw, 1.4rem);
+  border: 1px solid rgba(255, 253, 248, 0.3);
+  content: "";
+  pointer-events: none;
+}
+
+.interior-event__content {
+  width: min(100%, 56rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.interior-brand {
+  position: relative;
+  display: block;
+  width: clamp(5.8rem, 15vw, 8.5rem);
+  height: clamp(2.5rem, 6vw, 3.75rem);
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.interior-brand img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 49%;
+}
+
+.interior-brand--light img {
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+
+.interior-event__title {
+  margin: clamp(0.9rem, 2.5vw, 1.6rem) 0 0;
+  color: inherit;
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(3.6rem, 10vw, 7rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.85;
+  text-wrap: balance;
+}
+
+[dir="rtl"] .interior-event__title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 1;
+}
+
+.wedding-invitation {
+  position: relative;
+}
+
+.wedding-bsd {
+  position: absolute;
+  inset-block-start: -2.7rem;
+  inset-inline-end: 0;
+  margin: 0;
+  color: rgba(255, 253, 248, 0.78);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.75rem, 1.8vw, 1rem);
+  letter-spacing: 0.04em;
+}
+
+.wedding-verse {
+  margin: clamp(1.1rem, 2.8vw, 1.8rem) 0 0;
+  color: rgba(255, 253, 248, 0.9);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 2.7vw, 1.5rem);
+  font-weight: 350;
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+.wedding-families-new {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.2rem, 4vw, 3.5rem);
+  margin-block-start: clamp(2rem, 5vw, 3.4rem);
+}
+
+.wedding-families-new > span {
+  width: 1px;
+  height: 72%;
+  background: rgba(255, 253, 248, 0.3);
+}
+
+.wedding-families-new p {
+  margin: 0.25rem 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.88rem, 2vw, 1.08rem);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.wedding-joy,
+.wedding-invitation-text {
+  max-width: 42rem;
+  margin: clamp(1.6rem, 4vw, 2.6rem) auto 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.55;
+  text-wrap: balance;
+}
+
+.wedding-couple-new {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.45rem, 2vw, 1.25rem);
+  width: min(100%, 43rem);
+  margin: clamp(1.3rem, 3.5vw, 2.2rem) auto 0;
+}
+
+.wedding-couple-new > div {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 0.4rem;
+}
+
+.wedding-couple-new strong,
+.wedding-couple-new i {
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(3rem, 8.5vw, 5.8rem);
+  font-weight: 400;
+  line-height: 0.85;
+}
+
+.wedding-couple-new i {
+  color: rgba(255, 253, 248, 0.72);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+}
+
+.wedding-couple-new span {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 2.5vw, 1.35rem);
+  line-height: 1.25;
+}
+
+.wedding-date-new {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  margin-block-start: clamp(1.4rem, 3.7vw, 2.4rem);
+}
+
+.wedding-date-new time {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(2.3rem, 7vw, 4.8rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.wedding-date-new span {
+  color: rgba(255, 253, 248, 0.82);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+}
+
+.wedding-date-new strong {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 2.8vw, 1.5rem);
+  font-weight: 500;
+}
+
+.wedding-location-new {
+  display: grid;
+  gap: 0.3rem;
+  margin-block-start: clamp(1.5rem, 4vw, 2.6rem);
+  font-style: normal;
+}
+
+.wedding-location-new strong {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 400;
+}
+
+.wedding-location-new span {
+  color: rgba(255, 253, 248, 0.8);
+  font-size: clamp(0.78rem, 1.8vw, 0.95rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wedding-reception-new {
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 2.4vw, 1.25rem);
+}
+
+.wedding-memorial-new {
+  max-width: 40rem;
+  margin: clamp(1.3rem, 3.5vw, 2.2rem) auto 0;
+  color: rgba(255, 253, 248, 0.83);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 2vw, 1.08rem);
+  font-style: italic;
+  line-height: 1.55;
+  text-wrap: balance;
+}
+
+.interior-waze {
+  display: inline-flex;
+  min-width: 8.5rem;
+  min-height: 2.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-block-start: clamp(1.5rem, 4vw, 2.5rem);
+  padding: 0.65rem 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.interior-waze:hover {
+  background: var(--wedding-white);
+  color: var(--wedding-blue);
+  transform: translateY(-1px);
+}
+
+.interior-waze svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.invitation-page .interior-event.interior-event--henna {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 0;
+  background: #fff;
+  color: var(--wedding-blue);
+}
+
+.henna-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+.henna-frame__artwork {
+  object-fit: fill;
+  object-position: center;
+}
+
+.henna-frame__content {
+  position: absolute;
+  z-index: 1;
+  inset:
+    clamp(6.1rem, 17svh, 10.5rem)
+    clamp(3.25rem, 17vw, 10.5rem)
+    clamp(3.85rem, 10svh, 7rem);
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2.2svh, 1.4rem);
+  transform: translateY(-1.5svh);
+  text-align: center;
+}
+
+.henna-frame .interior-brand {
+  width: clamp(6.85rem, 23.4vw, 11rem);
+  height: clamp(3.05rem, 9.1vw, 4.9rem);
+  flex: 0 0 auto;
+}
+
+.henna-frame__title {
+  margin: 0;
+  color: var(--wedding-blue);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(4.35rem, 14.3vmin, 8.8rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+}
+
+[dir="rtl"] .henna-frame__title {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.henna-frame__intro {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.3rem, 3.9vmin, 1.75rem);
+  line-height: 1.28;
+  text-wrap: balance;
+}
+
+.henna-frame__date {
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.82rem, 5.72vmin, 3.2rem);
+  font-weight: 500;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.henna-frame__time {
+  margin: 0;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(2.28rem, 7vmin, 3.7rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.henna-frame__venue {
+  width: 100%;
+  max-width: 25rem;
+  margin: 0;
+  font-size: clamp(1.14rem, 3.32vmin, 1.5rem);
+  font-style: normal;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.henna-frame .interior-waze {
+  min-width: 8rem;
+  min-height: 2.9rem;
+  margin: 0;
+  padding-block: 0.55rem;
+  font-size: clamp(0.82rem, 2.4vmin, 0.95rem);
+}
+
+@media (max-height: 36rem) {
+  .henna-frame__content {
+    inset:
+      clamp(5.8rem, 16svh, 6.2rem)
+      14vw
+      clamp(3.75rem, 10svh, 4.25rem);
+    gap: 0.4rem;
+    transform: translateY(-0.25rem);
+  }
+
+  .henna-frame .interior-brand {
+    width: 6rem;
+    height: 2.65rem;
+  }
+
+  .henna-frame__title {
+    font-size: 3.8rem;
+  }
+
+  .henna-frame__intro {
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+
+  .henna-frame__date {
+    font-size: 1.55rem;
+  }
+
+  .henna-frame__time {
+    font-size: 2rem;
+  }
+
+  .henna-frame__venue {
+    font-size: 1rem;
+  }
+}
+
+.invitation-page .interior-event.interior-event--shabbat {
+  padding:
+    max(clamp(1.75rem, 4.5svh, 3.5rem), env(safe-area-inset-top))
+    max(clamp(1.1rem, 5vw, 4rem), env(safe-area-inset-right))
+    max(clamp(1.75rem, 4.5svh, 3.5rem), env(safe-area-inset-bottom))
+    max(clamp(1.1rem, 5vw, 4rem), env(safe-area-inset-left));
+}
+
+.shabbat-invitation {
+  display: flex;
+  width: min(100%, 52rem);
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.65rem, 1.75svh, 1.3rem);
+}
+
+.shabbat-invitation .interior-event__title {
+  margin: 0;
+  font-size: clamp(3.45rem, 10vmin, 6.5rem);
+  line-height: 0.9;
+}
+
+.shabbat-invitation .interior-event__title::after {
+  display: block;
+  width: clamp(3rem, 10vw, 5rem);
+  height: 1px;
+  margin: clamp(0.55rem, 1.5svh, 0.9rem) auto 0;
+  background: rgba(255, 253, 248, 0.48);
+  content: "";
+}
+
+.shabbat-invitation__intro {
+  max-width: 37rem;
+  margin: 0;
+  color: rgba(255, 253, 248, 0.9);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 2.4vmin, 1.3rem);
+  line-height: 1.48;
+  text-wrap: balance;
+}
+
+.shabbat-invitation__date {
+  display: grid;
+  width: min(100%, 40rem);
+  justify-items: center;
+  gap: clamp(0.15rem, 0.6svh, 0.4rem);
+  margin: 0;
+  padding-block: clamp(0.55rem, 1.45svh, 0.95rem);
+  border-block: 1px solid rgba(255, 253, 248, 0.28);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.75rem, 5.2vmin, 3.65rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.shabbat-invitation__date i {
+  color: rgba(255, 253, 248, 0.62);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: 0.7em;
+  font-weight: 400;
+  line-height: 0.7;
+}
+
+.shabbat-invitation__venue {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.2rem, 0.65svh, 0.4rem);
+  margin: 0;
+  font-style: normal;
+}
+
+.shabbat-invitation__venue strong {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1.35rem, 3.7vmin, 2.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.shabbat-invitation__venue span {
+  color: rgba(255, 253, 248, 0.72);
+  font-size: clamp(0.75rem, 1.75vmin, 0.95rem);
+  letter-spacing: 0.11em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.shabbat-schedule {
+  width: min(100%, 30rem);
+  margin: 0;
+  padding: clamp(0.7rem, 1.7svh, 1.1rem) clamp(0.8rem, 3vw, 1.5rem);
+  border: 1px solid rgba(255, 253, 248, 0.25);
+  background: rgba(255, 253, 248, 0.055);
+}
+
+.shabbat-schedule p {
+  margin: 0;
+  color: rgba(255, 253, 248, 0.76);
+  font-size: clamp(0.64rem, 1.45vmin, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.shabbat-schedule > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: clamp(0.55rem, 1.25svh, 0.8rem);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 2.7vmin, 1.4rem);
+  line-height: 1.2;
+}
+
+.shabbat-schedule > div span {
+  padding-inline: 0.45rem;
+}
+
+.shabbat-schedule > div span + span {
+  border-inline-start: 1px solid rgba(255, 253, 248, 0.25);
+}
+
+.shabbat-parasha-new {
+  margin: 0;
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(2.15rem, 5.5vmin, 3.6rem);
+  line-height: 0.95;
+}
+
+[dir="rtl"] .shabbat-parasha-new {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.shabbat-invitation .interior-waze {
+  min-width: 8rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding-block: 0.55rem;
+}
+
+@media (max-height: 36rem) {
+  .shabbat-invitation {
+    gap: 0.42rem;
+  }
+
+  .shabbat-invitation .interior-event__title {
+    font-size: 3.1rem;
+  }
+
+  .shabbat-invitation .interior-event__title::after {
+    margin-block-start: 0.4rem;
+  }
+
+  .shabbat-invitation__intro {
+    font-size: 0.82rem;
+    line-height: 1.32;
+  }
+
+  .shabbat-invitation__date {
+    gap: 0.05rem;
+    padding-block: 0.38rem;
+    font-size: 1.4rem;
+  }
+
+  .shabbat-invitation__venue strong {
+    font-size: 1.15rem;
+  }
+
+  .shabbat-schedule {
+    padding-block: 0.55rem;
+  }
+
+  .shabbat-parasha-new {
+    font-size: 1.85rem;
+  }
+
+  .shabbat-invitation .interior-waze {
+    min-height: 2.55rem;
+  }
+}
+
+.invitation-page .rsvp-section,
+.invitation-page .rsvp-section:not(.rsvp-section--confirmed),
+.invitation-page .rsvp-section--confirmed {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding:
+    max(clamp(5rem, 11vw, 8rem), env(safe-area-inset-top))
+    max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-right))
+    max(clamp(4rem, 10vw, 7rem), env(safe-area-inset-bottom))
+    max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 0%, rgba(109, 139, 181, 0.17), transparent 36rem),
+    var(--wedding-ivory);
+  color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-shell {
+  width: min(100%, 52rem);
+  max-width: 52rem;
+  margin-inline: auto;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.invitation-page .rsvp-heading .eyebrow {
+  color: rgba(20, 42, 83, 0.68);
+}
+
+.invitation-page .rsvp-heading .section-title {
+  color: var(--wedding-blue);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-size: clamp(3.5rem, 9vw, 6rem);
+  font-weight: 400;
+  line-height: 0.95;
+}
+
+.invitation-page .rsvp-intro {
+  max-width: 35rem;
+  margin-block-start: 1.2rem;
+  color: rgba(20, 42, 83, 0.72);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  line-height: 1.65;
+}
+
+.invitation-page .rsvp-form {
+  margin-block-start: clamp(3rem, 7vw, 4.5rem);
+  padding-block-start: 0;
+  border: 0;
+}
+
+.invitation-page .rsvp-event legend,
+.invitation-page .guest-count-fieldset legend,
+.invitation-page .shuttle-fieldset legend,
+.invitation-page .form-field label {
+  color: var(--wedding-blue);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+}
+
+.invitation-page .rsvp-event legend {
+  margin-block-end: 1.25rem;
+  font-size: clamp(1.8rem, 5vw, 2.7rem);
+}
+
+.invitation-page .rsvp-person-row {
+  padding: clamp(0.8rem, 2.5vw, 1.1rem) 0;
+  border: 0;
+  border-block-end: 1px solid rgba(20, 42, 83, 0.16);
+  background: transparent;
+}
+
+.invitation-page .rsvp-person-name {
+  color: var(--wedding-blue);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+}
+
+.invitation-page .rsvp-person-choice label {
+  min-height: 3.2rem;
+  border-color: rgba(20, 42, 83, 0.28);
+  background: rgba(255, 255, 255, 0.38);
+  color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-person-choice label:hover {
+  border-color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-person-choice label.is-selected {
+  border-color: var(--wedding-blue);
+  background: var(--wedding-blue);
+  color: var(--wedding-white);
+}
+
+.invitation-page .rsvp-person-choice input:focus-visible + label,
+.invitation-page .rsvp-choice input:focus-visible + label {
+  outline-color: var(--wedding-blue);
+}
+
+.rsvp-message-help {
+  margin: -0.85rem 0 1rem;
+  color: rgba(20, 42, 83, 0.57);
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.invitation-page .form-field textarea {
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid rgba(20, 42, 83, 0.24);
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--wedding-blue);
+}
+
+.invitation-page .form-field textarea:focus {
+  border-color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-form .primary-button {
+  width: min(100%, 24rem);
+  min-height: 3.25rem;
+  margin-block-start: 2.5rem;
+  border-color: var(--wedding-blue);
+  border-radius: 999px;
+  background: var(--wedding-blue);
+  color: var(--wedding-white);
+}
+
+.invitation-page .rsvp-form .primary-button:hover:not(:disabled) {
+  background: var(--wedding-blue-deep);
+}
+
+.invitation-page .rsvp-confirmation-page {
+  min-height: auto;
+  overflow: visible;
+  padding: 0;
+  color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-confirmation-card {
+  width: min(100%, 46rem);
+  padding: 0;
+  border: 1px solid rgba(20, 42, 83, 0.22);
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 1.5rem 4rem rgba(8, 23, 47, 0.08);
+  backdrop-filter: none;
+}
+
+.invitation-page .rsvp-confirmation-card__inner {
+  padding: clamp(2.5rem, 8vw, 5rem) clamp(1rem, 7vw, 4rem);
+  border-color: rgba(20, 42, 83, 0.14);
+}
+
+.rsvp-confirmation-logo {
+  width: clamp(5.8rem, 18vw, 7.5rem);
+  height: clamp(2.8rem, 8vw, 3.8rem);
+  object-fit: cover;
+  object-position: 50% 49%;
+}
+
+.invitation-page .rsvp-confirmation-check {
+  margin-block-start: 1.5rem;
+}
+
+.invitation-page .rsvp-confirmation-check svg {
+  stroke: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-confirmation-eyebrow,
+.invitation-page .rsvp-confirmation-text,
+.invitation-page .rsvp-confirmation-summary > p,
+.invitation-page .rsvp-confirmation-note {
+  color: rgba(20, 42, 83, 0.66);
+}
+
+.invitation-page .rsvp-confirmation-title {
+  color: var(--wedding-blue);
+  font-family: var(--font-opening-script), "Allura", cursive;
+  font-style: normal;
+}
+
+.invitation-page .rsvp-confirmation-summary dl {
+  border-color: rgba(20, 42, 83, 0.22);
+}
+
+.invitation-page .rsvp-confirmation-summary dl div {
+  border-color: rgba(20, 42, 83, 0.16);
+}
+
+.invitation-page .rsvp-confirmation-people b,
+.invitation-page .rsvp-confirmation-summary dt {
+  color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-confirmation-people em,
+.invitation-page .rsvp-confirmation-summary dd {
+  color: rgba(20, 42, 83, 0.72);
+}
+
+.invitation-page .rsvp-confirmation-people em[data-status="no"] {
+  color: rgba(20, 42, 83, 0.5);
+}
+
+.invitation-page .rsvp-confirmation-edit {
+  border-color: var(--wedding-blue);
+  border-radius: 999px;
+  color: var(--wedding-blue);
+}
+
+.invitation-page .rsvp-confirmation-edit:hover {
+  background: var(--wedding-blue);
+  color: var(--wedding-white);
+}
+
+.rsvp-finale {
+  display: grid;
+  justify-items: center;
+  gap: clamp(2.5rem, 8vw, 4.5rem);
+  width: 100%;
+  margin-block-start: clamp(5rem, 13vw, 9rem);
+}
+
+.rsvp-finale > span {
+  width: min(9rem, 42vw);
+  height: 1px;
+  background: rgba(20, 42, 83, 0.2);
+}
+
+.rsvp-finale img {
+  width: clamp(3.5rem, 12vw, 4.5rem);
+  height: clamp(2rem, 6vw, 2.6rem);
+  object-fit: cover;
+  object-position: 50% 49%;
+}
+
+@media (max-width: 37.5rem) {
+  .invitation-page .interior-event {
+    padding-inline: max(clamp(1rem, 5vw, 1.5rem), env(safe-area-inset-left));
+  }
+
+  .wedding-families-new {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    margin-block-start: 1.8rem;
+  }
+
+  .wedding-families-new > span {
+    width: 3rem;
+    height: 1px;
+    margin-inline: auto;
+  }
+
+  .wedding-families-new p {
+    font-size: clamp(0.88rem, 4vw, 1rem);
+  }
+
+  .wedding-couple-new strong {
+    font-size: clamp(2.55rem, 13vw, 3.5rem);
+  }
+
+  .wedding-couple-new span {
+    font-size: clamp(0.85rem, 4vw, 1rem);
+  }
+
+  .wedding-date-new time {
+    font-size: clamp(2.25rem, 11vw, 3.25rem);
+  }
+
+  .shabbat-schedule > div {
+    flex-wrap: wrap;
+  }
+
+  .invitation-page .rsvp-section,
+  .invitation-page .rsvp-section:not(.rsvp-section--confirmed),
+  .invitation-page .rsvp-section--confirmed {
+    padding-inline: max(1rem, env(safe-area-inset-left));
+  }
+
+  .invitation-page .rsvp-person-row {
+    gap: 0.7rem;
+  }
+
+  .invitation-page .rsvp-person-choice label {
+    min-height: 3.15rem;
+    padding-inline: 0.35rem;
+    font-size: clamp(0.6rem, 2.8vw, 0.7rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-waze,
+  .invitation-page .rsvp-person-choice label {
+    transition: none;
+  }
+}
+
+/* One viewport, one scroll track, one full section per slide */
+
+html.invitation-snap-active {
+  height: 100%;
+  overflow: hidden;
+  scroll-snap-type: none;
+}
+
+html.invitation-snap-active body {
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.invitation-page {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  scroll-padding-block: 0;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.invitation-page::-webkit-scrollbar {
+  display: none;
+}
+
+.invitation-page .invitation-intro-slide,
+.invitation-page .interior-event {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  max-height: 100vh;
+  max-height: 100svh;
+  overflow: clip;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.invitation-page .rsvp-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.invitation-page .events-section,
+.invitation-page .framed-events__list {
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .invitation-page {
+    scroll-behavior: auto;
+  }
+}
+
+.invitation-page .wedding-bsd {
+  right: max(clamp(1.65rem, 5vw, 2.5rem), env(safe-area-inset-right));
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+}
+
+/* RSVP palette sampled from the henna stationery */
+
+.invitation-page .rsvp-section {
+  --rsvp-paper: #fefefe;
+  --rsvp-ink: #0b2d63;
+  --rsvp-ink-deep: #061e4a;
+  --rsvp-ink-rgb: 11 45 99;
+  --rsvp-paper-rgb: 254 254 254;
+}
+
+.invitation-page .rsvp-section,
+.invitation-page .rsvp-section:not(.rsvp-section--confirmed),
+.invitation-page .rsvp-section.rsvp-section--confirmed {
+  background: var(--rsvp-paper);
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-heading .eyebrow,
+.invitation-page .rsvp-intro,
+.invitation-page .shuttle-fieldset > p,
+.invitation-page .rsvp-message-help,
+.invitation-page .character-count,
+.invitation-page .preview-note {
+  color: rgb(var(--rsvp-ink-rgb) / 0.68);
+}
+
+.invitation-page .rsvp-heading .section-title,
+.invitation-page .rsvp-event legend,
+.invitation-page .guest-count-fieldset legend,
+.invitation-page .shuttle-fieldset legend,
+.invitation-page .form-field label,
+.invitation-page .rsvp-person-name,
+.invitation-page .guest-count-stepper output {
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-person-row,
+.invitation-page .guest-count-fieldset,
+.invitation-page .shuttle-fieldset {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.17);
+}
+
+.invitation-page .rsvp-person-choice label,
+.invitation-page .rsvp-choice label {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.27);
+  background: rgb(var(--rsvp-ink-rgb) / 0.025);
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-person-choice label:hover,
+.invitation-page .rsvp-choice label:hover {
+  border-color: var(--rsvp-ink);
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-person-choice label.is-selected {
+  border-color: var(--rsvp-ink);
+  background: var(--rsvp-ink);
+  color: var(--rsvp-paper);
+}
+
+.invitation-page .rsvp-choice label.is-selected {
+  border-color: var(--rsvp-ink);
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .choice-mark {
+  border-color: var(--rsvp-ink);
+}
+
+.invitation-page .shuttle-options .is-selected .choice-mark {
+  background: var(--rsvp-ink);
+}
+
+.invitation-page .shuttle-options .is-selected .choice-mark::after {
+  border-color: var(--rsvp-paper);
+}
+
+.invitation-page .rsvp-person-choice input:focus-visible + label,
+.invitation-page .rsvp-choice input:focus-visible + label {
+  outline-color: var(--rsvp-ink);
+}
+
+.invitation-page .guest-count-stepper {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.22);
+  background: rgb(var(--rsvp-ink-rgb) / 0.045);
+}
+
+.invitation-page .guest-count-stepper button {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.65);
+  background: var(--rsvp-paper);
+  color: var(--rsvp-ink);
+  box-shadow: 0 0.16rem 0.45rem rgb(var(--rsvp-ink-rgb) / 0.08);
+}
+
+.invitation-page .guest-count-stepper button:hover:not(:disabled) {
+  border-color: var(--rsvp-ink);
+  background: var(--rsvp-ink);
+  color: var(--rsvp-paper);
+}
+
+.invitation-page .form-field textarea {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.25);
+  background: rgb(var(--rsvp-ink-rgb) / 0.025);
+  color: var(--rsvp-ink);
+  caret-color: var(--rsvp-ink);
+}
+
+.invitation-page .form-field textarea::placeholder {
+  color: rgb(var(--rsvp-ink-rgb) / 0.42);
+}
+
+.invitation-page .form-field textarea:focus {
+  border-color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-form .primary-button {
+  border-color: var(--rsvp-ink);
+  background: var(--rsvp-ink);
+  color: var(--rsvp-paper);
+}
+
+.invitation-page .rsvp-form .primary-button svg {
+  color: var(--rsvp-paper);
+}
+
+.invitation-page .rsvp-form .primary-button:hover:not(:disabled) {
+  background: var(--rsvp-ink-deep);
+}
+
+.invitation-page .rsvp-confirmation-page {
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-confirmation-card {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.24);
+  background: var(--rsvp-paper);
+  box-shadow: 0 1.5rem 4rem rgb(var(--rsvp-ink-rgb) / 0.08);
+}
+
+.invitation-page .rsvp-confirmation-card__inner {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.15);
+}
+
+.invitation-page .rsvp-confirmation-title,
+.invitation-page .rsvp-confirmation-people b,
+.invitation-page .rsvp-confirmation-summary dt {
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-confirmation-check svg {
+  stroke: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-confirmation-eyebrow,
+.invitation-page .rsvp-confirmation-text,
+.invitation-page .rsvp-confirmation-summary > p,
+.invitation-page .rsvp-confirmation-note,
+.invitation-page .rsvp-confirmation-people em,
+.invitation-page .rsvp-confirmation-summary dd {
+  color: rgb(var(--rsvp-ink-rgb) / 0.68);
+}
+
+.invitation-page .rsvp-confirmation-summary dl {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.22);
+}
+
+.invitation-page .rsvp-confirmation-summary dl div {
+  border-color: rgb(var(--rsvp-ink-rgb) / 0.16);
+}
+
+.invitation-page .rsvp-confirmation-people em[data-status="no"] {
+  color: rgb(var(--rsvp-ink-rgb) / 0.5);
+}
+
+.invitation-page .rsvp-confirmation-edit {
+  border-color: var(--rsvp-ink);
+  background: transparent;
+  color: var(--rsvp-ink);
+}
+
+.invitation-page .rsvp-confirmation-edit:hover {
+  background: var(--rsvp-ink);
+  color: var(--rsvp-paper);
+}
+
+.invitation-page .rsvp-finale > span {
+  background: rgb(var(--rsvp-ink-rgb) / 0.2);
+}
+
+/* Clearly separated RSVP events and individual guest cards */
+
+.invitation-page .rsvp-events {
+  gap: clamp(2rem, 5vw, 3.25rem);
+}
+
+.invitation-page .rsvp-event {
+  width: 100%;
+  padding: 0 clamp(0.75rem, 2.8vw, 1.35rem)
+    clamp(1rem, 3vw, 1.45rem);
+  border: 1px solid rgb(var(--rsvp-ink-rgb) / 0.24);
+  background: rgb(var(--rsvp-ink-rgb) / 0.028);
+  box-shadow: 0 0.75rem 2rem rgb(var(--rsvp-ink-rgb) / 0.045);
+}
+
+.invitation-page .rsvp-event legend {
+  width: auto;
+  max-width: calc(100% - 1.5rem);
+  margin: 0 auto clamp(1rem, 2.8vw, 1.35rem);
+  padding: 0.65rem clamp(1.1rem, 4vw, 2rem);
+  border: 1px solid rgb(var(--rsvp-ink-rgb) / 0.3);
+  background: var(--rsvp-paper);
+  box-shadow: 0 0.35rem 1rem rgb(var(--rsvp-ink-rgb) / 0.05);
+  font-size: clamp(1.45rem, 4.5vw, 2.25rem);
+  line-height: 1.15;
+  text-align: center;
+}
+
+.invitation-page .rsvp-people {
+  gap: clamp(0.75rem, 2.4vw, 1rem);
+}
+
+.invitation-page .rsvp-person-row {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.7rem, 2vw, 0.95rem);
+  padding: clamp(0.9rem, 3vw, 1.25rem);
+  border: 1px solid rgb(var(--rsvp-ink-rgb) / 0.2);
+  background: var(--rsvp-paper);
+  box-shadow: 0 0.35rem 1.2rem rgb(var(--rsvp-ink-rgb) / 0.035);
+}
+
+.invitation-page .rsvp-person-name {
+  width: 100%;
+  font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+  line-height: 1.25;
+  text-align: start;
+}
+
+.invitation-page .rsvp-person-options {
+  width: 100%;
+  gap: clamp(0.45rem, 1.8vw, 0.7rem);
+}
+
+.invitation-page .rsvp-person-choice label {
+  min-height: clamp(2.75rem, 8vw, 3.15rem);
+  padding: 0.65rem 0.55rem;
+}
+
+@media (max-width: 24rem) {
+  .invitation-page .rsvp-event {
+    padding-inline: 0.65rem;
+  }
+
+  .invitation-page .rsvp-event legend {
+    max-width: calc(100% - 0.75rem);
+    padding-inline: 0.8rem;
+  }
+
+  .invitation-page .rsvp-person-row {
+    padding: 0.8rem;
+  }
+}
+
+/* Opening card palette aligned with the henna stationery and RSVP */
+
+.opening-page {
+  --opening-paper: #fefefe;
+  --opening-ink: #0b2d63;
+  --opening-ink-rgb: 11 45 99;
+
+  background: var(--opening-paper);
+  color: var(--opening-ink);
+}
+
+.opening-page__texture {
+  background:
+    radial-gradient(circle at 50% 10%, rgb(var(--opening-ink-rgb) / 0.045), transparent 42%),
+    repeating-linear-gradient(90deg, rgb(var(--opening-ink-rgb) / 0.012) 0 1px, transparent 1px 5px);
+}
+
+.opening-card {
+  border-color: rgb(var(--opening-ink-rgb) / 0.24);
+  background: var(--opening-paper);
+  box-shadow:
+    0 1.6rem 3.8rem rgb(var(--opening-ink-rgb) / 0.1),
+    0 0.25rem 0.9rem rgb(var(--opening-ink-rgb) / 0.07);
+}
+
+.opening-card__inner {
+  border-color: rgb(var(--opening-ink-rgb) / 0.18);
+}
+
+.opening-title,
+.opening-names,
+.opening-trigger {
+  color: var(--opening-ink);
+}
+
+.opening-divider {
+  background: rgb(var(--opening-ink-rgb) / 0.42);
+}
+
+.opening-seal {
+  border: 1px solid rgb(var(--opening-ink-rgb) / 0.28);
+  background: var(--opening-paper);
+  box-shadow:
+    0 0.7rem 1.3rem rgb(var(--opening-ink-rgb) / 0.16),
+    inset 0 0 0 1px rgb(var(--opening-ink-rgb) / 0.08);
+}
+
+.opening-seal__inner {
+  border-color: rgb(var(--opening-ink-rgb) / 0.42);
+  background: var(--opening-ink);
+  box-shadow: inset 0 0 0 1px var(--opening-paper);
+}
+
+.opening-seal img {
+  filter: none;
+  mix-blend-mode: screen;
+}
+
+.opening-trigger:hover .opening-seal {
+  box-shadow:
+    0 0.9rem 1.6rem rgb(var(--opening-ink-rgb) / 0.2),
+    inset 0 0 0 1px rgb(var(--opening-ink-rgb) / 0.12);
+}
+
+html:has(.opening-page),
+html:has(.opening-page) body {
+  background: #fefefe;
+}
+
+/* Full-height, airy Shabbat Hatan composition */
+
+.invitation-page .interior-event.interior-event--shabbat {
+  padding:
+    max(clamp(1.5rem, 4.5svh, 3.25rem), env(safe-area-inset-top))
+    max(clamp(1.1rem, 5vw, 4rem), env(safe-area-inset-right))
+    max(clamp(1.5rem, 4.5svh, 3.25rem), env(safe-area-inset-bottom))
+    max(clamp(1.1rem, 5vw, 4rem), env(safe-area-inset-left));
+}
+
+.shabbat-invitation {
+  width: min(100%, 56rem);
+  height: 100%;
+  max-height: none;
+  justify-content: space-between;
+  gap: clamp(1.25rem, 3svh, 2.5rem);
+  padding: clamp(2.2rem, 5.5svh, 4.5rem) 0
+    clamp(0.6rem, 1.6svh, 1.25rem);
+}
+
+.shabbat-invitation__header,
+.shabbat-invitation__main,
+.shabbat-invitation__footer {
+  display: grid;
+  width: 100%;
+  flex: 0 0 auto;
+  justify-items: center;
+}
+
+.shabbat-invitation__header {
+  gap: clamp(1.15rem, 2.8svh, 2rem);
+}
+
+.shabbat-invitation__main {
+  gap: clamp(1.55rem, 3.5svh, 2.8rem);
+}
+
+.shabbat-invitation__footer {
+  gap: clamp(1.05rem, 2.5svh, 1.9rem);
+}
+
+.shabbat-invitation .interior-event__title {
+  font-size: clamp(4.35rem, 12vmin, 7.6rem);
+  line-height: 0.82;
+}
+
+.shabbat-invitation .interior-event__title::after {
+  width: clamp(3.6rem, 12vw, 6rem);
+  margin-block-start: clamp(0.8rem, 1.9svh, 1.25rem);
+  background: rgba(255, 253, 248, 0.52);
+}
+
+.shabbat-invitation__intro {
+  max-width: 39rem;
+  font-size: clamp(1.08rem, 2.8vmin, 1.5rem);
+  line-height: 1.55;
+}
+
+.shabbat-invitation__date {
+  width: min(100%, 56rem);
+  gap: clamp(0.22rem, 0.75svh, 0.55rem);
+  padding: 0;
+  border: 0;
+  font-size: clamp(2rem, 6.2vmin, 4.35rem);
+  line-height: 1.04;
+}
+
+.shabbat-invitation__date i {
+  color: rgba(255, 253, 248, 0.68);
+  font-size: 0.62em;
+  line-height: 0.75;
+}
+
+.shabbat-invitation__venue {
+  gap: clamp(0.35rem, 0.85svh, 0.6rem);
+}
+
+.shabbat-invitation__venue strong {
+  font-size: clamp(1.55rem, 4.2vmin, 2.65rem);
+}
+
+.shabbat-invitation__venue span {
+  font-size: clamp(0.78rem, 1.8vmin, 1rem);
+  letter-spacing: 0.14em;
+}
+
+.shabbat-schedule {
+  width: min(100%, 34rem);
+  padding: clamp(0.9rem, 2.1svh, 1.35rem) 0;
+  border: 0;
+  border-block: 1px solid rgba(255, 253, 248, 0.3);
+  background: transparent;
+}
+
+.shabbat-schedule p {
+  font-size: clamp(0.68rem, 1.55vmin, 0.82rem);
+  letter-spacing: 0.24em;
+}
+
+.shabbat-schedule > div {
+  margin-block-start: clamp(0.7rem, 1.6svh, 1rem);
+  font-size: clamp(1.1rem, 3vmin, 1.55rem);
+}
+
+.shabbat-parasha-new {
+  font-size: clamp(2.7rem, 6.8vmin, 4.4rem);
+}
+
+.shabbat-invitation .interior-waze {
+  min-width: 9rem;
+  min-height: 2.9rem;
+  padding-inline: 1.6rem;
+}
+
+@media (min-width: 48rem) {
+  .shabbat-invitation__date {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    font-size: clamp(2rem, 4.2vw, 4rem);
+  }
+}
+
+@media (max-height: 36rem) {
+  .invitation-page .interior-event.interior-event--shabbat {
+    padding-block: max(0.8rem, env(safe-area-inset-top));
+  }
+
+  .shabbat-invitation {
+    gap: 0.55rem;
+    padding-block: 0.4rem;
+  }
+
+  .shabbat-invitation__header,
+  .shabbat-invitation__main,
+  .shabbat-invitation__footer {
+    gap: 0.45rem;
+  }
+
+  .shabbat-invitation .interior-event__title {
+    font-size: 3.1rem;
+  }
+
+  .shabbat-invitation .interior-event__title::after {
+    margin-block-start: 0.35rem;
+  }
+
+  .shabbat-invitation__intro {
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .shabbat-invitation__date {
+    font-size: 1.35rem;
+  }
+
+  .shabbat-invitation__venue strong {
+    font-size: 1.1rem;
+  }
+
+  .shabbat-schedule {
+    padding-block: 0.45rem;
+  }
+
+  .shabbat-schedule > div {
+    margin-block-start: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .shabbat-parasha-new {
+    font-size: 1.8rem;
+  }
+
+  .shabbat-invitation .interior-waze {
+    min-height: 2.4rem;
   }
 }

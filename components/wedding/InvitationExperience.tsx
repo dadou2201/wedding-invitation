@@ -5,6 +5,7 @@ import { EventSections } from "@/components/wedding/EventSections";
 import { InvitationIntro } from "@/components/wedding/InvitationIntro";
 import { OpeningCard } from "@/components/wedding/OpeningCard";
 import { RSVPForm } from "@/components/wedding/RSVPForm";
+import { getInvitationAudience } from "@/lib/guest-display-name";
 import { getInvitedEvents } from "@/lib/invitation-utils";
 import { getTranslations } from "@/lib/translations";
 import type { InvitationData, Language } from "@/lib/types";
@@ -28,6 +29,10 @@ export function InvitationExperience({
   const invitedEvents = useMemo(
     () => getInvitedEvents(invitation.events, guest),
     [guest, invitation.events],
+  );
+  const { invitationDisplayName, rsvpPeople } = useMemo(
+    () => getInvitationAudience(guest, invitation.guestMembers),
+    [guest, invitation.guestMembers],
   );
   useEffect(() => {
     const root = document.documentElement;
@@ -79,7 +84,7 @@ export function InvitationExperience({
   if (!isInvitationOpen) {
     return (
       <OpeningCard
-        guest={guest}
+        displayName={invitationDisplayName}
         language={language}
         onDiscover={() => {
           window.scrollTo(0, 0);
@@ -138,6 +143,7 @@ export function InvitationExperience({
           events={invitedEvents}
           guest={guest}
           language={language}
+          rsvpPeople={rsvpPeople}
           settings={settings}
           token={token}
         />

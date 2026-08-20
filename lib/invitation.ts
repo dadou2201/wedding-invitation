@@ -6,7 +6,7 @@ import {
   getBaserowConfigurationStatus,
   getEvents,
   getGallery,
-  getGuestByToken,
+  getGuestWithMembersByToken,
   getSettings,
 } from "@/lib/baserow";
 import {
@@ -42,11 +42,13 @@ export const getInvitationByToken = cache(
       };
     }
 
-    const guest = await getGuestByToken(token);
+    const guestData = await getGuestWithMembersByToken(token);
 
-    if (!guest) {
+    if (!guestData) {
       return null;
     }
+
+    const { guest, guestMembers } = guestData;
 
     const [events, gallery, settings] = await Promise.all([
       getEvents(),
@@ -56,6 +58,7 @@ export const getInvitationByToken = cache(
 
     return {
       guest,
+      guestMembers,
       events: getInvitedEvents(events, guest),
       gallery: getVisibleGallery(gallery),
       settings,
