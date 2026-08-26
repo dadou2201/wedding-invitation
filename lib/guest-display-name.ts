@@ -11,6 +11,41 @@ export interface InvitationAudience {
   rsvpPeople: RsvpPerson[];
 }
 
+function normalizeNamePart(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("fr");
+}
+
+function formatCoupleWithSharedLastName(
+  firstGuestName: string,
+  secondGuestName: string,
+): string | null {
+  const firstParts = firstGuestName.split(/\s+/).filter(Boolean);
+  const secondParts = secondGuestName.split(/\s+/).filter(Boolean);
+  let sharedPartCount = 0;
+
+  while (
+    sharedPartCount < firstParts.length - 1 &&
+    sharedPartCount < secondParts.length - 1 &&
+    normalizeNamePart(firstParts[firstParts.length - 1 - sharedPartCount]) ===
+      normalizeNamePart(secondParts[secondParts.length - 1 - sharedPartCount])
+  ) {
+    sharedPartCount += 1;
+  }
+
+  if (sharedPartCount === 0) {
+    return null;
+  }
+
+  const firstNames = firstParts.slice(0, -sharedPartCount).join(" ");
+  const secondNames = secondParts.slice(0, -sharedPartCount).join(" ");
+  const sharedLastName = secondParts.slice(-sharedPartCount).join(" ");
+
+  return `${firstNames} et ${secondNames} ${sharedLastName}`;
+}
+
 export function getInvitationDisplayName(
   guest: GuestName,
   guestMembers: GuestMember[] = [],
@@ -23,7 +58,10 @@ export function getInvitationDisplayName(
   }
 
   if (firstName && lastName) {
-    return `${firstName} & ${lastName}`;
+    return (
+      formatCoupleWithSharedLastName(firstName, lastName) ??
+      `${firstName} & ${lastName}`
+    );
   }
 
   return firstName || lastName || "Invité";

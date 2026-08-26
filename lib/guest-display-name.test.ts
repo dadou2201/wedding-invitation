@@ -46,6 +46,52 @@ test("couple: First Name and Last Name remain two independent people", () => {
   );
 });
 
+test("couple: a shared last name is displayed only once on the invitation", () => {
+  const audience = getInvitationAudience(
+    {
+      ...baseGuest,
+      firstName: "Steven Guez",
+      lastName: "Salome Guez",
+    },
+    [],
+  );
+
+  assert.equal(audience.invitationDisplayName, "Steven et Salome Guez");
+  assert.deepEqual(
+    audience.rsvpPeople.map(({ id, name }) => ({ id, name })),
+    [
+      { id: "primary", name: "Steven Guez" },
+      { id: "secondary", name: "Salome Guez" },
+    ],
+  );
+});
+
+test("couple: a shared multi-word last name is displayed only once", () => {
+  const audience = getInvitationAudience(
+    {
+      ...baseGuest,
+      firstName: "David Ben Attar",
+      lastName: "Sarah Ben Attar",
+    },
+    [],
+  );
+
+  assert.equal(audience.invitationDisplayName, "David et Sarah Ben Attar");
+});
+
+test("couple: different last names keep the existing display", () => {
+  const audience = getInvitationAudience(
+    {
+      ...baseGuest,
+      firstName: "Steven Guez",
+      lastName: "Salome Cohen",
+    },
+    [],
+  );
+
+  assert.equal(audience.invitationDisplayName, "Steven Guez & Salome Cohen");
+});
+
 test("family: linked members are the only RSVP people", () => {
   const members = [
     "David Bourak",
