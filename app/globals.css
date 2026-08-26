@@ -1060,6 +1060,10 @@ html.invitation-snap-active .rsvp-section {
 }
 
 .invitation-page .interior-event--wedding .interior-event__title {
+  font-family: var(--font-monotype-corsiva), "Monotype Corsiva", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-synthesis: none;
   margin: 0;
   font-size: clamp(3.35rem, 8vw, 5.6rem);
   line-height: 0.82;
@@ -1072,7 +1076,7 @@ html.invitation-snap-active .rsvp-section {
 }
 
 .invitation-page .wedding-families-new {
-  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   width: min(100%, 49rem);
   gap: clamp(0.55rem, 2.5vw, 2.2rem);
   margin-block-start: clamp(0.78rem, 2svh, 1.35rem);
@@ -1084,12 +1088,6 @@ html.invitation-snap-active .rsvp-section {
 
 .invitation-page .wedding-families-new > div:last-child {
   text-align: right;
-}
-
-.invitation-page .wedding-families-new > span {
-  width: 1px;
-  height: 82%;
-  margin: 0;
 }
 
 .invitation-page .wedding-families-new p {
@@ -1185,14 +1183,9 @@ html.invitation-snap-active .rsvp-section {
 
 @media (max-width: 37.5rem) {
   .invitation-page .wedding-families-new {
-    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(0.4rem, 2vw, 0.75rem);
     margin-block-start: clamp(0.66rem, 1.75svh, 0.92rem);
-  }
-
-  .invitation-page .wedding-families-new > span {
-    width: 1px;
-    height: 82%;
   }
 
   .invitation-page .wedding-families-new p {
@@ -5359,16 +5352,10 @@ html.invitation-snap-active {
 
 .wedding-families-new {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: clamp(1.2rem, 4vw, 3.5rem);
   margin-block-start: clamp(2rem, 5vw, 3.4rem);
-}
-
-.wedding-families-new > span {
-  width: 1px;
-  height: 72%;
-  background: rgba(255, 253, 248, 0.3);
 }
 
 .wedding-families-new p {
@@ -5573,7 +5560,7 @@ html.invitation-snap-active {
   margin: 0;
   color: var(--wedding-blue);
   font-family: var(--font-opening-script), "Allura", cursive;
-  font-size: clamp(4.35rem, 14.3vmin, 8.8rem);
+  font-size: clamp(4rem, 13.2vmin, 8.1rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 0.9;
@@ -5645,7 +5632,7 @@ html.invitation-snap-active {
   }
 
   .henna-frame__title {
-    font-size: 3.8rem;
+    font-size: 3.5rem;
   }
 
   .henna-frame__intro {
@@ -5957,6 +5944,7 @@ html.invitation-snap-active {
   font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
   font-size: 0.9rem;
   font-style: italic;
+  text-align: center;
 }
 
 .invitation-page .form-field textarea {
@@ -6012,6 +6000,15 @@ html.invitation-snap-active {
   height: clamp(2.8rem, 8vw, 3.8rem);
   object-fit: cover;
   object-position: 50% 49%;
+  filter: url("#rsvp-confirmation-logo-ink");
+  mix-blend-mode: multiply;
+}
+
+.rsvp-confirmation-logo-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .invitation-page .rsvp-confirmation-check {
@@ -6031,8 +6028,13 @@ html.invitation-snap-active {
 
 .invitation-page .rsvp-confirmation-title {
   color: var(--wedding-blue);
-  font-family: var(--font-opening-script), "Allura", cursive;
-  font-style: normal;
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-size: clamp(2.15rem, 8vw, 4rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .invitation-page .rsvp-confirmation-summary dl {
@@ -6095,15 +6097,9 @@ html.invitation-snap-active {
   }
 
   .wedding-families-new {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
     margin-block-start: 1.8rem;
-  }
-
-  .wedding-families-new > span {
-    width: 3rem;
-    height: 1px;
-    margin-inline: auto;
   }
 
   .wedding-families-new p {
@@ -6222,11 +6218,11 @@ html.invitation-snap-active body {
 /* RSVP palette sampled from the henna stationery */
 
 .invitation-page .rsvp-section {
-  --rsvp-paper: #fefefe;
-  --rsvp-ink: #0b2d63;
-  --rsvp-ink-deep: #061e4a;
-  --rsvp-ink-rgb: 11 45 99;
-  --rsvp-paper-rgb: 254 254 254;
+  --rsvp-paper: #c8b29b;
+  --rsvp-ink: #4a3a31;
+  --rsvp-ink-deep: #4a3a31;
+  --rsvp-ink-rgb: 74 58 49;
+  --rsvp-paper-rgb: 200 178 155;
 }
 
 .invitation-page .rsvp-section,
@@ -6379,7 +6375,7 @@ html.invitation-snap-active body {
 .invitation-page .rsvp-confirmation-note,
 .invitation-page .rsvp-confirmation-people em,
 .invitation-page .rsvp-confirmation-summary dd {
-  color: rgb(var(--rsvp-ink-rgb) / 0.68);
+  color: var(--rsvp-ink);
 }
 
 .invitation-page .rsvp-confirmation-summary dl {
@@ -6391,7 +6387,7 @@ html.invitation-snap-active body {
 }
 
 .invitation-page .rsvp-confirmation-people em[data-status="no"] {
-  color: rgb(var(--rsvp-ink-rgb) / 0.5);
+  color: var(--rsvp-ink);
 }
 
 .invitation-page .rsvp-confirmation-edit {
@@ -6485,9 +6481,9 @@ html.invitation-snap-active body {
 /* Opening card palette aligned with the henna stationery and RSVP */
 
 .opening-page {
-  --opening-paper: #fefefe;
-  --opening-ink: #0b2d63;
-  --opening-ink-rgb: 11 45 99;
+  --opening-paper: #c8b29b;
+  --opening-ink: #4a3a31;
+  --opening-ink-rgb: 74 58 49;
 
   background: var(--opening-paper);
   color: var(--opening-ink);
@@ -6535,6 +6531,17 @@ html.invitation-snap-active body {
   box-shadow: inset 0 0 0 1px var(--opening-paper);
 }
 
+.opening-seal__inner::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--opening-paper);
+  content: "";
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
 .opening-seal img {
   filter: none;
   mix-blend-mode: screen;
@@ -6548,7 +6555,7 @@ html.invitation-snap-active body {
 
 html:has(.opening-page),
 html:has(.opening-page) body {
-  background: #fefefe;
+  background: #c8b29b;
 }
 
 /* Full-height, airy Shabbat Hatan composition */
@@ -6569,6 +6576,7 @@ html:has(.opening-page) body {
   gap: clamp(1.25rem, 3svh, 2.5rem);
   padding: clamp(2.2rem, 5.5svh, 4.5rem) 0
     clamp(0.6rem, 1.6svh, 1.25rem);
+  transform: translateY(clamp(-1.2rem, -2svh, -0.5rem));
 }
 
 .shabbat-invitation__header,
@@ -6641,8 +6649,11 @@ html:has(.opening-page) body {
   width: min(100%, 34rem);
   padding: clamp(0.9rem, 2.1svh, 1.35rem) 0;
   border: 0;
-  border-block: 1px solid rgba(255, 253, 248, 0.3);
   background: transparent;
+}
+
+.shabbat-schedule > div span + span {
+  border-inline-start: 0;
 }
 
 .shabbat-schedule p {
@@ -6682,6 +6693,7 @@ html:has(.opening-page) body {
   .shabbat-invitation {
     gap: 0.55rem;
     padding-block: 0.4rem;
+    transform: translateY(-0.35rem);
   }
 
   .shabbat-invitation__header,
@@ -6726,5 +6738,275 @@ html:has(.opening-page) body {
 
   .shabbat-invitation .interior-waze {
     min-height: 2.4rem;
+  }
+}
+
+/* Responsive intro navigation kept above the portrait */
+
+.invitation-intro-slide__image {
+  object-position: 50% top;
+}
+
+@media (max-height: 36rem) and (orientation: landscape) {
+  .invitation-intro-slide__image {
+    object-position: 50% top;
+  }
+}
+
+.invitation-intro-menu {
+  top: max(0.65rem, env(safe-area-inset-top));
+  border-color: rgb(74 58 49 / 0.34);
+  gap: clamp(0.22rem, 0.8vw, 0.42rem);
+  padding-inline: clamp(0.42rem, 1.2vw, 0.7rem);
+  background: #c8b29b;
+  box-shadow: 0 0.65rem 1.8rem rgb(74 58 49 / 0.18);
+}
+
+.invitation-intro-menu a {
+  color: #4a3a31;
+  font-weight: 600;
+}
+
+.invitation-intro-menu a:hover {
+  border-color: rgb(74 58 49 / 0.38);
+  background: rgb(74 58 49 / 0.09);
+}
+
+@media (max-width: 48rem) {
+  .invitation-intro-menu {
+    top: max(0.45rem, env(safe-area-inset-top));
+    right: max(0.45rem, env(safe-area-inset-right));
+    left: max(0.45rem, env(safe-area-inset-left));
+    width: auto;
+    max-width: none;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    gap: clamp(0.2rem, 1.1vw, 0.34rem);
+    overflow-x: auto;
+    padding: 0.34rem clamp(0.4rem, 1.8vw, 0.58rem);
+    border-radius: 999px;
+    scrollbar-width: none;
+    transform: none;
+  }
+
+  .invitation-intro-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .invitation-intro-menu a {
+    min-height: 2.1rem;
+    flex: 1 1 auto;
+    padding: 0.52rem clamp(0.46rem, 2.2vw, 0.76rem);
+    font-size: clamp(0.56rem, 2.2vw, 0.68rem);
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Houppa palette */
+
+.invitation-page .interior-event--wedding {
+  background: #4a3a31;
+  color: #c8b29b;
+}
+
+.invitation-page .interior-event--wedding::before {
+  background: #4a3a31;
+}
+
+.invitation-page .interior-event--wedding::after {
+  border-color: rgb(200 178 155 / 0.3);
+}
+
+.invitation-page .interior-event--wedding .wedding-bsd,
+.invitation-page .interior-event--wedding .wedding-verse,
+.invitation-page .interior-event--wedding .wedding-couple-new i,
+.invitation-page .interior-event--wedding .wedding-date-new span,
+.invitation-page .interior-event--wedding .wedding-location-new span,
+.invitation-page .interior-event--wedding .wedding-memorial-new {
+  color: #c8b29b;
+}
+
+.invitation-page .interior-event--wedding .interior-waze:hover {
+  background: #c8b29b;
+  color: #4a3a31;
+}
+
+/* Henné artwork, palette and viewport fitting */
+
+.invitation-page .interior-event--henna,
+.henna-frame__title {
+  color: #4a3a31;
+}
+
+.henna-frame__content {
+  color: #4a3a31;
+  transform: translateY(clamp(-1.6rem, -2.6svh, -0.75rem));
+}
+
+.henna-frame .interior-brand {
+  background: transparent;
+}
+
+.henna-frame .interior-brand img {
+  filter: url("#henna-logo-beige");
+  mix-blend-mode: normal;
+}
+
+.henna-logo-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.henna-frame__venue {
+  display: grid;
+  max-width: min(100%, 17rem);
+  justify-items: center;
+  gap: 0.05rem;
+  font-size: clamp(0.78rem, 2.3vmin, 1.05rem);
+  line-height: 1.2;
+  white-space: normal;
+}
+
+.henna-frame__venue span {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.henna-frame .interior-waze {
+  width: fit-content;
+  max-width: min(100%, 7.25rem);
+  min-width: 0;
+  min-height: clamp(2.15rem, 5svh, 2.6rem);
+  flex: 0 0 auto;
+  gap: clamp(0.3rem, 1vw, 0.45rem);
+  padding: clamp(0.38rem, 1svh, 0.5rem) clamp(0.72rem, 3vw, 1rem);
+  font-size: clamp(0.58rem, 1.8vmin, 0.72rem);
+  letter-spacing: 0.12em;
+}
+
+.henna-frame .interior-waze svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.henna-frame .interior-waze:hover {
+  background: #4a3a31;
+  color: #d4b192;
+}
+
+@media (max-height: 36rem) {
+  .henna-frame__content {
+    transform: translateY(-0.45rem);
+  }
+
+  .henna-frame .interior-waze {
+    min-height: 2rem;
+    padding-block: 0.3rem;
+    font-size: 0.56rem;
+  }
+}
+
+/* Chabbat Hatan palette */
+
+.invitation-page .interior-event--shabbat {
+  background: #4a3a31;
+  color: #c8b29b;
+}
+
+.invitation-page .interior-event--shabbat::before {
+  background: #4a3a31;
+}
+
+.invitation-page .interior-event--shabbat::after {
+  border-color: rgb(200 178 155 / 0.3);
+}
+
+.invitation-page .interior-event--shabbat .interior-event__title::after {
+  background: rgb(200 178 155 / 0.52);
+}
+
+.invitation-page .interior-event--shabbat .shabbat-invitation__intro,
+.invitation-page .interior-event--shabbat .shabbat-invitation__date i,
+.invitation-page .interior-event--shabbat .shabbat-invitation__venue span,
+.invitation-page .interior-event--shabbat .shabbat-schedule p {
+  color: #c8b29b;
+}
+
+.invitation-page .interior-event--shabbat .interior-waze:hover {
+  background: #c8b29b;
+  color: #4a3a31;
+}
+
+/* Monotype Corsiva titles */
+
+.opening-page[lang="fr"] .opening-title,
+.invitation-page[data-language="fr"] .wedding-couple-new strong,
+.invitation-page[data-language="fr"] .henna-frame__title,
+.invitation-page[data-language="fr"]
+  .interior-event--shabbat
+  .interior-event__title,
+.invitation-page[data-language="fr"] .shabbat-parasha-new,
+.invitation-page[data-language="fr"] .rsvp-heading .section-title {
+  font-family: var(--font-monotype-corsiva), "Monotype Corsiva", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.invitation-page[data-language="fr"]
+  .interior-event--wedding
+  .interior-event__title {
+  transform: translateY(clamp(-1.75rem, -3svh, -1rem));
+}
+
+.invitation-page .wedding-couple-new {
+  align-items: start;
+}
+
+.invitation-page .wedding-couple-new > div {
+  width: 100%;
+  align-content: start;
+  gap: clamp(0.18rem, 0.55svh, 0.32rem);
+}
+
+.invitation-page .wedding-couple-new strong,
+.invitation-page .wedding-couple-new span {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.invitation-page .wedding-couple-new strong {
+  white-space: nowrap;
+}
+
+.invitation-page .wedding-couple-new span {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.invitation-page .wedding-couple-new i {
+  display: inline-flex;
+  width: clamp(2.1rem, 5.5vw, 3.4rem);
+  align-items: center;
+  align-self: start;
+  justify-content: center;
+  margin-block-start: clamp(0.12rem, 0.65svh, 0.32rem);
+  font-family: var(--font-opening-serif), Georgia, serif;
+  font-size: clamp(1.8rem, 5.2vmin, 3rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.82;
+  text-align: center;
+}
+
+@media (max-height: 43rem) {
+  .invitation-page[data-language="fr"]
+    .interior-event--wedding
+    .interior-event__title {
+    transform: translateY(-0.7rem);
   }
 }

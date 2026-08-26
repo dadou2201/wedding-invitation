@@ -1,4 +1,5 @@
 import Image from "next/image";
+import fondHenne from "@/public/images/fondd.png";
 import { getTranslations } from "@/lib/translations";
 import type {
   Language,
@@ -45,7 +46,7 @@ const EVENT_COPY = {
       schedule: "Horaires de Chabbat",
       entrance: "E : 16h27",
       exit: "S : 17h25",
-      parasha: "Parashat Haye Sarah",
+      parasha: "Parasha Haye Sarah",
     },
   },
   he: {
@@ -84,14 +85,14 @@ const EVENT_COPY = {
 
 const WEDDING_FAMILIES = {
   left: [
-    "Armand et Aline Amsellem",
+    "Aline & Armand Amsellem",
     "Marie Paule Abécassis",
-    "Johan & Valérie Amsellem",
+    "Valérie & Johan Amsellem",
   ],
   right: [
     "Armand Zerbib",
     "Jeanine Bourak",
-    "Serge et Fabienne Bourak",
+    "Fabienne & Serge Bourak",
   ],
 } as const;
 
@@ -190,7 +191,6 @@ function WeddingInvitation({
             <p key={name}>{name}</p>
           ))}
         </div>
-        <span aria-hidden="true" />
         <div>
           {WEDDING_FAMILIES.right.map((name) => (
             <p key={name}>{name}</p>
@@ -202,13 +202,13 @@ function WeddingInvitation({
 
       <div className="wedding-couple-new" dir="ltr">
         <div>
-          <strong>{settings.groomName}</strong>
-          <span lang="he" dir="rtl">ארמנד ברוך</span>
+          <strong>{settings.brideName}</strong>
+          <span lang="he" dir="rtl">חנה ביבה</span>
         </div>
         <i aria-hidden="true">&amp;</i>
         <div>
-          <strong>{settings.brideName}</strong>
-          <span lang="he" dir="rtl">חנה ביבה</span>
+          <strong>{settings.groomName}</strong>
+          <span lang="he" dir="rtl">ארמנד ברוך</span>
         </div>
       </div>
 
@@ -234,11 +234,32 @@ function WeddingInvitation({
 
 function HennaInvitation({ event, language }: FramedEventInvitationProps) {
   const copy = EVENT_COPY[language].henna;
+  const [venueName, ...venueAddressParts] = copy.venue.split(",");
+  const venueAddress = venueAddressParts.join(",").trim();
 
   return (
     <div className="henna-frame">
+      <svg
+        className="henna-logo-filter"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <filter id="henna-logo-beige" colorInterpolationFilters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="
+                0 0 0 0 0.290196
+                0 0 0 0 0.227451
+                0 0 0 0 0.192157
+                -0.2126 -0.7152 -0.0722 0 1
+              "
+            />
+          </filter>
+        </defs>
+      </svg>
       <Image
-        src="/images/fondHenne.jpg"
+        src={fondHenne}
         alt=""
         fill
         sizes="100vw"
@@ -254,7 +275,10 @@ function HennaInvitation({ event, language }: FramedEventInvitationProps) {
           {copy.date}
         </time>
         <strong className="henna-frame__time">{copy.time}</strong>
-        <address className="henna-frame__venue">{copy.venue}</address>
+        <address className="henna-frame__venue">
+          <span>{venueName.trim()}</span>
+          {venueAddress && <span>{venueAddress}</span>}
+        </address>
         <WazeLink event={event} language={language} />
       </div>
     </div>

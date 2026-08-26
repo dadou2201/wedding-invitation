@@ -64,6 +64,17 @@ export function RSVPForm({
     ...person,
     responses: responsesByPerson[person.id] ?? person.responses,
   }));
+  const confirmationNames = rsvpPeople
+    .map((person) => person.name.trim())
+    .filter(Boolean);
+  const isFamilyOrGroup = rsvpPeople.some(
+    (person) => person.source === "guest-member",
+  );
+  const confirmationRecipient = isFamilyOrGroup
+    ? guest.firstName.trim() || confirmationNames[0] || "Invités"
+    : confirmationNames.join(language === "fr" ? " et " : " ו") ||
+      guest.firstName.trim() ||
+      "Invité";
   const getEventTitle = (event: WeddingEvent) => {
     if (language !== "fr") {
       return event.title[language];
@@ -165,9 +176,8 @@ export function RSVPForm({
       {isEditing ? (
         <div className="section-shell rsvp-shell reveal-section">
           <div className="rsvp-heading">
-            <p className="eyebrow">{t.eyebrow}</p>
             <h2 id="rsvp-title" className="section-title">
-              {t.title}
+              {t.eyebrow}
             </h2>
             <p className="rsvp-intro">{t.intro}</p>
           </div>
@@ -327,6 +337,28 @@ export function RSVPForm({
         <div className="rsvp-confirmation-page reveal-section is-visible">
           <div className="rsvp-confirmation-card">
             <div className="rsvp-confirmation-card__inner">
+              <svg
+                className="rsvp-confirmation-logo-filter"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <filter
+                    id="rsvp-confirmation-logo-ink"
+                    colorInterpolationFilters="sRGB"
+                  >
+                    <feColorMatrix
+                      type="matrix"
+                      values="
+                        0.63 0 0 0 0.37
+                        0 0.674157 0 0 0.325843
+                        0 0 0.683871 0 0.316129
+                        0 0 0 1 0
+                      "
+                    />
+                  </filter>
+                </defs>
+              </svg>
               <Image
                 src="/images/logo2.jpg"
                 alt={`Logo ${settings.brideName} et ${settings.groomName}`}
@@ -343,7 +375,7 @@ export function RSVPForm({
               </span>
               <p className="rsvp-confirmation-eyebrow">{t.savedEyebrow}</p>
               <h2 id="rsvp-title" className="rsvp-confirmation-title">
-                {t.savedTitle(guest.firstName)}
+                {t.savedTitle(confirmationRecipient)}
               </h2>
               <p className="rsvp-confirmation-text">{t.savedText}</p>
 
@@ -389,16 +421,6 @@ export function RSVPForm({
         </div>
       )}
 
-      <footer className="rsvp-finale">
-        <span aria-hidden="true" />
-        <Image
-          src="/images/logo2.jpg"
-          alt={`Logo ${settings.brideName} et ${settings.groomName}`}
-          width={1254}
-          height={1254}
-          sizes="(max-width: 480px) 64px, 72px"
-        />
-      </footer>
     </section>
   );
 }

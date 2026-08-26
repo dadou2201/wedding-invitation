@@ -6,6 +6,7 @@ import {
   Noto_Sans_Hebrew,
   Noto_Serif_Hebrew,
 } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const bodyFont = Noto_Sans_Hebrew({
@@ -40,6 +41,14 @@ const openingSerifFont = Cormorant_Garamond({
   display: "swap",
 });
 
+const monotypeCorsivaFont = localFont({
+  src: "./fonts/Monotype-Corsiva-Regular.ttf",
+  variable: "--font-monotype-corsiva",
+  weight: "400",
+  style: "normal",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Clara & David — Notre mariage",
@@ -68,7 +77,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="fr"
       dir="ltr"
-      className={`${bodyFont.variable} ${displayFont.variable} ${murrayHillFont.variable} ${openingScriptFont.variable} ${openingSerifFont.variable}`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${murrayHillFont.variable} ${openingScriptFont.variable} ${openingSerifFont.variable} ${monotypeCorsivaFont.variable}`}
     >
       <body>{children}</body>
     </html>

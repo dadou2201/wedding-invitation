@@ -20,6 +20,7 @@ export function InvitationExperience({
   token,
 }: InvitationExperienceProps) {
   const [isInvitationOpen, setIsInvitationOpen] = useState(false);
+  const [isIntroVisible, setIsIntroVisible] = useState(true);
   const [language, setLanguage] = useState<Language>(
     invitation.guest.preferredLanguage,
   );
@@ -81,6 +82,27 @@ export function InvitationExperience({
     return () => observer.disconnect();
   }, [isInvitationOpen]);
 
+  useEffect(() => {
+    if (!isInvitationOpen) {
+      return;
+    }
+
+    const introduction = document.getElementById("introduction");
+
+    if (!introduction) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsIntroVisible(entry.intersectionRatio >= 0.55),
+      { threshold: [0, 0.55, 1] },
+    );
+
+    observer.observe(introduction);
+
+    return () => observer.disconnect();
+  }, [isInvitationOpen]);
+
   if (!isInvitationOpen) {
     return (
       <OpeningCard
@@ -101,28 +123,30 @@ export function InvitationExperience({
       dir={direction}
       data-language={language}
     >
-      <div
-        className="invitation-language-switcher"
-        role="group"
-        aria-label={t.languageLabel}
-        dir="ltr"
-      >
-        <button
-          type="button"
-          aria-pressed={language === "fr"}
-          onClick={() => setLanguage("fr")}
+      {!isIntroVisible && (
+        <div
+          className="invitation-language-switcher"
+          role="group"
+          aria-label={t.languageLabel}
+          dir="ltr"
         >
-          FR
-        </button>
-        <span aria-hidden="true" />
-        <button
-          type="button"
-          aria-pressed={language === "he"}
-          onClick={() => setLanguage("he")}
-        >
-          עברית
-        </button>
-      </div>
+          <button
+            type="button"
+            aria-pressed={language === "fr"}
+            onClick={() => setLanguage("fr")}
+          >
+            FR
+          </button>
+          <span aria-hidden="true" />
+          <button
+            type="button"
+            aria-pressed={language === "he"}
+            onClick={() => setLanguage("he")}
+          >
+            עברית
+          </button>
+        </div>
+      )}
 
       <InvitationIntro
         brideName={settings.brideName}
