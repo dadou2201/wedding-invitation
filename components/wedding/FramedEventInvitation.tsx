@@ -185,7 +185,7 @@ function WeddingInvitation({
         קול ששון וקול שמחה קול חתן וקול כלה
       </p>
 
-      <div className="wedding-families-new">
+      <div className="wedding-families-new" dir="ltr">
         <div>
           {WEDDING_FAMILIES.left.map((name) => (
             <p key={name}>{name}</p>
@@ -294,7 +294,16 @@ function ShabbatInvitation({ event, language }: FramedEventInvitationProps) {
         <h2 id="shabbat-title" className="interior-event__title">
           {copy.title}
         </h2>
-        <p className="shabbat-invitation__intro">{copy.invitation}</p>
+        <p className="shabbat-invitation__intro">
+          {language === "he" ? (
+            <>
+              <span>נשמח שתהיו לצידנו ונחלוק יחד</span>
+              <span>את שמחת שבת החתן שלנו</span>
+            </>
+          ) : (
+            copy.invitation
+          )}
+        </p>
       </header>
 
       <div className="shabbat-invitation__main">
@@ -306,7 +315,11 @@ function ShabbatInvitation({ event, language }: FramedEventInvitationProps) {
               <span>Samedi 7 novembre</span>
             </>
           ) : (
-            copy.date
+            <>
+              <span>יום שישי 6 בנובמבר</span>
+              <i aria-hidden="true">&amp;</i>
+              <span>שבת 7 בנובמבר</span>
+            </>
           )}
         </time>
         <address className="shabbat-invitation__venue">
@@ -341,7 +354,14 @@ export function FramedEventInvitation(props: FramedEventInvitationProps) {
     >
       {event.key === "wedding" && <WeddingInvitation {...props} />}
       {event.key === "henna" && <HennaInvitation {...props} />}
-      {event.key === "shabbat" && <ShabbatInvitation {...props} />}
+      {event.key === "shabbat" && (
+        <>
+          <p className="wedding-bsd shabbat-bsd" lang="he" dir="rtl">
+            בס״ד
+          </p>
+          <ShabbatInvitation {...props} />
+        </>
+      )}
     </article>
   );
 }

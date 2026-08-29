@@ -222,8 +222,8 @@ a:focus-visible {
 
 .opening-seal {
   display: grid;
-  width: clamp(4rem, 18vw, 4.5rem);
-  height: clamp(4rem, 18vw, 4.5rem);
+  width: clamp(5.4rem, 24vw, 6.1rem);
+  height: clamp(5.4rem, 24vw, 6.1rem);
   place-items: center;
   overflow: hidden;
   border-radius: 50%;
@@ -254,7 +254,7 @@ a:focus-visible {
 }
 
 .opening-trigger__label {
-  font-size: clamp(0.58rem, 2.5vw, 0.68rem);
+  font-size: clamp(0.64rem, 2.7vw, 0.76rem);
   font-weight: 650;
   letter-spacing: 0.32em;
   line-height: 1.5;
@@ -295,8 +295,8 @@ a:focus-visible {
   }
 
   .opening-seal {
-    width: 3.7rem;
-    height: 3.7rem;
+    width: 4.95rem;
+    height: 4.95rem;
   }
 }
 
@@ -5217,8 +5217,8 @@ html.invitation-snap-active {
 }
 
 .opening-seal img {
-  width: 142%;
-  height: 142%;
+  width: 152%;
+  height: 152%;
   object-fit: cover;
   object-position: 50% 46%;
   filter: invert(1);
@@ -6756,7 +6756,7 @@ html:has(.opening-page) body {
 .invitation-intro-menu {
   top: max(0.65rem, env(safe-area-inset-top));
   border-color: rgb(74 58 49 / 0.34);
-  gap: clamp(0.22rem, 0.8vw, 0.42rem);
+  gap: clamp(0.18rem, 0.65vw, 0.34rem);
   padding-inline: clamp(0.42rem, 1.2vw, 0.7rem);
   background: #c8b29b;
   box-shadow: 0 0.65rem 1.8rem rgb(74 58 49 / 0.18);
@@ -6764,7 +6764,21 @@ html:has(.opening-page) body {
 
 .invitation-intro-menu a {
   color: #4a3a31;
-  font-weight: 600;
+  font-size: clamp(0.84rem, 2.2vw, 1.01rem);
+  font-weight: 800;
+  letter-spacing: 0.095em;
+}
+
+[dir="rtl"] .invitation-intro-menu a {
+  font-size: clamp(1.09rem, 2.86vw, 1.31rem);
+}
+
+.invitation-intro-menu__separator {
+  flex: 0 0 auto;
+  color: #4a3a31;
+  font-size: clamp(0.44rem, 1vw, 0.57rem);
+  line-height: 1;
+  opacity: 0.72;
 }
 
 .invitation-intro-menu a:hover {
@@ -6781,7 +6795,7 @@ html:has(.opening-page) body {
     max-width: none;
     flex-wrap: nowrap;
     justify-content: space-evenly;
-    gap: clamp(0.2rem, 1.1vw, 0.34rem);
+    gap: clamp(0.12rem, 0.8vw, 0.24rem);
     overflow-x: auto;
     padding: 0.34rem clamp(0.4rem, 1.8vw, 0.58rem);
     border-radius: 999px;
@@ -6794,11 +6808,19 @@ html:has(.opening-page) body {
   }
 
   .invitation-intro-menu a {
-    min-height: 2.1rem;
+    min-height: 2.2rem;
     flex: 1 1 auto;
-    padding: 0.52rem clamp(0.46rem, 2.2vw, 0.76rem);
-    font-size: clamp(0.56rem, 2.2vw, 0.68rem);
-    letter-spacing: 0.06em;
+    padding: 0.54rem clamp(0.3rem, 1.5vw, 0.55rem);
+    font-size: clamp(0.7rem, 2.7vw, 0.84rem);
+    letter-spacing: 0.045em;
+  }
+
+  [dir="rtl"] .invitation-intro-menu a {
+    font-size: clamp(0.91rem, 3.51vw, 1.09rem);
+  }
+
+  .invitation-intro-menu__separator {
+    font-size: clamp(0.37rem, 1.43vw, 0.48rem);
   }
 }
 
@@ -6931,7 +6953,8 @@ html:has(.opening-page) body {
 .invitation-page .interior-event--shabbat .shabbat-invitation__intro,
 .invitation-page .interior-event--shabbat .shabbat-invitation__date i,
 .invitation-page .interior-event--shabbat .shabbat-invitation__venue span,
-.invitation-page .interior-event--shabbat .shabbat-schedule p {
+.invitation-page .interior-event--shabbat .shabbat-schedule p,
+.invitation-page .interior-event--shabbat .shabbat-bsd {
   color: #c8b29b;
 }
 
@@ -6954,6 +6977,159 @@ html:has(.opening-page) body {
   font-style: normal;
   font-weight: 400;
   font-synthesis: none;
+}
+
+.invitation-page .invitation-intro-names h1,
+.invitation-page .invitation-intro-names h1 span,
+.invitation-page .invitation-intro-names time {
+  color: #c8b29b;
+  font-family: var(--font-monotype-corsiva), "Monotype Corsiva", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.invitation-page .invitation-intro-names h1 i {
+  margin-inline-start: clamp(0.18rem, 0.7vw, 0.4rem);
+  color: #c8b29b;
+}
+
+.invitation-page .invitation-intro-scroll {
+  color: #c8b29b;
+}
+
+/* Keep Latin family and couple names identical in the Hebrew Houppa. */
+
+.invitation-page[data-language="he"] .wedding-families-new {
+  direction: ltr;
+}
+
+.invitation-page[data-language="he"] .wedding-families-new p {
+  font-family: var(--font-opening-serif), var(--font-display), Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  unicode-bidi: isolate;
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new strong {
+  font-family: var(--font-monotype-corsiva), "Monotype Corsiva", cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+/* Hebrew-only Chabbat composition */
+
+.invitation-page[data-language="he"] .rsvp-person-name {
+  text-align: center;
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__intro {
+  display: grid;
+  max-width: 48rem;
+  gap: clamp(0.08rem, 0.35svh, 0.22rem);
+  font-size: clamp(1.35rem, 3.4vmin, 1.9rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__intro span {
+  display: block;
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__date {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.45rem, 1svh, 0.8rem);
+  font-size: clamp(2.25rem, 6.8vmin, 4.6rem);
+  font-weight: 500;
+  line-height: 1.06;
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__date span {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__venue strong {
+  font-size: clamp(1.78rem, 4.83vmin, 3.05rem);
+}
+
+.invitation-page[data-language="he"] .shabbat-invitation__venue span {
+  font-size: clamp(0.9rem, 2.07vmin, 1.15rem);
+}
+
+.invitation-page[data-language="he"] .shabbat-schedule {
+  width: min(100%, 48rem);
+  padding-block: clamp(1rem, 2.5svh, 1.55rem);
+  transform: translateY(clamp(-0.65rem, -1.2svh, -0.3rem));
+}
+
+.invitation-page[data-language="he"] .shabbat-schedule p {
+  font-size: clamp(1rem, 2.6vmin, 1.4rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.invitation-page[data-language="he"] .shabbat-schedule > div {
+  width: 100%;
+  gap: clamp(0.55rem, 2.5vw, 1.5rem);
+  margin-block-start: clamp(0.75rem, 1.8svh, 1.15rem);
+  font-size: clamp(1.55rem, 4.3vmin, 2.6rem);
+  font-weight: 600;
+}
+
+.invitation-page[data-language="he"] .shabbat-schedule > div span {
+  display: grid;
+  min-width: 0;
+  min-height: clamp(2.8rem, 7vmin, 4rem);
+  place-items: center;
+  padding-inline: clamp(0.35rem, 2vw, 1rem);
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (max-height: 36rem) {
+  .invitation-page[data-language="he"] .shabbat-invitation__intro {
+    gap: 0;
+    font-size: 0.95rem;
+    line-height: 1.15;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__date {
+    gap: 0.18rem;
+    font-size: clamp(1.35rem, 5.2vmin, 1.7rem);
+    line-height: 1;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__venue strong {
+    font-size: 1.27rem;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__venue span {
+    font-size: 0.9rem;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule {
+    width: min(100%, 38rem);
+    padding-block: 0.3rem;
+    transform: translateY(-0.25rem);
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule p {
+    font-size: 0.8rem;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule > div {
+    gap: 0.4rem;
+    margin-block-start: 0.25rem;
+    font-size: clamp(1rem, 3.5vmin, 1.25rem);
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule > div span {
+    min-height: 1.9rem;
+  }
 }
 
 .invitation-page[data-language="fr"]

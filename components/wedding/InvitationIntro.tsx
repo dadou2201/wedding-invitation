@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import type { EventKey, Language, WeddingEvent } from "@/lib/types";
 
 interface InvitationIntroProps {
@@ -44,6 +45,16 @@ export function InvitationIntro({
 }: InvitationIntroProps) {
   const copy = INTRO_COPY[language];
   const firstEvent = events[0];
+  const navigationItems = [
+    ...events.map((event) => ({
+      href: `#${event.key}`,
+      key: event.key,
+      label: EVENT_LABELS[language][event.key],
+    })),
+    ...(showRsvp
+      ? [{ href: "#rsvp", key: "rsvp", label: copy.rsvp }]
+      : []),
+  ];
 
   return (
     <section
@@ -73,12 +84,19 @@ export function InvitationIntro({
       </div>
 
       <nav className="invitation-intro-menu" aria-label={copy.navigation}>
-        {events.map((event) => (
-          <a key={event.key} href={`#${event.key}`}>
-            {EVENT_LABELS[language][event.key]}
-          </a>
+        {navigationItems.map((item, index) => (
+          <Fragment key={item.key}>
+            {index > 0 && (
+              <span
+                className="invitation-intro-menu__separator"
+                aria-hidden="true"
+              >
+                ◆
+              </span>
+            )}
+            <a href={item.href}>{item.label}</a>
+          </Fragment>
         ))}
-        {showRsvp && <a href="#rsvp">{copy.rsvp}</a>}
       </nav>
 
       {firstEvent && (
