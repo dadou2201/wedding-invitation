@@ -8,8 +8,27 @@ type AudienceGuest = Pick<
 
 export interface InvitationAudience {
   invitationDisplayName: string;
+  invitationDisplay: InvitationDisplay;
   rsvpPeople: RsvpPerson[];
 }
+
+export type InvitationDisplay =
+  | {
+      kind: "family" | "solo";
+      name: string;
+      accessibleLabel: string;
+    }
+  | {
+      kind: "shared-last-name";
+      firstNames: readonly [string, string];
+      lastName: string;
+      accessibleLabel: string;
+    }
+  | {
+      kind: "couple";
+      people: readonly [string, string];
+      accessibleLabel: string;
+    };
 
 function normalizeNamePart(value: string): string {
   return value
@@ -18,10 +37,24 @@ function normalizeNamePart(value: string): string {
     .toLocaleLowerCase("fr");
 }
 
-function formatCoupleWithSharedLastName(
+interface SharedLastNameParts {
+  firstNames: readonly [string, string];
+  lastName: string;
+}
+
+function capitalizeName(value: string): string {
+  return value
+    .trim()
+    .toLocaleLowerCase("fr")
+    .replace(/(^|[\s'-])(\p{L})/gu, (_, separator: string, letter: string) =>
+      `${separator}${letter.toLocaleUpperCase("fr")}`,
+    );
+}
+
+function getCoupleWithSharedLastName(
   firstGuestName: string,
   secondGuestName: string,
-): string | null {
+): SharedLastNameParts | null {
   const firstParts = firstGuestName.split(/\s+/).filter(Boolean);
   const secondParts = secondGuestName.split(/\s+/).filter(Boolean);
   let sharedPartCount = 0;
@@ -39,45 +72,88 @@ function formatCoupleWithSharedLastName(
     return null;
   }
 
-  const firstNames = firstParts.slice(0, -sharedPartCount).join(" ");
-  const secondNames = secondParts.slice(0, -sharedPartCount).join(" ");
-  const sharedLastName = secondParts.slice(-sharedPartCount).join(" ");
+  const firstNames = capitalizeName(
+    firstParts.slice(0, -sharedPartCount).join(" "),
+  );
+  const secondNames = capitalizeName(
+    secondParts.slice(0, -sharedPartCount).join(" "),
+  );
+  const sharedLastName = secondParts
+    .slice(-sharedPartCount)
+    .join(" ")
+    .toLocaleUpperCase("fr");
 
-  return `${firstNames} et ${secondNames} ${sharedLastName}`;
+  return {
+    firstNames: [firstNames, secondNames],
+    lastName: sharedLastName,
+  };
+}
+
+export function getInvitationDisplay(
+  guest: GuestName,
+  guestMembers: GuestMember[] = [],
+): InvitationDisplay {
+  const firstName = guest.firstName.trim();
+  const lastName = guest.lastName.trim();
+  const fallbackName = firstName || lastName || "Invités";
+  const isFamilyName = /^(?:famille|family|משפחת)\b/iu.test(fallbackName);
+
+  if (guestMembers.length > 0 || isFamilyName) {
+    return {
+      kind: "family",
+      name: fallbackName,
+      accessibleLabel: fallbackName,
+    };
+  }
+
+  if (firstName && lastName) {
+    const sharedName = getCoupleWithSharedLastName(firstName, lastName);
+
+    if (sharedName) {
+      const accessibleLabel = `${sharedName.firstNames[0]} & ${sharedName.firstNames[1]} ${sharedName.lastName}`;
+
+      return {
+        kind: "shared-last-name",
+        firstNames: sharedName.firstNames,
+        lastName: sharedName.lastName,
+        accessibleLabel,
+      };
+    }
+
+    return {
+      kind: "couple",
+      people: [firstName, lastName],
+      accessibleLabel: `${firstName} & ${lastName}`,
+    };
+  }
+
+  return {
+    kind: "solo",
+    name: fallbackName,
+    accessibleLabel: fallbackName,
+  };
 }
 
 export function getInvitationDisplayName(
   guest: GuestName,
   guestMembers: GuestMember[] = [],
 ): string {
-  const firstName = guest.firstName.trim();
-  const lastName = guest.lastName.trim();
-
-  if (guestMembers.length > 0) {
-    return firstName || "Invités";
-  }
-
-  if (firstName && lastName) {
-    return (
-      formatCoupleWithSharedLastName(firstName, lastName) ??
-      `${firstName} & ${lastName}`
-    );
-  }
-
-  return firstName || lastName || "Invité";
+  return getInvitationDisplay(guest, guestMembers).accessibleLabel;
 }
 
 export function getInvitationAudience(
   guest: AudienceGuest,
   guestMembers: GuestMember[],
 ): InvitationAudience {
-  const invitationDisplayName = getInvitationDisplayName(guest, guestMembers);
+  const invitationDisplay = getInvitationDisplay(guest, guestMembers);
+  const invitationDisplayName = invitationDisplay.accessibleLabel;
   const firstName = guest.firstName.trim() || "Invité";
   const lastName = guest.lastName.trim();
 
   if (guestMembers.length > 0) {
     return {
       invitationDisplayName,
+      invitationDisplay,
       rsvpPeople: guestMembers.map((member) => ({
         id: `member:${member.id}`,
         name: member.name.trim() || "Invité",
@@ -105,5 +181,5 @@ export function getInvitationAudience(
     });
   }
 
-  return { invitationDisplayName, rsvpPeople };
+  return { invitationDisplayName, invitationDisplay, rsvpPeople };
 }

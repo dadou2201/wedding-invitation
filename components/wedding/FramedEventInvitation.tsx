@@ -1,5 +1,5 @@
 import Image from "next/image";
-import fondHenne from "@/public/images/fondd-cdb69e.png";
+import fondHenne from "@/public/images/fondFinal.jpg";
 import { getTranslations } from "@/lib/translations";
 import type {
   Language,
@@ -21,7 +21,7 @@ const EVENT_COPY = {
       invitation:
         "Et seront honorés de votre présence à la houppa qui aura lieu le",
       date: "Lundi 2 Novembre",
-      time: "À 18h00 précises",
+      times: ["Cocktail 18h00", "Houppa 19h00"],
       venue: "Dans les salons 58",
       address: "Hayarkonim 58, Petah Tikva",
       reception: "La cérémonie sera suivie d’une réception",
@@ -55,12 +55,12 @@ const EVENT_COPY = {
       joy: "שמחים לבשר על נישואי ילדיהם ונכדיהם",
       invitation: "ויתכבדו בנוכחותכם בחופה שתתקיים ביום",
       date: "יום שני, 2 בנובמבר",
-      time: "בשעה 18:00 בדיוק",
+      times: ["קבלת פנים 18:00", "חופה 19:00"],
       venue: "באולמי 58",
       address: "הירקונים 58, פתח תקווה",
       reception: "לאחר החופה תתקיים קבלת פנים",
       memorial:
-        "ביום מיוחד זה נישא עמנו את זכר סבינו וסבותינו איב אבקסיס, רנה בוראק ומדי זרביב",
+        "ביום מיוחד זה נישא עמנו את זכר סבינו וסבותינו איב אבקסיס, רנה בורק ומדי זרביב",
     },
     henna: {
       title: "חינה",
@@ -217,7 +217,11 @@ function WeddingInvitation({
       <div className="wedding-date-new">
         <time dateTime="2026-11-02">{copy.date}</time>
         <span lang="he" dir="rtl">כ״ג חשוון תשפ״ז</span>
-        <strong>{copy.time}</strong>
+        <div className="wedding-date-new__times">
+          {copy.times.map((time) => (
+            <strong key={time}>{time}</strong>
+          ))}
+        </div>
       </div>
 
       <address className="wedding-location-new">

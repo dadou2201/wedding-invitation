@@ -74,7 +74,7 @@ export function InvitationIntro({
         />
         <span className="invitation-intro-slide__veil" aria-hidden="true" />
         <div className="invitation-intro-names">
-          <h1 id="invitation-intro-title">
+          <h1 id="invitation-intro-title" dir="ltr">
             <span>{brideName}</span>
             <i>&amp;</i>
             <span>{groomName}</span>

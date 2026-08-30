@@ -1205,7 +1205,7 @@ html.invitation-snap-active .rsvp-section {
   }
 }
 
-@media (max-height: 43rem) {
+@media (max-height: 52rem) {
   .invitation-page .interior-event--wedding {
     padding-block: max(0.8rem, env(safe-area-inset-top));
   }
@@ -6218,7 +6218,7 @@ html.invitation-snap-active body {
 /* RSVP palette sampled from the henna stationery */
 
 .invitation-page .rsvp-section {
-  --rsvp-paper: #cdb69e;
+  --rsvp-paper: #ddcbb8;
   --rsvp-ink: #4a3a31;
   --rsvp-ink-deep: #4a3a31;
   --rsvp-ink-rgb: 74 58 49;
@@ -6758,7 +6758,7 @@ html:has(.opening-page) body {
   border-color: rgb(74 58 49 / 0.34);
   gap: clamp(0.18rem, 0.65vw, 0.34rem);
   padding-inline: clamp(0.42rem, 1.2vw, 0.7rem);
-  background: #cdb69e;
+  background: #ddcbb8;
   box-shadow: 0 0.65rem 1.8rem rgb(74 58 49 / 0.18);
 }
 
@@ -6770,7 +6770,7 @@ html:has(.opening-page) body {
 }
 
 [dir="rtl"] .invitation-intro-menu a {
-  font-size: clamp(1.09rem, 2.86vw, 1.31rem);
+  font-size: clamp(1.25rem, 3.29vw, 1.51rem);
 }
 
 .invitation-intro-menu__separator {
@@ -6816,7 +6816,7 @@ html:has(.opening-page) body {
   }
 
   [dir="rtl"] .invitation-intro-menu a {
-    font-size: clamp(0.91rem, 3.51vw, 1.09rem);
+    font-size: clamp(1.05rem, 4.04vw, 1.25rem);
   }
 
   .invitation-intro-menu__separator {
@@ -6903,6 +6903,7 @@ html:has(.opening-page) body {
   min-width: 0;
   min-height: clamp(2.15rem, 5svh, 2.6rem);
   flex: 0 0 auto;
+  margin-block-start: clamp(0.7rem, 2svh, 1.2rem);
   gap: clamp(0.3rem, 1vw, 0.45rem);
   padding: clamp(0.38rem, 1svh, 0.5rem) clamp(0.72rem, 3vw, 1rem);
   font-size: clamp(0.58rem, 1.8vmin, 0.72rem);
@@ -6926,6 +6927,7 @@ html:has(.opening-page) body {
 
   .henna-frame .interior-waze {
     min-height: 2rem;
+    margin-block-start: 0.4rem;
     padding-block: 0.3rem;
     font-size: 0.56rem;
   }
@@ -7458,4 +7460,382 @@ html:has(.opening-page) body {
     animation: none;
     transition: none;
   }
+}
+
+/* Restored responsive opening card without the envelope presentation */
+
+.opening-composition {
+  padding-block-end: 0;
+}
+
+.opening-card {
+  aspect-ratio: 1.3 / 1;
+}
+
+.opening-card__inner {
+  justify-content: center;
+}
+
+.opening-names {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  justify-items: center;
+  gap: clamp(0.84rem, 3.12vw, 1.32rem);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  line-height: 1.18;
+  text-align: center;
+}
+
+.opening-names__single {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(2.02rem, 7.68vw, 3.12rem);
+  text-wrap: balance;
+}
+
+.opening-names__people {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  place-items: center;
+  gap: clamp(0.36rem, 1.38vw, 0.6rem);
+  font-size: clamp(1.94rem, 7.44vw, 3rem);
+}
+
+.opening-names__people > span {
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.opening-names__people i {
+  font-family: Georgia, serif;
+  font-size: 0.7em;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 0.85;
+}
+
+.opening-names__people--full {
+  font-size: clamp(1.38rem, 5.52vw, 2.28rem);
+  line-height: 1.2;
+}
+
+.opening-names__surname {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.5rem, 5.82vw, 2.4rem);
+  font-weight: 750;
+  letter-spacing: clamp(0.12em, 0.8vw, 0.18em);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.opening-seal img {
+  top: 56%;
+  filter: none;
+  mix-blend-mode: screen;
+  object-position: 50% 50%;
+}
+
+.opening-page--closing {
+  opacity: 0;
+  transform: scale(1.012);
+  pointer-events: none;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .invitation-intro-slide {
+    animation: none;
+  }
+}
+
+/* Henné placement restored to the state before the final title adjustment */
+
+.invitation-page[data-language="he"] .henna-frame__title {
+  transform: translateY(clamp(-0.95rem, -1.5svh, -0.6rem));
+}
+
+/* Houppa schedules and Hebrew readability */
+
+.invitation-page .wedding-date-new__times {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.08rem, 0.3svh, 0.18rem);
+}
+
+.invitation-page .wedding-date-new__times strong {
+  display: block;
+  line-height: 1.05;
+  text-align: center;
+  unicode-bidi: plaintext;
+}
+
+.invitation-page .interior-event--wedding .interior-waze {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: min(100%, 11.5rem);
+  min-width: 0;
+  flex: 0 0 auto;
+  align-self: center;
+  margin-block-start: clamp(0.82rem, 2svh, 1.3rem);
+}
+
+.invitation-page .interior-event--wedding .interior-waze span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+}
+
+.invitation-page[data-language="he"]
+  .interior-event--wedding
+  .interior-event__title {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.85rem, 9.2vw, 6.44rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.9;
+  transform: translateY(clamp(-0.9rem, -1.6svh, -0.4rem));
+}
+
+.invitation-page[data-language="he"] .wedding-bsd {
+  font-size: clamp(0.83rem, 1.96vw, 1.04rem);
+}
+
+.invitation-page[data-language="he"] .wedding-verse {
+  margin-block-start: clamp(0.38rem, 1.15svh, 0.7rem);
+  font-size: clamp(1.17rem, 2.93vw, 1.59rem);
+}
+
+.invitation-page[data-language="he"] .wedding-families-new {
+  margin-block-start: clamp(0.5rem, 1.35svh, 0.82rem);
+}
+
+.invitation-page[data-language="he"] .wedding-families-new p {
+  font-size: clamp(0.86rem, 2.53vw, 1.24rem);
+}
+
+.invitation-page[data-language="he"] .wedding-joy,
+.invitation-page[data-language="he"] .wedding-invitation-text {
+  margin-block-start: clamp(0.45rem, 1.2svh, 0.75rem);
+  font-size: clamp(1.04rem, 2.42vw, 1.33rem);
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new {
+  margin-block-start: clamp(0.42rem, 1.15svh, 0.72rem);
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new strong {
+  font-size: clamp(3.05rem, 8.4vw, 5.52rem);
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new i {
+  font-size: clamp(2.07rem, 5.98vmin, 3.45rem);
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new span {
+  font-size: clamp(1.01rem, 2.47vw, 1.38rem);
+}
+
+.invitation-page[data-language="he"] .wedding-date-new {
+  margin-block-start: clamp(0.45rem, 1.2svh, 0.75rem);
+}
+
+.invitation-page[data-language="he"] .wedding-date-new time {
+  font-size: clamp(2.42rem, 6.56vw, 4.6rem);
+}
+
+.invitation-page[data-language="he"] .wedding-date-new > span {
+  font-size: clamp(0.99rem, 2.3vw, 1.29rem);
+}
+
+.invitation-page[data-language="he"] .wedding-date-new__times strong {
+  font-size: clamp(1.17rem, 2.65vw, 1.5rem);
+}
+
+.invitation-page[data-language="he"] .wedding-location-new {
+  margin-block-start: clamp(0.45rem, 1.2svh, 0.76rem);
+}
+
+.invitation-page[data-language="he"] .wedding-location-new strong {
+  font-size: clamp(1.5rem, 3.91vw, 2.19rem);
+}
+
+.invitation-page[data-language="he"] .wedding-location-new span {
+  font-size: clamp(0.81rem, 1.9vw, 1.01rem);
+}
+
+.invitation-page[data-language="he"] .wedding-reception-new {
+  margin-block-start: clamp(0.4rem, 1.05svh, 0.68rem);
+  font-size: clamp(0.97rem, 2.19vw, 1.21rem);
+}
+
+.invitation-page[data-language="he"] .wedding-memorial-new {
+  margin-block-start: clamp(0.36rem, 0.95svh, 0.62rem);
+  font-size: clamp(0.96rem, 2.21vw, 1.2rem);
+}
+
+.invitation-page[data-language="he"]
+  .interior-event--wedding
+  .interior-waze {
+  font-size: 0.78rem;
+}
+
+@media (max-width: 37.5rem) {
+  .invitation-page[data-language="he"] .wedding-families-new p {
+    font-size: clamp(0.81rem, 3.16vw, 0.97rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-couple-new strong {
+    font-size: clamp(2.7rem, 12.65vw, 3.62rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-couple-new span {
+    font-size: clamp(0.92rem, 4.03vw, 1.1rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-date-new time {
+    font-size: clamp(2.24rem, 10.58vw, 3.11rem);
+  }
+}
+
+@media (max-height: 52rem) {
+  .invitation-page[data-language="he"]
+    .interior-event--wedding
+    .interior-event__title {
+    font-size: clamp(2.88rem, 10.35svh, 3.85rem);
+    transform: translateY(-0.45rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-verse {
+    font-size: clamp(0.94rem, 2.99svh, 1.15rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-families-new p {
+    font-size: clamp(0.74rem, 2.36svh, 0.87rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-invitation-text {
+    font-size: clamp(0.83rem, 2.53svh, 0.99rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-couple-new strong {
+    font-size: clamp(2.3rem, 8.4svh, 2.99rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-couple-new span,
+  .invitation-page[data-language="he"] .wedding-date-new > span {
+    font-size: clamp(0.81rem, 2.42svh, 0.94rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-date-new time {
+    font-size: clamp(1.9rem, 6.9svh, 2.47rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-date-new__times strong,
+  .invitation-page[data-language="he"] .wedding-location-new strong {
+    font-size: clamp(1.09rem, 3.57svh, 1.36rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-location-new span {
+    font-size: clamp(0.72rem, 2.2svh, 0.86rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    font-size: clamp(0.74rem, 2.19svh, 0.87rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    font-size: clamp(0.81rem, 2.41svh, 0.96rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-verse,
+  .invitation-page[data-language="he"] .wedding-families-new,
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-couple-new,
+  .invitation-page[data-language="he"] .wedding-invitation-text,
+  .invitation-page[data-language="he"] .wedding-date-new,
+  .invitation-page[data-language="he"] .wedding-location-new,
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    margin-block-start: clamp(0.16rem, 0.56svh, 0.32rem);
+  }
+
+  .invitation-page .interior-event--wedding .interior-waze {
+    margin-block-start: clamp(0.45rem, 1.15svh, 0.7rem);
+  }
+}
+
+/* Larger French-only Chabbat Hatan introduction */
+
+.invitation-page[data-language="fr"] .shabbat-invitation__intro {
+  font-size: clamp(1.24rem, 3.22vmin, 1.73rem);
+}
+
+@media (max-height: 36rem) {
+  .invitation-page[data-language="fr"] .shabbat-invitation__intro {
+    font-size: 0.94rem;
+  }
+}
+
+/* Hebrew-only Henné logo sizing */
+
+.invitation-page[data-language="he"] .henna-frame .interior-brand {
+  width: clamp(7.88rem, 26.91vw, 12.65rem);
+  height: clamp(3.51rem, 10.47vw, 5.64rem);
+}
+
+@media (max-height: 36rem) {
+  .invitation-page[data-language="he"] .henna-frame .interior-brand {
+    width: 6.9rem;
+    height: 3.05rem;
+  }
+}
+
+/* Match the Hebrew RSVP title to the Houppa and Henné titles */
+
+.invitation-page[data-language="he"] .rsvp-heading .section-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+/* Keep Clara & David identical in French and Hebrew */
+
+.invitation-page[data-language="he"] .invitation-intro-names h1,
+.invitation-page[data-language="he"] .wedding-couple-new {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Simple opening transition: fade only, without lateral movement or zoom */
+
+.opening-page {
+  transition: none;
+}
+
+.opening-page--closing {
+  opacity: 0;
+  transform: none;
+  animation: none;
+}
+
+html:has(.opening-page),
+html:has(.opening-page) body {
+  width: 100%;
+  overflow: hidden;
 }

@@ -31,7 +31,7 @@ export function InvitationExperience({
     () => getInvitedEvents(invitation.events, guest),
     [guest, invitation.events],
   );
-  const { invitationDisplayName, rsvpPeople } = useMemo(
+  const { invitationDisplay, rsvpPeople } = useMemo(
     () => getInvitationAudience(guest, invitation.guestMembers),
     [guest, invitation.guestMembers],
   );
@@ -106,7 +106,7 @@ export function InvitationExperience({
   if (!isInvitationOpen) {
     return (
       <OpeningCard
-        displayName={invitationDisplayName}
+        display={invitationDisplay}
         language={language}
         onDiscover={() => {
           window.scrollTo(0, 0);

@@ -24,6 +24,11 @@ test("solo: the first name is used for the card and RSVP", () => {
   );
 
   assert.equal(audience.invitationDisplayName, "David Bourak");
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "solo",
+    name: "David Bourak",
+    accessibleLabel: "David Bourak",
+  });
   assert.deepEqual(
     audience.rsvpPeople.map(({ id, name }) => ({ id, name })),
     [{ id: "primary", name: "David Bourak" }],
@@ -37,6 +42,11 @@ test("couple: First Name and Last Name remain two independent people", () => {
   );
 
   assert.equal(audience.invitationDisplayName, "David & Clara");
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "couple",
+    people: ["David", "Clara"],
+    accessibleLabel: "David & Clara",
+  });
   assert.deepEqual(
     audience.rsvpPeople.map(({ id, name }) => ({ id, name })),
     [
@@ -56,7 +66,13 @@ test("couple: a shared last name is displayed only once on the invitation", () =
     [],
   );
 
-  assert.equal(audience.invitationDisplayName, "Steven et Salome Guez");
+  assert.equal(audience.invitationDisplayName, "Steven & Salome GUEZ");
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "shared-last-name",
+    firstNames: ["Steven", "Salome"],
+    lastName: "GUEZ",
+    accessibleLabel: "Steven & Salome GUEZ",
+  });
   assert.deepEqual(
     audience.rsvpPeople.map(({ id, name }) => ({ id, name })),
     [
@@ -76,7 +92,25 @@ test("couple: a shared multi-word last name is displayed only once", () => {
     [],
   );
 
-  assert.equal(audience.invitationDisplayName, "David et Sarah Ben Attar");
+  assert.equal(audience.invitationDisplayName, "David & Sarah BEN ATTAR");
+});
+
+test("couple: shared-name capitalization is normalized for the card", () => {
+  const audience = getInvitationAudience(
+    {
+      ...baseGuest,
+      firstName: "sTEVEN gUEZ",
+      lastName: "sALOME GUEZ",
+    },
+    [],
+  );
+
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "shared-last-name",
+    firstNames: ["Steven", "Salome"],
+    lastName: "GUEZ",
+    accessibleLabel: "Steven & Salome GUEZ",
+  });
 });
 
 test("couple: different last names keep the existing display", () => {
@@ -90,6 +124,11 @@ test("couple: different last names keep the existing display", () => {
   );
 
   assert.equal(audience.invitationDisplayName, "Steven Guez & Salome Cohen");
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "couple",
+    people: ["Steven Guez", "Salome Cohen"],
+    accessibleLabel: "Steven Guez & Salome Cohen",
+  });
 });
 
 test("family: linked members are the only RSVP people", () => {
@@ -106,6 +145,11 @@ test("family: linked members are the only RSVP people", () => {
   );
 
   assert.equal(audience.invitationDisplayName, "Famille Bourak");
+  assert.deepEqual(audience.invitationDisplay, {
+    kind: "family",
+    name: "Famille Bourak",
+    accessibleLabel: "Famille Bourak",
+  });
   assert.deepEqual(
     audience.rsvpPeople.map(({ name }) => name),
     members.map(({ name }) => name),

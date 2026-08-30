@@ -179,7 +179,7 @@ export function RSVPForm({
             <h2 id="rsvp-title" className="section-title">
               {t.eyebrow}
             </h2>
-            <p className="rsvp-intro">{t.intro}</p>
+            {t.intro && <p className="rsvp-intro">{t.intro}</p>}
           </div>
 
           <form className="rsvp-form" onSubmit={handleSubmit} noValidate>
@@ -261,7 +261,7 @@ export function RSVPForm({
 
             <fieldset className="shuttle-fieldset">
               <legend>{t.shuttleLabel}</legend>
-              <p>{t.shuttleHelp}</p>
+              {t.shuttleHelp && <p>{t.shuttleHelp}</p>}
               <div className="shuttle-options">
                 {(["Jerusalem", "Tel Aviv"] as const).map((city) => {
                   const inputId = `shuttle-${city.replace(" ", "-").toLowerCase()}`;
