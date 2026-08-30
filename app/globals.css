@@ -7839,3 +7839,686 @@ html:has(.opening-page) body {
   width: 100%;
   overflow: hidden;
 }
+
+/* Airier French Houppa copy, fitted to every viewport height */
+
+.invitation-page[data-language="fr"] .wedding-joy,
+.invitation-page[data-language="fr"] .wedding-invitation-text {
+  margin-block-start: clamp(0.76rem, 2.05svh, 1.3rem);
+  font-size: clamp(0.98rem, 2.28vw, 1.26rem);
+  line-height: 1.36;
+  text-wrap: balance;
+}
+
+.invitation-page[data-language="fr"] .wedding-reception-new {
+  margin-block-start: clamp(0.62rem, 1.65svh, 1.05rem);
+  font-size: clamp(0.91rem, 2.05vw, 1.14rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.invitation-page[data-language="fr"] .wedding-memorial-new {
+  margin-block-start: clamp(0.58rem, 1.5svh, 0.98rem);
+  font-size: clamp(0.83rem, 1.9vw, 1.04rem);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+@media (max-height: 52rem) {
+  .invitation-page[data-language="fr"] .wedding-joy,
+  .invitation-page[data-language="fr"] .wedding-invitation-text {
+    margin-block-start: clamp(0.38rem, 1.22svh, 0.72rem);
+    font-size: clamp(0.76rem, 2.32svh, 0.91rem);
+    line-height: 1.2;
+  }
+
+  .invitation-page[data-language="fr"] .wedding-reception-new,
+  .invitation-page[data-language="fr"] .wedding-memorial-new {
+    margin-block-start: clamp(0.36rem, 1.16svh, 0.68rem);
+    line-height: 1.2;
+  }
+
+  .invitation-page[data-language="fr"] .wedding-reception-new {
+    font-size: clamp(0.67rem, 2.02svh, 0.81rem);
+  }
+
+  .invitation-page[data-language="fr"] .wedding-memorial-new {
+    font-size: clamp(0.68rem, 2.04svh, 0.82rem);
+  }
+}
+
+@media (max-height: 40rem) {
+  .invitation-page[data-language="fr"] .wedding-joy,
+  .invitation-page[data-language="fr"] .wedding-invitation-text {
+    margin-block-start: clamp(0.35rem, 1.1svh, 0.65rem);
+    font-size: clamp(0.74rem, 2.25svh, 0.88rem);
+  }
+
+  .invitation-page[data-language="fr"] .wedding-reception-new,
+  .invitation-page[data-language="fr"] .wedding-memorial-new {
+    margin-block-start: clamp(0.35rem, 1.1svh, 0.65rem);
+    font-size: clamp(0.65rem, 1.96svh, 0.78rem);
+  }
+}
+
+/* Preserve the airy iPhone rhythm on every shorter Houppa viewport */
+
+@media (max-height: 52rem) {
+  .invitation-page .interior-event--wedding .wedding-invitation {
+    width: min(100%, 54rem);
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    justify-content: space-between;
+    gap: 0;
+    padding-block: clamp(0.25rem, 0.8svh, 0.5rem);
+  }
+}
+
+@media (max-height: 40rem) {
+  .invitation-page .interior-event--wedding .wedding-invitation {
+    padding-block: 0;
+  }
+}
+
+/* Airier Hebrew Houppa composition without leaving the frame */
+
+@media (min-height: 52.01rem) {
+  .invitation-page[data-language="he"] .wedding-invitation {
+    min-height: min(84svh, 48rem);
+  }
+}
+
+.invitation-page[data-language="he"] .wedding-verse {
+  margin-block-start: clamp(0.42rem, 1.25svh, 0.76rem);
+}
+
+.invitation-page[data-language="he"] .wedding-families-new {
+  margin-block-start: clamp(0.57rem, 1.5svh, 0.92rem);
+}
+
+.invitation-page[data-language="he"] .wedding-joy,
+.invitation-page[data-language="he"] .wedding-invitation-text {
+  max-width: 43rem;
+  margin-block-start: clamp(0.51rem, 1.34svh, 0.83rem);
+  line-height: 1.34;
+  text-wrap: balance;
+}
+
+.invitation-page[data-language="he"] .wedding-couple-new {
+  margin-block-start: clamp(0.48rem, 1.28svh, 0.8rem);
+}
+
+.invitation-page[data-language="he"] .wedding-date-new,
+.invitation-page[data-language="he"] .wedding-location-new {
+  margin-block-start: clamp(0.51rem, 1.34svh, 0.84rem);
+}
+
+.invitation-page[data-language="he"] .wedding-reception-new {
+  max-width: 42rem;
+  margin-block-start: clamp(0.46rem, 1.18svh, 0.75rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.invitation-page[data-language="he"] .wedding-memorial-new {
+  max-width: 42rem;
+  margin-block-start: clamp(0.42rem, 1.08svh, 0.69rem);
+  line-height: 1.32;
+  text-wrap: balance;
+}
+
+@media (max-height: 52rem) {
+  .invitation-page[data-language="he"] .wedding-verse,
+  .invitation-page[data-language="he"] .wedding-families-new,
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-couple-new,
+  .invitation-page[data-language="he"] .wedding-invitation-text,
+  .invitation-page[data-language="he"] .wedding-date-new,
+  .invitation-page[data-language="he"] .wedding-location-new,
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    margin-block-start: clamp(0.22rem, 0.7svh, 0.4rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-invitation-text {
+    line-height: 1.2;
+  }
+
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    line-height: 1.18;
+  }
+}
+
+@media (max-height: 40rem) {
+  .invitation-page[data-language="he"] .wedding-verse,
+  .invitation-page[data-language="he"] .wedding-families-new,
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-couple-new,
+  .invitation-page[data-language="he"] .wedding-invitation-text,
+  .invitation-page[data-language="he"] .wedding-date-new,
+  .invitation-page[data-language="he"] .wedding-location-new,
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    margin-block-start: clamp(0.18rem, 0.58svh, 0.32rem);
+  }
+
+  .invitation-page[data-language="he"] .wedding-joy,
+  .invitation-page[data-language="he"] .wedding-invitation-text {
+    line-height: 1.16;
+  }
+
+  .invitation-page[data-language="he"] .wedding-reception-new,
+  .invitation-page[data-language="he"] .wedding-memorial-new {
+    line-height: 1.15;
+  }
+}
+
+/* Henné: keep the full composition airy and inside the illustrated frame */
+
+.henna-frame__content {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+
+.henna-frame__content > * {
+  max-width: 100%;
+}
+
+.henna-frame__intro,
+.henna-frame__date,
+.henna-frame__venue {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 48rem) and (min-height: 56rem) {
+  .henna-frame__content {
+    inset-block-start: 50%;
+    inset-block-end: auto;
+    height: min(72svh, 50rem);
+    justify-content: space-between;
+    gap: clamp(0.65rem, 1.2svh, 1rem);
+    transform: translateY(
+      calc(-50% - clamp(0.7rem, 1.4svh, 1.25rem))
+    );
+  }
+}
+
+@media (max-height: 52rem) {
+  .henna-frame__content {
+    justify-content: space-between;
+    gap: clamp(0.18rem, 0.55svh, 0.38rem);
+    transform: translateY(clamp(-0.9rem, -1.7svh, -0.35rem));
+  }
+
+  .henna-frame__title {
+    font-size: clamp(3rem, 8.4svh, 4rem);
+  }
+
+  .henna-frame .interior-brand {
+    width: clamp(6.4rem, 15svh, 8.4rem);
+    height: clamp(2.85rem, 6.7svh, 3.75rem);
+  }
+
+  .invitation-page[data-language="he"] .henna-frame .interior-brand {
+    width: clamp(7.25rem, 17.25svh, 9.65rem);
+    height: clamp(3.22rem, 7.67svh, 4.3rem);
+  }
+
+  .henna-frame__intro {
+    font-size: clamp(0.94rem, 2.35svh, 1.18rem);
+    line-height: 1.22;
+  }
+
+  .henna-frame__date {
+    font-size: clamp(1.45rem, 3.6svh, 1.85rem);
+  }
+
+  .henna-frame__time {
+    font-size: clamp(1.8rem, 4.5svh, 2.35rem);
+  }
+
+  .henna-frame__venue {
+    font-size: clamp(0.85rem, 2.1svh, 1.05rem);
+    line-height: 1.18;
+  }
+
+  .henna-frame .interior-waze {
+    min-height: clamp(2rem, 5.2svh, 2.45rem);
+    margin-block-start: clamp(0.3rem, 0.85svh, 0.55rem);
+  }
+}
+
+@media (max-height: 40rem) {
+  .henna-frame__content {
+    gap: clamp(0.12rem, 0.42svh, 0.26rem);
+    transform: translateY(-0.3rem);
+  }
+
+  .henna-frame__title {
+    font-size: clamp(2.65rem, 7.4svh, 3.05rem);
+  }
+
+  .henna-frame .interior-brand {
+    width: clamp(5.7rem, 14.4svh, 6.5rem);
+    height: clamp(2.53rem, 6.4svh, 2.9rem);
+  }
+
+  .invitation-page[data-language="he"] .henna-frame .interior-brand {
+    width: clamp(6.5rem, 16.55svh, 7.4rem);
+    height: clamp(2.89rem, 7.36svh, 3.3rem);
+  }
+
+  .henna-frame__intro {
+    font-size: clamp(0.78rem, 2.2svh, 0.92rem);
+    line-height: 1.15;
+  }
+
+  .henna-frame__date {
+    font-size: clamp(1.2rem, 3.3svh, 1.42rem);
+  }
+
+  .henna-frame__time {
+    font-size: clamp(1.45rem, 4svh, 1.75rem);
+  }
+
+  .henna-frame__venue {
+    font-size: clamp(0.72rem, 2svh, 0.86rem);
+    line-height: 1.12;
+  }
+
+  .henna-frame .interior-waze {
+    min-height: clamp(1.85rem, 4.8svh, 2.05rem);
+    margin-block-start: clamp(0.16rem, 0.5svh, 0.3rem);
+    padding: 0.25rem 0.65rem;
+  }
+}
+
+@media (max-height: 30rem) {
+  .henna-frame__content {
+    inset:
+      clamp(4.5rem, 14svh, 5.1rem)
+      clamp(2.5rem, 13vw, 8rem)
+      clamp(2.5rem, 8svh, 3rem);
+    gap: 0.1rem;
+    transform: translateY(-0.15rem);
+  }
+
+  .henna-frame__title {
+    font-size: 2.35rem;
+  }
+
+  .henna-frame .interior-brand {
+    width: 5rem;
+    height: 2.22rem;
+  }
+
+  .invitation-page[data-language="he"] .henna-frame .interior-brand {
+    width: 5.75rem;
+    height: 2.55rem;
+  }
+
+  .henna-frame__intro {
+    font-size: 0.72rem;
+    line-height: 1.12;
+  }
+
+  .henna-frame__date {
+    font-size: 1.1rem;
+  }
+
+  .henna-frame__time {
+    font-size: 1.3rem;
+  }
+
+  .henna-frame__venue {
+    font-size: 0.68rem;
+    line-height: 1.1;
+  }
+
+  .henna-frame .interior-waze {
+    min-height: 1.75rem;
+    margin-block-start: 0.1rem;
+    font-size: 0.52rem;
+  }
+}
+
+/* Chabbat Hatan: preserve the three airy groups on every viewport height */
+
+.shabbat-invitation,
+.shabbat-invitation__header,
+.shabbat-invitation__main,
+.shabbat-invitation__footer {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+}
+
+.shabbat-invitation__intro,
+.shabbat-invitation__date,
+.shabbat-invitation__venue,
+.shabbat-schedule {
+  overflow-wrap: anywhere;
+}
+
+@media (max-height: 52rem) {
+  .invitation-page .interior-event.interior-event--shabbat {
+    padding:
+      max(
+        clamp(0.8rem, 2.2svh, 1.2rem),
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-top)
+      )
+      max(clamp(0.85rem, 4vw, 2rem), env(safe-area-inset-right))
+      max(
+        clamp(0.8rem, 2.2svh, 1.2rem),
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-bottom)
+      )
+      max(clamp(0.85rem, 4vw, 2rem), env(safe-area-inset-left));
+  }
+
+  .shabbat-invitation {
+    width: min(100%, 56rem);
+    height: 100%;
+    max-height: 100%;
+    justify-content: space-between;
+    gap: 0;
+    padding-block: clamp(0.2rem, 0.65svh, 0.42rem);
+    transform: none;
+  }
+
+  .shabbat-invitation__header,
+  .shabbat-invitation__main,
+  .shabbat-invitation__footer {
+    gap: clamp(0.32rem, 0.9svh, 0.58rem);
+  }
+
+  .shabbat-invitation .interior-event__title {
+    font-size: clamp(3rem, 8svh, 4.15rem);
+    line-height: 0.84;
+  }
+
+  .shabbat-invitation .interior-event__title::after {
+    margin-block-start: clamp(0.32rem, 0.8svh, 0.5rem);
+  }
+
+  .invitation-page[data-language="fr"] .shabbat-invitation__intro {
+    font-size: clamp(0.92rem, 2.2svh, 1.12rem);
+    line-height: 1.28;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__intro {
+    gap: clamp(0.04rem, 0.2svh, 0.12rem);
+    font-size: clamp(1.02rem, 2.55svh, 1.28rem);
+    line-height: 1.2;
+  }
+
+  .shabbat-invitation__date,
+  .invitation-page[data-language="he"] .shabbat-invitation__date {
+    gap: clamp(0.08rem, 0.32svh, 0.2rem);
+    font-size: clamp(1.48rem, 4.25svh, 2.1rem);
+    line-height: 1;
+  }
+
+  .shabbat-invitation__venue {
+    gap: clamp(0.12rem, 0.35svh, 0.22rem);
+  }
+
+  .shabbat-invitation__venue strong,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue strong {
+    font-size: clamp(1.15rem, 3.1svh, 1.52rem);
+  }
+
+  .shabbat-invitation__venue span,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue span {
+    font-size: clamp(0.66rem, 1.72svh, 0.83rem);
+  }
+
+  .shabbat-schedule,
+  .invitation-page[data-language="he"] .shabbat-schedule {
+    width: min(100%, 40rem);
+    padding-block: clamp(0.38rem, 1.05svh, 0.62rem);
+    transform: none;
+  }
+
+  .shabbat-schedule p,
+  .invitation-page[data-language="he"] .shabbat-schedule p {
+    font-size: clamp(0.58rem, 1.48svh, 0.72rem);
+  }
+
+  .shabbat-schedule > div,
+  .invitation-page[data-language="he"] .shabbat-schedule > div {
+    gap: clamp(0.25rem, 1vw, 0.65rem);
+    margin-block-start: clamp(0.28rem, 0.75svh, 0.46rem);
+    font-size: clamp(0.88rem, 2.4svh, 1.18rem);
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule > div span {
+    min-height: clamp(1.8rem, 4.8svh, 2.35rem);
+  }
+
+  .shabbat-parasha-new {
+    font-size: clamp(1.8rem, 4.8svh, 2.4rem);
+  }
+
+  .shabbat-invitation .interior-waze {
+    min-height: clamp(2.2rem, 5.7svh, 2.55rem);
+    padding-block: 0.38rem;
+  }
+}
+
+@media (max-height: 40rem) {
+  .invitation-page .interior-event.interior-event--shabbat {
+    padding-block:
+      max(
+        clamp(0.72rem, 1.9svh, 1rem),
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-top)
+      )
+      max(
+        clamp(0.72rem, 1.9svh, 1rem),
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .shabbat-invitation {
+    padding-block: 0.08rem;
+    transform: none;
+  }
+
+  .shabbat-invitation__header,
+  .shabbat-invitation__main,
+  .shabbat-invitation__footer {
+    gap: clamp(0.2rem, 0.58svh, 0.34rem);
+  }
+
+  .shabbat-invitation .interior-event__title {
+    font-size: clamp(2.65rem, 7.3svh, 3rem);
+  }
+
+  .invitation-page[data-language="fr"] .shabbat-invitation__intro {
+    font-size: clamp(0.76rem, 2.05svh, 0.9rem);
+    line-height: 1.18;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__intro {
+    font-size: clamp(0.84rem, 2.25svh, 0.98rem);
+    line-height: 1.14;
+  }
+
+  .shabbat-invitation__date,
+  .invitation-page[data-language="he"] .shabbat-invitation__date {
+    font-size: clamp(1.18rem, 3.4svh, 1.42rem);
+  }
+
+  .shabbat-invitation__venue strong,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue strong {
+    font-size: clamp(0.96rem, 2.7svh, 1.12rem);
+  }
+
+  .shabbat-invitation__venue span,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue span {
+    font-size: clamp(0.58rem, 1.6svh, 0.68rem);
+  }
+
+  .shabbat-schedule,
+  .invitation-page[data-language="he"] .shabbat-schedule {
+    padding-block: clamp(0.25rem, 0.65svh, 0.36rem);
+  }
+
+  .shabbat-schedule p,
+  .invitation-page[data-language="he"] .shabbat-schedule p {
+    font-size: clamp(0.52rem, 1.38svh, 0.6rem);
+  }
+
+  .shabbat-schedule > div,
+  .invitation-page[data-language="he"] .shabbat-schedule > div {
+    margin-block-start: clamp(0.18rem, 0.48svh, 0.28rem);
+    font-size: clamp(0.76rem, 2.1svh, 0.9rem);
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule > div span {
+    min-height: clamp(1.45rem, 3.9svh, 1.72rem);
+  }
+
+  .shabbat-parasha-new {
+    font-size: clamp(1.5rem, 4.15svh, 1.75rem);
+  }
+
+  .shabbat-invitation .interior-waze {
+    min-height: clamp(1.95rem, 5.2svh, 2.2rem);
+    padding: 0.3rem 1rem;
+  }
+}
+
+@media (max-height: 30rem) {
+  .invitation-page .interior-event.interior-event--shabbat {
+    padding-block:
+      max(
+        0.7rem,
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-top)
+      )
+      max(
+        0.7rem,
+        clamp(0.7rem, 2vw, 1.4rem),
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .shabbat-invitation {
+    transform: none;
+  }
+
+  .shabbat-invitation__header,
+  .shabbat-invitation__main,
+  .shabbat-invitation__footer {
+    gap: 0.16rem;
+  }
+
+  .shabbat-invitation .interior-event__title {
+    font-size: 2.3rem;
+  }
+
+  .shabbat-invitation .interior-event__title::after {
+    margin-block-start: 0.2rem;
+  }
+
+  .invitation-page[data-language="fr"] .shabbat-invitation__intro {
+    font-size: 0.68rem;
+    line-height: 1.12;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-invitation__intro {
+    font-size: 0.76rem;
+    line-height: 1.1;
+  }
+
+  .shabbat-invitation__date,
+  .invitation-page[data-language="he"] .shabbat-invitation__date {
+    font-size: 1.05rem;
+  }
+
+  .shabbat-invitation__venue strong,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue strong {
+    font-size: 0.9rem;
+  }
+
+  .shabbat-invitation__venue span,
+  .invitation-page[data-language="he"] .shabbat-invitation__venue span {
+    font-size: 0.55rem;
+  }
+
+  .shabbat-schedule,
+  .invitation-page[data-language="he"] .shabbat-schedule {
+    padding-block: 0.2rem;
+  }
+
+  .shabbat-schedule p,
+  .invitation-page[data-language="he"] .shabbat-schedule p {
+    font-size: 0.5rem;
+  }
+
+  .shabbat-schedule > div,
+  .invitation-page[data-language="he"] .shabbat-schedule > div {
+    margin-block-start: 0.12rem;
+    font-size: 0.72rem;
+  }
+
+  .invitation-page[data-language="he"] .shabbat-schedule > div span {
+    min-height: 1.3rem;
+  }
+
+  .shabbat-parasha-new {
+    font-size: 1.35rem;
+  }
+
+  .shabbat-invitation .interior-waze {
+    min-height: 1.8rem;
+    padding-block: 0.22rem;
+    font-size: 0.62rem;
+  }
+}
+
+/* Balance Chabbat Hatan vertically on iPhone SE and other short screens */
+
+@media (max-height: 52rem) {
+  .shabbat-invitation {
+    height: min(100%, 46rem);
+    justify-content: center;
+    gap: clamp(2.5rem, 6svh, 3.25rem);
+  }
+}
+
+@media (max-height: 44rem) {
+  .shabbat-invitation {
+    justify-content: center;
+    gap: clamp(2.25rem, 7svh, 3.2rem);
+  }
+}
+
+@media (max-width: 48rem) and (min-height: 52.01rem) {
+  .shabbat-invitation {
+    height: min(100%, 48rem);
+    justify-content: center;
+    gap: clamp(2.65rem, 5.5svh, 3.4rem);
+  }
+}
+
+@media (max-height: 40rem) {
+  .shabbat-invitation {
+    gap: clamp(1.4rem, 4.5svh, 2rem);
+  }
+}
+
+@media (max-height: 30rem) {
+  .shabbat-invitation {
+    gap: clamp(0.8rem, 3.2svh, 1.1rem);
+  }
+}
