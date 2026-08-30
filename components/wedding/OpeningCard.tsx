@@ -23,7 +23,7 @@ const OPENING_COPY = {
   },
 } as const;
 
-const EXIT_DURATION_MS = 720;
+const EXIT_DURATION_MS = 1250;
 
 export function OpeningCard({
   displayName,
@@ -57,36 +57,41 @@ export function OpeningCard({
       <div className="opening-page__texture" aria-hidden="true" />
 
       <div className="opening-composition">
-        <article className="opening-card" aria-labelledby="opening-names">
-          <div className="opening-card__inner">
+        <article className="opening-envelope" aria-labelledby="opening-names">
+          <span className="opening-envelope__back" aria-hidden="true" />
+          <span className="opening-envelope__letter" aria-hidden="true" />
+          <span className="opening-envelope__flap" aria-hidden="true" />
+          <span className="opening-envelope__front" aria-hidden="true" />
+
+          <div className="opening-envelope__address">
             <p className="opening-title">{copy.invitation}</p>
             <span className="opening-divider" aria-hidden="true" />
             <h1 id="opening-names" className="opening-names">
               {displayName}
             </h1>
           </div>
-        </article>
 
-        <button
-          type="button"
-          className="opening-trigger focus-ring"
-          onClick={handleOpen}
-          disabled={isClosing}
-          aria-label={copy.open}
-        >
-          <span className="opening-seal" aria-hidden="true">
-            <span className="opening-seal__inner">
-              <Image
-                src="/images/logo2.jpg"
-                alt={copy.logoAlt}
-                width={1254}
-                height={1254}
-                priority
-              />
+          <button
+            type="button"
+            className="opening-trigger focus-ring"
+            onClick={handleOpen}
+            disabled={isClosing}
+            aria-label={copy.open}
+          >
+            <span className="opening-seal" aria-hidden="true">
+              <span className="opening-seal__inner">
+                <Image
+                  src="/images/logo2.jpg"
+                  alt={copy.logoAlt}
+                  width={1254}
+                  height={1254}
+                  priority
+                />
+              </span>
             </span>
-          </span>
-          <span className="opening-trigger__label">{copy.open}</span>
-        </button>
+            <span className="opening-trigger__label">{copy.open}</span>
+          </button>
+        </article>
       </div>
     </main>
   );

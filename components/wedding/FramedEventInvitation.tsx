@@ -1,5 +1,5 @@
 import Image from "next/image";
-import fondHenne from "@/public/images/fondd.png";
+import fondHenne from "@/public/images/fondd-cdb69e.png";
 import { getTranslations } from "@/lib/translations";
 import type {
   Language,
