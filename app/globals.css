@@ -7691,13 +7691,16 @@ html:has(.opening-page) body {
   .interior-event--wedding
   .interior-waze {
     display: inline-flex;
+    width: fit-content;
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
-
     white-space: nowrap;   /* empêche le retour à la ligne */
-    min-width: 7rem;       /* augmente la largeur */
-  font-size: 0.58rem;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    min-width: 8rem;
+    padding: 0 1rem;       /* augmente la largeur */
+    font-size: 0.58rem;
 }
 
 @media (max-width: 37.5rem) {
