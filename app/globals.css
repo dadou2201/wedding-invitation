@@ -6481,7 +6481,7 @@ html.invitation-snap-active body {
 /* Opening card palette aligned with the henna stationery and RSVP */
 
 .opening-page {
-  --opening-paper: #cdb69e;
+  --opening-paper: #ddcbb8;
   --opening-ink: #4a3a31;
   --opening-ink-rgb: 74 58 49;
 
@@ -6555,7 +6555,7 @@ html.invitation-snap-active body {
 
 html:has(.opening-page),
 html:has(.opening-page) body {
-  background: #cdb69e;
+  background: #ddcbb8;
 }
 
 /* Full-height, airy Shabbat Hatan composition */
