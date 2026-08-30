@@ -7690,6 +7690,9 @@ html:has(.opening-page) body {
 .invitation-page[data-language="he"]
   .interior-event--wedding
   .interior-waze {
+    .interior-waze {
+  white-space: nowrap;
+}
   font-size: 0.58rem;
 }
 
