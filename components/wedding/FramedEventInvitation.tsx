@@ -24,7 +24,6 @@ const EVENT_COPY = {
       times: ["Cocktail 18h00", "Houppa 19h00"],
       venue: "Dans les salons 58",
       address: "Hayarkonim 58, Petah Tikva",
-      reception: "La cérémonie sera suivie d’une réception",
       memorial:
         "En ce jour si spécial, nous aurons une pensée émue pour nos grands-parents Yves Abécassis, René Bourak et Mady Zerbib",
     },
@@ -58,7 +57,6 @@ const EVENT_COPY = {
       times: ["קבלת פנים 18:00", "חופה 19:00"],
       venue: "באולמי 58",
       address: "הירקונים 58, פתח תקווה",
-      reception: "לאחר החופה תתקיים קבלת פנים",
       memorial:
         "ביום מיוחד זה נישא עמנו את זכר סבינו וסבותינו איב אבקסיס, רנה בורק ומדי זרביב",
     },
@@ -229,7 +227,6 @@ function WeddingInvitation({
         <span>{copy.address}</span>
       </address>
 
-      <p className="wedding-reception-new">{copy.reception}</p>
       <p className="wedding-memorial-new">{copy.memorial}</p>
       <WazeLink event={event} language={language} />
     </div>
